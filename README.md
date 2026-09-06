@@ -212,7 +212,7 @@ re-split, and one sub-cube alone needed 561 s and a 480 MB proof. An 8-hour, 14-
 ## 7. Data availability
 
 * GitHub layer (this repository, https://github.com/Amberlogy/haugland-2131-certificates): all inputs, CNFs, cube file, cover certificate, L2/L3 certificates, 5-colouring, scripts and fingerprints (< 100 MB).
-* Zenodo layer (full proof archive, 28 GB, 14 786 leaf proofs + spindle-freeness DRAT): DOI to be added after the Zenodo record is published (placeholder: `10.5281/zenodo.XXXXXXX`).
+* Zenodo layer (full proof archive, 28 GB, 14 786 leaf proofs + spindle-freeness DRAT): DOI [10.5281/zenodo.22435778](https://doi.org/10.5281/zenodo.22435778).
   The archive's per-file sha256 values are in `SHA256SUMS.bundle` here, so either layer can be checked against the other.
 
 ## 8. License

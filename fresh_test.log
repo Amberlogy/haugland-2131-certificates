@@ -1,12 +1,12 @@
-== fresh copy: 50 files, 34M; no zenodo/, no rebuild/ ==
+== fresh copy: 51 files, 34M; no zenodo/, no rebuild/ ==
 == python: Python 3.14.4 ==
-== quick layer (GitHub layer only) == Sun Sep  6 09:41:46 HKT 2026
+== quick layer (GitHub layer only) == Sun Sep  6 09:58:10 HKT 2026
 python: Python 3.14.4; drat-trim: /home/user/hadwiger/drat-trim/drat-trim; kissat: /home/user/hadwiger/kissat/build/kissat
-[0] OK  SHA256SUMS: 49 files match
-== 完成: 全部數字同論文一致 = True; 總用時 13.5s; 輸出喺 rebuild ==
-[1] OK  haugland.py rebuilt G1/G3 from the paper in 14 s; G1.cvtx G1.edge G3.cvtx G3.edge byte-identical to inputs/
-[2] OK  G1: [G1.cvtx] 邊表 == 點集嘅完整單位距離圖 ✓ (3985 條) [0 s]
-[2] OK  G3: [G3.cvtx] 邊表 == 點集嘅完整單位距離圖 ✓ (12530 條) [9 s]
+[0] OK  SHA256SUMS: 50 files match
+== 完成: 全部數字同論文一致 = True; 總用時 13.4s; 輸出喺 rebuild ==
+[1] OK  haugland.py rebuilt G1/G3 from the paper in 13 s; G1.cvtx G1.edge G3.cvtx G3.edge byte-identical to inputs/
+[2] OK  G1: [G1.cvtx] 邊表 == 點集嘅完整單位距離圖 ✓ (3985 條) [1 s]
+[2] OK  G3: [G3.cvtx] 邊表 == 點集嘅完整單位距離圖 ✓ (12530 條) [8 s]
 [3] OK  [A 枚舉] 2131 點 12530 邊: 菱形 858 個, Moser spindle copies = 0 (0.03s) [0 s]
 [4] OK  L1_a.cnf rebuilt from inputs/G1.*: sha256 6d427680d5c0afd4… == L1/L1_a.cnf
 [5] OK  drat-trim cover_pure: s VERIFIED (14786 negated cubes) [1 s]
@@ -21,7 +21,7 @@ python: Python 3.14.4; drat-trim: /home/user/hadwiger/drat-trim/drat-trim; kissa
 [7] OK  drat-trim L3: s VERIFIED; the 16 lemma clauses from L2/pairs.json are present in L3.cnf
    G3-5.col: 2131 vertices, 5 colours, 12530/12530 edges bichromatic
 [8] OK  5-colouring checked edge by edge
-== quick layer done: ALL OK in 26 s == Sun Sep  6 09:42:12 HKT 2026
+== quick layer done: ALL OK in 26 s == Sun Sep  6 09:58:36 HKT 2026
    (the 14786 leaf proofs of L1 and the spindle-freeness DRAT are in the Zenodo layer: bash rerun.sh --full /path/to/bundle)
 rerun.sh rc=0
 == rebuild/haugland.log (full) ==
@@ -88,7 +88,7 @@ rerun.sh rc=0
 [G3.cvtx] N=420 (dim 96), 2131 個頂點 (parse 0.2s), 12530 條邊
 [G3.cvtx] sha256 cvtx=441f31210dae1ab14e700a2b7e34e70264aa1b1f9307c2f47c8ea3534c6e6d1f
 [G3.cvtx] sha256 edge=992936f8779b3baedb70b6518ae3a870a1278969d6deae8c0008df172302ae0b (證書只對應呢兩個檔案; hash 同 parse 用同一份 bytes)
-[G3.cvtx] 12530/12530 條邊精確長度 1  (驗證 3.7s, 全程無浮點) ✓
+[G3.cvtx] 12530/12530 條邊精確長度 1  (驗證 3.5s, 全程無浮點) ✓
 [G3.cvtx] selftest: 故意整壞頂點 1 後, 8/8 條相關邊即刻被揭發 ✓ (檢查器有牙)
-== 完成: 全部數字同論文一致 = True; 總用時 13.5s; 輸出喺 rebuild ==
-FRESH_TEST DONE Sun Sep  6 09:42:12 HKT 2026
+== 完成: 全部數字同論文一致 = True; 總用時 13.4s; 輸出喺 rebuild ==
+FRESH_TEST DONE Sun Sep  6 09:58:36 HKT 2026
