@@ -1,6 +1,7 @@
-# Zenodo layer (28 GB archive, split volumes) lives outside git
-zenodo/
-zenodo_v2/
+# Zenodo layer (28 GB archive, split volumes) lives outside git — "zenodo" is a symlink here, so no trailing slash
+zenodo
+zenodo_v2
+zenodo_v1_old
 # large proof files never go into the GitHub layer (only cover_pure.drat 4.4 MB and L3.drat 0.7 MB are tracked)
 *.drat
 *.lrat
