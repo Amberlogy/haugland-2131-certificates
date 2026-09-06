@@ -1,4 +1,4 @@
-# ZENODO_METADATA.md — fields for the Zenodo record (final draft 2026-09-06; NOT uploaded — the author uploads by hand, see ZENODO_STEPS.md)
+# ZENODO_METADATA.md — fields of the Zenodo record (final 2026-09-06). Status: draft deposition 22435778 created through the Zenodo REST API with these fields, all files uploaded and checksummed, DOI 10.5281/zenodo.22435778 reserved; the record is published by the author by hand (see ZENODO_STEPS.md).
 
 **Upload type / Resource type:** Dataset
 

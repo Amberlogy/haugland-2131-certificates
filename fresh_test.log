@@ -1,27 +1,27 @@
 == fresh copy: 51 files, 34M; no zenodo/, no rebuild/ ==
 == python: Python 3.14.4 ==
-== quick layer (GitHub layer only) == Sun Sep  6 09:58:10 HKT 2026
+== quick layer (GitHub layer only) == Sun Sep  6 09:59:53 HKT 2026
 python: Python 3.14.4; drat-trim: /home/user/hadwiger/drat-trim/drat-trim; kissat: /home/user/hadwiger/kissat/build/kissat
 [0] OK  SHA256SUMS: 50 files match
 == 完成: 全部數字同論文一致 = True; 總用時 13.4s; 輸出喺 rebuild ==
-[1] OK  haugland.py rebuilt G1/G3 from the paper in 13 s; G1.cvtx G1.edge G3.cvtx G3.edge byte-identical to inputs/
-[2] OK  G1: [G1.cvtx] 邊表 == 點集嘅完整單位距離圖 ✓ (3985 條) [1 s]
+[1] OK  haugland.py rebuilt G1/G3 from the paper in 14 s; G1.cvtx G1.edge G3.cvtx G3.edge byte-identical to inputs/
+[2] OK  G1: [G1.cvtx] 邊表 == 點集嘅完整單位距離圖 ✓ (3985 條) [0 s]
 [2] OK  G3: [G3.cvtx] 邊表 == 點集嘅完整單位距離圖 ✓ (12530 條) [8 s]
 [3] OK  [A 枚舉] 2131 點 12530 邊: 菱形 858 個, Moser spindle copies = 0 (0.03s) [0 s]
 [4] OK  L1_a.cnf rebuilt from inputs/G1.*: sha256 6d427680d5c0afd4… == L1/L1_a.cnf
-[5] OK  drat-trim cover_pure: s VERIFIED (14786 negated cubes) [1 s]
+[5] OK  drat-trim cover_pure: s VERIFIED (14786 negated cubes) [0 s]
 [5b] OK  cubes.icnf has 14786 cubes == 14786 cover clauses
    [L2] copy 1: φ_1(V(G1)) ⊂ V(G3) (740 點, injective) ✓, E(G1) 3985/3985 條映落 E(G3) ✓; A_1 = #172 [-1.0, -0.0], B_1 = #655 [0.5, 0.866025]
    [L2] copy 2: φ_2(V(G1)) ⊂ V(G3) (740 點, injective) ✓, E(G1) 3985/3985 條映落 E(G3) ✓; A_2 = #994 [1.0, 0.0], B_2 = #181 [-0.5, 0.866025]
    [L2] copy 3: φ_3(V(G1)) ⊂ V(G3) (740 點, injective) ✓, E(G1) 3985/3985 條映落 E(G3) ✓; A_3 = #172 [-1.0, -0.0], B_3 = #1720 [-0.106763, 1.483957]
    [L2] copy 4: φ_4(V(G1)) ⊂ V(G3) (740 點, injective) ✓, E(G1) 3985/3985 條映落 E(G3) ✓; A_4 = #2059 [0.75, 0.968246], B_4 = #1246 [-0.981763, 0.999834]
    [L3] G3 4 色 CNF + 16 條引理子句 (4 copy × 4 色), 三角形釘色 (1, 63, 65): 8524 變量 52270 子句
-   [L3] kissat UNSAT 0.19s; DRAT 4891 行 (730744 bytes); drat-trim s VERIFIED ✓ (0.2s)
-[6] OK  chain.py: L2 copy maps reproduce L2/pairs.json; L3 re-solved and re-checked [1 s]
+   [L3] kissat UNSAT 0.21s; DRAT 4891 行 (730744 bytes); drat-trim s VERIFIED ✓ (0.2s)
+[6] OK  chain.py: L2 copy maps reproduce L2/pairs.json; L3 re-solved and re-checked [2 s]
 [7] OK  drat-trim L3: s VERIFIED; the 16 lemma clauses from L2/pairs.json are present in L3.cnf
    G3-5.col: 2131 vertices, 5 colours, 12530/12530 edges bichromatic
 [8] OK  5-colouring checked edge by edge
-== quick layer done: ALL OK in 26 s == Sun Sep  6 09:58:36 HKT 2026
+== quick layer done: ALL OK in 25 s == Sun Sep  6 10:00:18 HKT 2026
    (the 14786 leaf proofs of L1 and the spindle-freeness DRAT are in the Zenodo layer: bash rerun.sh --full /path/to/bundle)
 rerun.sh rc=0
 == rebuild/haugland.log (full) ==
@@ -91,4 +91,4 @@ rerun.sh rc=0
 [G3.cvtx] 12530/12530 條邊精確長度 1  (驗證 3.5s, 全程無浮點) ✓
 [G3.cvtx] selftest: 故意整壞頂點 1 後, 8/8 條相關邊即刻被揭發 ✓ (檢查器有牙)
 == 完成: 全部數字同論文一致 = True; 總用時 13.4s; 輸出喺 rebuild ==
-FRESH_TEST DONE Sun Sep  6 09:58:36 HKT 2026
+FRESH_TEST DONE Sun Sep  6 10:00:18 HKT 2026

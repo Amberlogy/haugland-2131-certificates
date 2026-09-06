@@ -1,5 +1,11 @@
 # ZENODO_STEPS.md — uploading the proof archive to Zenodo (the author presses the buttons)
 
+**Status 2026-09-06:** steps A and B below are done — draft deposition https://zenodo.org/deposit/22435778 was created through the REST API
+(with a deposit-only token, never calling the publish endpoint); the two volumes, `SHA256SUMS.volumes`, `VOLUMES.txt`, `README.md`, `CLAIM_en.md`,
+`SHA256SUMS.bundle` and `ZENODO_METADATA.md` are uploaded and their MD5 checksums returned by the API match the local files
+(Zenodo reports MD5; the sha256 values are in `SHA256SUMS.volumes` / `SHA256SUMS`); the DOI **10.5281/zenodo.22435778** is reserved and already written
+into README.md §7, CLAIM_en.md and ZENODO_METADATA.md (commit "Add Zenodo DOI"). Remaining: step C (publish) and step D (e-mail), both by the author.
+
 Files to upload are in `D:\hadwiger\release\zenodo\` (WSL path `/mnt/d/hadwiger/release/zenodo/`, same as `~/hadwiger/release/zenodo/`):
 
 ```
