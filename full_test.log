@@ -1,0 +1,19 @@
+start Sat Sep  5 23:11:39 HKT 2026
+== full layer: /mnt/d/hadwiger/phase2b/bundle ==
+[sha256] all files of the archive match
+[0 SHA256SUMS] ✓ 14830 個檔案對數
+[1 exact G1] ✓ [G1.cvtx] 邊表 == 點集嘅完整單位距離圖 ✓ (3985 條)
+[1 exact G3] ✓ [G3.cvtx] 邊表 == 點集嘅完整單位距離圖 ✓ (12530 條)
+[2 L1_a 重建] ✓ sha 6d427680d5c0afd4… == manifest True
+[3a cover] ✓ drat-trim cover_pure: s VERIFIED (14786 條 ¬cube 子句)
+[3c leaf 集合] ✓ lifted.jsonl 14786 個 leaf == cover 子句集 14786 個: True
+[3b leaves] ✓ 14786/14786 個 leaf: 重建 CNF sha ✓, lifted DRAT sha ✓, drat-trim s VERIFIED ✓
+[4 L2 映射 (chain.py 重跑)] ✓ [L2] copy 4: φ_4(V(G1)) ⊂ V(G3) (740 點, injective) ✓, E(G1) 3985/3985 條映落 E(G3) ✓; A_4 = #2059 [0.75, 0.968246], B_4 = #1246 [-0.981763, 0.999834]
+[4 L2 pairs] ✓ A_k/B_k 索引同 bundle 一致: True
+[4 L3 重做] ✓ [L3] kissat UNSAT 0.24s; DRAT 4891 行 (730744 bytes); drat-trim s VERIFIED ✓ (0.3s)
+[5 L3] ✓ drat-trim L3: s VERIFIED; 16 條引理子句喺 L3.cnf: True
+
+[verify_bundle] 全部通過 —— G₃ 5-chromatic 嘅機器證明鏈 L1+L2+L3 重驗成功 (3221s)
+rc=0
+end Sun Sep  6 00:32:09 HKT 2026
+FULL_TEST DONE

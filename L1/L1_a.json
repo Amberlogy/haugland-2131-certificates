@@ -1,0 +1,26 @@
+{
+ "variant": "a",
+ "plain": false,
+ "A": 560,
+ "B": 181,
+ "pin": {
+  "triangle": [
+   1,
+   13,
+   87
+  ],
+  "colours": [
+   1,
+   2,
+   3
+  ]
+ },
+ "n": 740,
+ "m": 3985,
+ "nvars": 2960,
+ "clauses": 16691,
+ "cnf": "enc/L1_a.cnf",
+ "cnf_sha256": "6d427680d5c0afd44a673bb61fcc5e6e9ebe7f458861c76da2a4a5e114061365",
+ "edge_sha256": "edf7df00c6be5f95a6c77a804c8cd947e51571d660e59a8144f77cd1742db03a",
+ "cvtx_sha256": "9590e6784ceb9a3258e02f5d6be53585119b05a69c234b52c5f4f18149c2d04b"
+}

@@ -1,0 +1,55 @@
+Two licenses apply to this release.
+
+====================================================================
+1. CODE  (scripts/*.py, rerun.sh, and any other program text)  —  MIT License
+====================================================================
+
+MIT License
+
+Copyright (c) 2026 King Tat Wong
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+====================================================================
+2. DATA AND CERTIFICATES  —  Creative Commons Attribution 4.0 International (CC BY 4.0)
+====================================================================
+
+The data files (inputs/, L1/, cubes/, L2/, L3/, extra/, SHA256SUMS*, and the
+Zenodo proof archive hadwiger_G3_proof_bundle.tar.gz.part*) are released under
+CC BY 4.0: https://creativecommons.org/licenses/by/4.0/
+
+Attribution: "King Tat Wong, Machine-checked certificate that Haugland's
+2131-vertex Moser-spindle-free unit-distance graph is 5-chromatic (2026)".
+
+Data statement
+--------------
+* The graphs G1 (740 vertices) and G3 (2131 vertices) are the constructions of
+  Jan Kristian Haugland, arXiv:2608.04542 v4, reconstructed here from the
+  paper's definitions in exact cyclotomic arithmetic. The mathematical content
+  of the construction is his; please cite the paper.
+* Every DRAT/LRAT proof, CNF file, cube file and colouring in this release was
+  generated on the author's machine by the tools listed in README.md §3 and can
+  be regenerated with the commands in README.md §4.3. The solvers are
+  deterministic; re-running the same binaries reproduces the proofs.
+* No third-party data other than the paper's published definitions (including
+  the Appendix A path list, transcribed in scripts/refs/appendixA_paths.json) is
+  included.
+* The certificates are provided as is; their validity is exactly what the
+  checkers (drat-trim, cake_lpr, exactfield.py) report on the files listed in
+  SHA256SUMS and SHA256SUMS.bundle, nothing more.

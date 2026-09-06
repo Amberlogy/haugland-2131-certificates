@@ -1,0 +1,25 @@
+{
+ "tag": "G3-5",
+ "n": 2131,
+ "m": 12530,
+ "k": 5,
+ "same": null,
+ "tri": [
+  1,
+  63,
+  65
+ ],
+ "solver": "kissat",
+ "nvars": 10655,
+ "clauses": 64784,
+ "solve_s": 0.1,
+ "status": "SAT",
+ "colours_used": [
+  1,
+  2,
+  3,
+  4,
+  5
+ ],
+ "edges_checked": 12530
+}

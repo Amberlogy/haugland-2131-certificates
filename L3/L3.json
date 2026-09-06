@@ -1,0 +1,17 @@
+{
+ "status": "UNSAT",
+ "verified": true,
+ "solver": "kissat",
+ "solve_s": 0.12,
+ "drat_lines": 4891,
+ "lemma_clauses": 16,
+ "tri": [
+  1,
+  63,
+  65
+ ],
+ "sha": {
+  "L3.cnf": "d732701f91af4656",
+  "L3.drat": "ca3614078a17bd5d"
+ }
+}

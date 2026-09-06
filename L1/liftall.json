@@ -1,0 +1,23 @@
+{
+ "bundle": "cnc_b/bundle.json",
+ "cnf_a": "enc/L1_a.cnf",
+ "cnf_a_sha": "6d427680d5c0afd44a673bb61fcc5e6e9ebe7f458861c76da2a4a5e114061365",
+ "cnf_b_sha": "f29f3cc6c29e75dcaaad43135b8612c2544b3f9159711e1bb51b8db7dd75ce75",
+ "A": 560,
+ "B": 181,
+ "pins": [
+  1,
+  50,
+  347
+ ],
+ "n_leaves": 14786,
+ "n_verified": 14786,
+ "not_ok": [],
+ "cover_mode": "pure",
+ "cover_reverified": true,
+ "cover_cnf_sha": "8af0f0ccac580bbc59c7a359e56efa32aafaa27ad0af026dd45b1dcebadf4016",
+ "cover_drat_sha": "c1315a950ebaf0236d86d465ddf94d4cc79f5dd1cb709b8783220121a5e5933c",
+ "keep_dir": "/mnt/d/hadwiger/phase2b/lifted",
+ "wall_s": 1054.0,
+ "all_ok": true
+}

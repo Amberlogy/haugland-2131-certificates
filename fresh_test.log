@@ -1,0 +1,94 @@
+== fresh copy: 50 files, 34M; no zenodo/, no rebuild/ ==
+== python: Python 3.14.4 ==
+== quick layer (GitHub layer only) == Sun Sep  6 09:41:46 HKT 2026
+python: Python 3.14.4; drat-trim: /home/user/hadwiger/drat-trim/drat-trim; kissat: /home/user/hadwiger/kissat/build/kissat
+[0] OK  SHA256SUMS: 49 files match
+== 完成: 全部數字同論文一致 = True; 總用時 13.5s; 輸出喺 rebuild ==
+[1] OK  haugland.py rebuilt G1/G3 from the paper in 14 s; G1.cvtx G1.edge G3.cvtx G3.edge byte-identical to inputs/
+[2] OK  G1: [G1.cvtx] 邊表 == 點集嘅完整單位距離圖 ✓ (3985 條) [0 s]
+[2] OK  G3: [G3.cvtx] 邊表 == 點集嘅完整單位距離圖 ✓ (12530 條) [9 s]
+[3] OK  [A 枚舉] 2131 點 12530 邊: 菱形 858 個, Moser spindle copies = 0 (0.03s) [0 s]
+[4] OK  L1_a.cnf rebuilt from inputs/G1.*: sha256 6d427680d5c0afd4… == L1/L1_a.cnf
+[5] OK  drat-trim cover_pure: s VERIFIED (14786 negated cubes) [1 s]
+[5b] OK  cubes.icnf has 14786 cubes == 14786 cover clauses
+   [L2] copy 1: φ_1(V(G1)) ⊂ V(G3) (740 點, injective) ✓, E(G1) 3985/3985 條映落 E(G3) ✓; A_1 = #172 [-1.0, -0.0], B_1 = #655 [0.5, 0.866025]
+   [L2] copy 2: φ_2(V(G1)) ⊂ V(G3) (740 點, injective) ✓, E(G1) 3985/3985 條映落 E(G3) ✓; A_2 = #994 [1.0, 0.0], B_2 = #181 [-0.5, 0.866025]
+   [L2] copy 3: φ_3(V(G1)) ⊂ V(G3) (740 點, injective) ✓, E(G1) 3985/3985 條映落 E(G3) ✓; A_3 = #172 [-1.0, -0.0], B_3 = #1720 [-0.106763, 1.483957]
+   [L2] copy 4: φ_4(V(G1)) ⊂ V(G3) (740 點, injective) ✓, E(G1) 3985/3985 條映落 E(G3) ✓; A_4 = #2059 [0.75, 0.968246], B_4 = #1246 [-0.981763, 0.999834]
+   [L3] G3 4 色 CNF + 16 條引理子句 (4 copy × 4 色), 三角形釘色 (1, 63, 65): 8524 變量 52270 子句
+   [L3] kissat UNSAT 0.19s; DRAT 4891 行 (730744 bytes); drat-trim s VERIFIED ✓ (0.2s)
+[6] OK  chain.py: L2 copy maps reproduce L2/pairs.json; L3 re-solved and re-checked [1 s]
+[7] OK  drat-trim L3: s VERIFIED; the 16 lemma clauses from L2/pairs.json are present in L3.cnf
+   G3-5.col: 2131 vertices, 5 colours, 12530/12530 edges bichromatic
+[8] OK  5-colouring checked edge by edge
+== quick layer done: ALL OK in 26 s == Sun Sep  6 09:42:12 HKT 2026
+   (the 14786 leaf proofs of L1 and the spindle-freeness DRAT are in the Zenodo layer: bash rerun.sh --full /path/to/bundle)
+rerun.sh rc=0
+== rebuild/haugland.log (full) ==
+== 1. H (21 點, N=84) ==
+    α ≈ 1.279048, β ≈ 1.025717, γ ≈ -2.304765; 精確: α+β+γ = 0 ✓, α²+β²+γ² = 8 ✓ (論文 (1)(2))
+    [對數] H 頂點數: 我方 21 = 論文 21 ✓
+    [對數] H 邊數: 我方 42 = 論文 42 ✓
+    H 邊結構 = 七邊形(7) + 七角星{7/2}(7) + 七角星{7/3}(7) + 7 個等邊三角形(21) ✓ (Prop 2.1)
+[H.cvtx] N=84 (dim 24), 21 個頂點 (parse 0.0s), 42 條邊
+[H.cvtx] sha256 cvtx=8c863b1381d4237b21ac1a2d5994fb84071d666092fa42141c72c8073bbddd2d
+[H.cvtx] sha256 edge=185fb4ba557d8a7e720417d1a2d64084cd374f576819c17b5a5bb103e162a20d (證書只對應呢兩個檔案; hash 同 parse 用同一份 bytes)
+[H.cvtx] 42/42 條邊精確長度 1  (驗證 0.0s, 全程無浮點) ✓
+[H.cvtx] selftest: 故意整壞頂點 1 後, 4/4 條相關邊即刻被揭發 ✓ (檢查器有牙)
+== 2. 84 個單位向量 u_j + Table 1 ==
+    u_0..u_83: 全部 |u|=1 ✓, u_{k+42} = -u_k ✓, u_{k+2} = u_k·ζ² ✓, 角度遞增 ✓; θ = 0.42363201413287 (論文 ≈ 0.42363201413287, 差 1.9e-15)
+    Table 1: 84 條 arc 逐條精確核對 u_k == head − tail ✓
+    Remark 2.1: u0+u35+u22+u53+u72 = 0 ✓
+    lattice 公分母 D = 7; u_1 = [2, 0, 1, 0, 3, 0, 0, 0, -2, 0, 1, 0, 5, 0, 1, 0, 1, 0, -6, 0, -4, 0, 4, 0]/7
+== 3. T5 / T6 / G0 / G1 ==
+    Appendix A: 讀入 231 條路徑
+    B = u14 + u28 = i√3 = (0, √3) ✓ (精確)
+    BFS 3-ball (由 (0,0)):
+      1-ball: 85 點
+      2-ball: 3529 點
+      3-ball: 83581 點
+    [對數] 3-ball 點數: 我方 83581 = 論文 83581 ✓
+    [對數] |V(T5)|: 我方 1042 = 論文 1042 ✓
+    [對數] |V(T6)|: 我方 12856 = 論文 12856 ✓
+    T6: 12856 點 87619 條 lattice 邊; T5: 1042 點 4597 條
+    [T6] 全對浮點掃描 (12856 點, 82631940 對): |d-1|<1e-06 嘅候選 87619 對, 其中 lattice 方向邊 87619; 非 lattice 候選 0 → 精確核實: 真單位 0, 近似 0
+    G0: 1294 點 (∈T5 或 T5 鄰居 ≥ 7)
+    7-core: 6 輪 → G1 740 點 3985 邊
+    [對數] |V(G1)|: 我方 740 = 論文 740 ✓
+    [對數] |E(G1)|: 我方 3985 = 論文 3985 ✓
+    Appendix A: 231 條路徑全部由 A 精確落喺 B, 經過嘅點全部 ∈ V(G1); 聯集 740 點 = V(G1) ✓
+    A = (0,0) 係頂點 #560, B = (0,√3) 係頂點 #181 (1-based, 精確對認)
+[G1.cvtx] N=84 (dim 24), 740 個頂點 (parse 0.0s), 3985 條邊
+[G1.cvtx] sha256 cvtx=9590e6784ceb9a3258e02f5d6be53585119b05a69c234b52c5f4f18149c2d04b
+[G1.cvtx] sha256 edge=edf7df00c6be5f95a6c77a804c8cd947e51571d660e59a8144f77cd1742db03a (證書只對應呢兩個檔案; hash 同 parse 用同一份 bytes)
+[G1.cvtx] 3985/3985 條邊精確長度 1  (驗證 0.1s, 全程無浮點) ✓
+[G1.cvtx] selftest: 故意整壞頂點 1 後, 7/7 條相關邊即刻被揭發 ✓ (檢查器有牙)
+== 4. G2 (兩個 copy) ==
+    [對數] |V(G2)|: 我方 1066 = 論文 1066 ✓
+    V1 ∩ V2 = 414 點 (2×740 − 1066 = 414)
+    [對數] |E(G2)| (lattice 方向): 我方 6264 = 論文 6264 ✓
+    G1 兩個 copy 嘅 3985×2 條邊全部 ⊂ E(G2) ✓
+    [G2] 全對浮點掃描 (1066 點, 567645 對): |d-1|<1e-06 嘅候選 6264 對, 其中 lattice 方向邊 6264; 非 lattice 候選 0 → 精確核實: 真單位 0, 近似 0
+    五個特殊點 (-1,0),(0,0),(1,0),(-½,√3/2),(½,√3/2) 全部 ∈ V(G2) ✓
+[G2.cvtx] N=84 (dim 24), 1066 個頂點 (parse 0.0s), 6264 條邊
+[G2.cvtx] sha256 cvtx=849ff7a23b1cb6031598b33d2bc028fb49b7d20b385c1cf30e58b65b0b800d3d
+[G2.cvtx] sha256 edge=32ba405060ba59d799ee3e8ee193c46d25c8494bfbb50d7f1037fe2007398f5d (證書只對應呢兩個檔案; hash 同 parse 用同一份 bytes)
+[G2.cvtx] 6264/6264 條邊精確長度 1  (驗證 0.2s, 全程無浮點) ✓
+[G2.cvtx] selftest: 故意整壞頂點 1 後, 8/8 條相關邊即刻被揭發 ✓ (檢查器有牙)
+== 5. G3 (spindle, N=420) ==
+    ρ(z) = (z+1)(7+i√15)/8 − 1 計咗 1066 點 (0.2s, N=420 dim 96)
+    [對數] |V(G3)|: 我方 2131 = 論文 2131 ✓
+    G2 ∩ ρ(G2) = {(-1,0)} ✓ (2×1066 − 1 = 2131)
+    [G3] 近似陷阱: 頂點 #246–#1641 浮點距離 np.float64(1.0000006202573795) (差 1 得 6.203e-07), 但精確 d² ≠ 1 (d² − 1 ≈ 1.241e-06, 精確向量非零) → 唔係邊
+    [G3] 全對浮點掃描 (2131 點, 2269515 對): |d-1|<1e-06 嘅候選 12531 對, 其中 lattice 方向邊 12528; 非 lattice 候選 3 → 精確核實: 真單位 2, 近似 1
+    交叉新邊 (精確核實為 1): 2 條 → [(186, 1251), (993, 2058)]; 近似但唔係 1: 1
+    [對數] G3 新增邊數: 我方 2 = 論文 2 ✓
+    [對數] |E(G3)|: 我方 12530 = 論文 12530 ✓
+    (1,0) ↦ (3/4, √15/4) ✓ 精確, 而且係邊 ✓
+[G3.cvtx] N=420 (dim 96), 2131 個頂點 (parse 0.2s), 12530 條邊
+[G3.cvtx] sha256 cvtx=441f31210dae1ab14e700a2b7e34e70264aa1b1f9307c2f47c8ea3534c6e6d1f
+[G3.cvtx] sha256 edge=992936f8779b3baedb70b6518ae3a870a1278969d6deae8c0008df172302ae0b (證書只對應呢兩個檔案; hash 同 parse 用同一份 bytes)
+[G3.cvtx] 12530/12530 條邊精確長度 1  (驗證 3.7s, 全程無浮點) ✓
+[G3.cvtx] selftest: 故意整壞頂點 1 後, 8/8 條相關邊即刻被揭發 ✓ (檢查器有牙)
+== 完成: 全部數字同論文一致 = True; 總用時 13.5s; 輸出喺 rebuild ==
+FRESH_TEST DONE Sun Sep  6 09:42:12 HKT 2026
