@@ -1,0 +1,14 @@
+# Zenodo layer (28 GB archive, split volumes) lives outside git
+zenodo/
+zenodo_v2/
+# large proof files never go into the GitHub layer (only cover_pure.drat 4.4 MB and L3.drat 0.7 MB are tracked)
+*.drat
+*.lrat
+!cubes/cover_pure.drat
+!L3/L3.drat
+# scratch output of rerun.sh
+rebuild/
+tmp_verify/
+__pycache__/
+*.pyc
+*.tmp
