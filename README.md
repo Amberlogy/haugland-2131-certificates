@@ -210,7 +210,8 @@ re-split, and one sub-cube alone needed 561 s and a 480 MB proof. An 8-hour, 14-
 ## 6. References
 
 * J. K. Haugland, *A Moser-spindle-free 5-chromatic unit distance graph on 2131 vertices in the plane*, arXiv:2608.04542 v4, 2026.
-* M. J. H. Heule, *Odd-Distance Virtual Edges in Unit-Distance Graphs*, Geombinatorics 31(2), 2021, 77–85 (the 1441-vertex Moser-spindle-free 5-chromatic graph).
+* M. J. H. Heule, *Odd-Distance Virtual Edges in Unit-Distance Graphs*, Geombinatorics 31(2), 2021, 68–76 (the 1441-vertex Moser-spindle-free 5-chromatic graph).
+  Page numbers confirmed by the author. arXiv:2608.04542 cites this note as 77–85; that range is incorrect.
 * M. J. H. Heule, *Computing small unit-distance graphs with chromatic number 5*, Geombinatorics 28(1), 2018, 32–50.
 * A. D. N. J. de Grey, *The chromatic number of the plane is at least 5*, Geombinatorics 28(1), 2018, 18–31.
 * V. A. Voronov, A. M. Neopryatnaya, E. A. Dergachev, *Constructing 5-chromatic unit distance graphs embedded in the Euclidean plane and two-dimensional spheres*, arXiv:2106.11824.
