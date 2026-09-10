@@ -2,7 +2,12 @@
 # reverify.sh — independent re-verification of this archived certificate set.
 # Needs the v1.0 tool environment: ~/hadwiger/{phase2,phase2b,phase3b,phase3c,phase3d,phase3e}, kissat, drat-trim, march_cu, cake_lpr; python venv ~/hadwiger/venv.
 # Wall-clock on 14 threads: ~3 h (step 3 dominates: every one of the 16382 leaf proofs is re-checked).
-set -u
+set -u -o pipefail
+# pipefail is load-bearing.  Steps 3 to 6 below each end in a pipe into
+# tail, and without pipefail the $? that follows is tail's status, which is
+# always 0.  A failing check would then print [PASS]: that is exactly what
+# happened before this line existed -- verify_final.py reported 0/16382 leaf
+# proofs verified and the script still said [PASS].
 cd "$(dirname "$0")"
 PY=/home/user/hadwiger/venv/bin/python
 T=$(mktemp -d)

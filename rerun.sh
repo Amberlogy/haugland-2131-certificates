@@ -22,6 +22,20 @@ bad() { echo "[$1] !! FAIL  $2"; fail=1; }
 T0=$(date +%s)
 echo "== quick layer (GitHub layer only) == $(date)"
 echo "python: $($PY --version 2>&1); drat-trim: $DRATTRIM; kissat: $KISSAT"
+# Dependency check before anything else.  Steps 1 and 2 import numpy, and
+# without it they fail with a bare ModuleNotFoundError buried in the output --
+# which reads like a broken certificate rather than a missing package.
+missing=""
+for m in numpy; do
+  $PY -c "import $m" >/dev/null 2>&1 || missing="$missing $m"
+done
+if [ -n "$missing" ]; then
+  echo "!! $PY is missing:$missing"
+  echo "   Steps 1 and 2 (rebuild from the paper; exact-field completeness) need them."
+  echo "   Install with:   $PY -m pip install$missing"
+  echo "   Or point PY at an interpreter that has them:   PY=/path/to/python bash rerun.sh"
+  echo "   Everything else below still runs."
+fi
 # 0. sha256
 if sha256sum -c SHA256SUMS --quiet; then ok 0 "SHA256SUMS: $(wc -l < SHA256SUMS) files match"; else bad 0 "SHA256SUMS"; fi
 # 1. rebuild from the paper

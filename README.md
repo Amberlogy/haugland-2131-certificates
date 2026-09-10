@@ -320,7 +320,7 @@ the run and re-verification logs, and **the sha256 of every one of the 16 384 le
 
 **Not deposited:** the leaf proofs themselves — 16 384 leaves plus 819 audit proofs, **95.2 GiB (102.2 GB)**, which exceeds Zenodo's 50 GB per-record
 limit even compressed (binary DRAT compresses about 1.6× with gzip, 2.1× with xz, measured on this project's proofs). They are regenerable in about
-2.4 h on 14 threads, and each one can be checked against its recorded sha256.
+2.2 h on 14 threads, and each one can be checked against its recorded sha256.
 
 **There is no driver script in that directory** — unlike `rerun.sh` at the repository root (2131-vertex layer) and `best_S315/reverify.sh`
 (1501-vertex layer). `reduction_S60/README.md` gives the command line instead, and lists the checks that need no leaf proofs at all

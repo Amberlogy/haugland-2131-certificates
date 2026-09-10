@@ -47,7 +47,7 @@ proofs), so it is not deposited. Every one of those files is pinned by sha256 in
 `LEAF_INDEX.json` and `SHA256SUMS.leaf_proofs`, so a copy of a proof you obtain
 can be checked against this record.
 
-Regenerating them takes roughly 2.4 h on 14 threads
+Regenerating them takes roughly 2.2 h on 14 threads (7929.6 s measured for the run archived here; the 2.42 h figure belongs to the original probe run, which used the same inputs)
 (`scripts/phase2b/cnc2.py` in `best_S315/scripts/`, or the v1.0 `scripts/cnc2.py`).
 
 ## 3. How to re-check
