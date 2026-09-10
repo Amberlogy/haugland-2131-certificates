@@ -280,9 +280,14 @@ DRAT artefacts and is not part of this release.
 
 The complete set of 16382 leaf proofs (128.1 GB; ~61 GB with xz, ~79 GB
 with gzip) is not uploaded: both exceed Zenodo's 50 GB per-record limit.
-Every leaf proof is pinned by sha256 in L1pp/LEAF_INDEX.json, and
-reverify.sh regenerates and re-checks all of them from base.cnf and the
-cube file.
+Every leaf proof is pinned by sha256 in `L1pp/LEAF_INDEX.json`. `reverify.sh`
+re-verifies those proofs with drat-trim and needs them present in
+`L1pp/leaf_proofs/`; it does not regenerate them, and step 3 cannot run from a
+clone of this repository alone. To check a leaf without the archived proof,
+rebuild `base.cnf` plus the cube's unit clauses and re-solve. kissat is not
+bit-reproducible, so a fresh proof will not match the recorded sha256 -- the
+digest pins the proof that was actually checked; drat-trim accepting a new
+proof is an independent confirmation of the same claim.
 
 One further file is present here only by fingerprint, because GitHub rejects files above 100 MB: the engine-B spindle-freeness proof
 `L2L3/l3_final/spindle_B/spindle.drat` (542 778 955 B, sha256 `97cf230e02827a4b18c860b5b0b6a6b046f35d432431c71533e776ed8faff4fe`; the copy under

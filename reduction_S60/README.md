@@ -44,8 +44,8 @@ anywhere** — not in this repository and not in the Zenodo record.
 That exceeds Zenodo's 50 GB per-record limit even after compression (binary DRAT
 compresses about 1.6× with gzip and 2.1× with xz, measured on this project's
 proofs), so it is not deposited. Every one of those files is pinned by sha256 in
-`LEAF_INDEX.json` and `SHA256SUMS.leaf_proofs`, so a proof you regenerate or
-obtain can be checked against this record.
+`LEAF_INDEX.json` and `SHA256SUMS.leaf_proofs`, so a copy of a proof you obtain
+can be checked against this record.
 
 Regenerating them takes roughly 2.4 h on 14 threads
 (`scripts/phase2b/cnc2.py` in `best_S315/scripts/`, or the v1.0 `scripts/cnc2.py`).
@@ -84,7 +84,10 @@ sha256sum -c SHA256SUMS
 
 For a single leaf: rebuild `base.cnf` plus the unit clauses of cube `<id>` from
 `cubes_d14.icnf`, regenerate the proof with kissat, and check it with
-`drat-trim`; its sha256 must match the entry in `LEAF_INDEX.json`.
+`drat-trim`. kissat is not bit-reproducible, so the fresh proof will **not** match
+the sha256 in `LEAF_INDEX.json`: that digest pins the proof that was actually
+checked in the original run. drat-trim accepting your proof is an independent
+confirmation of the same claim, which is the point of regenerating.
 
 `S60_README.md` refers to `../REDUCTION_README.md §A` for the statement being
 certified. That staging document is not part of this release; §1 above states the
