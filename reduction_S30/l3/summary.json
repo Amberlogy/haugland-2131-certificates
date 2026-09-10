@@ -1,0 +1,110 @@
+{
+ "removed": [
+  54,
+  141,
+  150,
+  237,
+  263,
+  313,
+  315,
+  324,
+  355,
+  370,
+  371,
+  373,
+  417,
+  426,
+  434,
+  478,
+  495,
+  504,
+  529,
+  579,
+  584,
+  591,
+  600,
+  605,
+  607,
+  610,
+  671,
+  690,
+  709,
+  726
+ ],
+ "n_removed": 30,
+ "G1p": {
+  "n": 710,
+  "m": 3779
+ },
+ "G3p": {
+  "n": 2011,
+  "m": 11642
+ },
+ "poison": null,
+ "sha": {
+  "G1p.cvtx": "ab8f7f4a29ad9ea8667bb336eeb08c078a3e3dda7515d7f2b38aea1a637c920e",
+  "G1p.edge": "bcf5f89f6738b074cd17601876ffedeef59085a551c8718a35daecf595cc06c2",
+  "G3p.cvtx": "ae296f1ffa457c4c9cf3a04921d902d7dd6804b980fd739fa4046b5c8c944d56",
+  "G3p.edge": "e0e6830da50e6ee7a512fbf75dc8e3c94cd939a9af12959347c9a6a126b2406b"
+ },
+ "complete_G1p": {
+  "rc": 0,
+  "last": "[G1p.cvtx] \u908a\u8868 == \u9ede\u96c6\u5605\u5b8c\u6574\u55ae\u4f4d\u8ddd\u96e2\u5716 \u2713 (3779 \u689d)"
+ },
+ "complete_G3p": {
+  "rc": 0,
+  "last": "[G3p.cvtx] \u908a\u8868 == \u9ede\u96c6\u5605\u5b8c\u6574\u55ae\u4f4d\u8ddd\u96e2\u5716 \u2713 (11642 \u689d)"
+ },
+ "L2": {
+  "1": {
+   "A": 166,
+   "B": 620,
+   "A_orig": 172,
+   "B_orig": 655,
+   "edges_missing": 0
+  },
+  "2": {
+   "A": 938,
+   "B": 175,
+   "A_orig": 994,
+   "B_orig": 181,
+   "edges_missing": 0
+  },
+  "3": {
+   "A": 166,
+   "B": 1625,
+   "A_orig": 172,
+   "B_orig": 1720,
+   "edges_missing": 0
+  },
+  "4": {
+   "A": 1943,
+   "B": 1180,
+   "A_orig": 2059,
+   "B_orig": 1246,
+   "edges_missing": 0
+  }
+ },
+ "L3": {
+  "nvars": 8044,
+  "clauses": 48598,
+  "tri": [
+   1,
+   60,
+   62
+  ],
+  "lemma_clauses": 16,
+  "rc": 20,
+  "solve_s": 0.08,
+  "status": "UNSAT",
+  "verified": true,
+  "drat_lines": 3708,
+  "drat_bytes": 419837,
+  "sha": {
+   "L3p.cnf": "7cc9c3fc3b1f869afee7e15d668308fbe4444470da5a44856aa5d085dc930e9b",
+   "L3p.drat": "06b4bc51a03e467a964c32a4df845b3ac5caed1fb97e3b1c68ed01ebb9af9975"
+  }
+ },
+ "all_ok": true,
+ "t_s": 5.5
+}

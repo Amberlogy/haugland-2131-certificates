@@ -1,0 +1,119 @@
+[
+ {
+  "witness": "probe/round3/G1minus_90v.col",
+  "S_size": 90,
+  "blocked_min": [
+   221,
+   295,
+   417,
+   591,
+   610,
+   615,
+   675,
+   732
+  ],
+  "blocked_min_size": 8,
+  "order": "index_asc",
+  "blocked_size_hist": {
+   "8": 504
+  },
+  "verified": true,
+  "edges_checked": 3929,
+  "bad_edges": 0,
+  "col_A": 1,
+  "col_B": 1,
+  "coloured": 732,
+  "out": "probe/witness/round3_G1minus_90v_minus_blocked.col",
+  "blocked_deg": {
+   "221": 7,
+   "295": 7,
+   "417": 7,
+   "591": 7,
+   "610": 7,
+   "615": 7,
+   "675": 7,
+   "732": 7
+  },
+  "sha256_out": "ee715f4676f711105e730bc056423137143e46cca5c46a2d1fae1ed85f4efb0c"
+ },
+ {
+  "witness": "probe/round3_bisecta/G1minus_75v.col",
+  "S_size": 75,
+  "blocked_min": [
+   72,
+   121,
+   141,
+   370,
+   371,
+   373,
+   422,
+   495,
+   529,
+   531,
+   563,
+   616
+  ],
+  "blocked_min_size": 12,
+  "order": "index_asc",
+  "blocked_size_hist": {
+   "12": 504
+  },
+  "verified": true,
+  "edges_checked": 3901,
+  "bad_edges": 0,
+  "col_A": 1,
+  "col_B": 1,
+  "coloured": 728,
+  "out": "probe/witness/round3_bisecta_G1minus_75v_minus_blocked.col",
+  "blocked_deg": {
+   "72": 7,
+   "121": 7,
+   "141": 7,
+   "370": 7,
+   "371": 7,
+   "373": 7,
+   "422": 7,
+   "495": 7,
+   "529": 7,
+   "531": 7,
+   "563": 7,
+   "616": 7
+  },
+  "sha256_out": "1bfecf9d4b3c239ffdf2f45c408ac4405145f5cc2bdb21c73cb2eeaa37b42d75"
+ },
+ {
+  "witness": "probe/round3_bisectb/G1minus_75v.col",
+  "S_size": 75,
+  "blocked_min": [
+   257,
+   272,
+   397,
+   446,
+   584,
+   597,
+   692
+  ],
+  "blocked_min_size": 7,
+  "order": "index_asc",
+  "blocked_size_hist": {
+   "7": 504
+  },
+  "verified": true,
+  "edges_checked": 3936,
+  "bad_edges": 0,
+  "col_A": 1,
+  "col_B": 1,
+  "coloured": 733,
+  "out": "probe/witness/round3_bisectb_G1minus_75v_minus_blocked.col",
+  "blocked_deg": {
+   "257": 7,
+   "272": 7,
+   "397": 7,
+   "446": 7,
+   "584": 7,
+   "597": 7,
+   "692": 7
+  },
+  "sha256_out": "464c77549750918e2eac6f439b39572f649d2f50203edce6b624695e4aee1804"
+ }
+]

@@ -19,6 +19,16 @@ zenodo_v1_old
 # (95.2 GiB) are not in the repository at all and stay covered by `*.drat`.
 !reduction_S60/cnc/cover_pure.drat
 !reduction_S60/l3_phase3_round2/L3p.drat
+# reduction_S30: likewise.  Its leaf proofs were never retained at all.
+!reduction_S30/cnc/cover_pure.drat
+!reduction_S30/l3/L3p.drat
+#
+# NOTE for whoever adds the next layer: `*.drat` above has silently swallowed
+# the cover certificate and the L3 proof three times now (best_S315,
+# reduction_S60, reduction_S30).  After copying a new layer in, run
+#     find <layer> -name '*.drat' -exec git check-ignore -v {} +
+# and add a negation for every small certificate it prints.  reduction_blocked
+# has no .drat at all: those batches are SAT, and the certificate is a colouring.
 # scratch output of rerun.sh
 rebuild/
 tmp_verify/

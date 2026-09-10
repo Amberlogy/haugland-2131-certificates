@@ -101,6 +101,8 @@ scripts/  haugland.py exactfield.py spindlefind.py chain.py certify4.py l1enc.py
           refs/appendixA_paths.json        the 231 lattice paths of the paper's Appendix A (input to haugland.py)
 best_S315/                                 v1.1 layer: the 1501-vertex graph G3' (its own README, RECORD_README, certificates, scripts) -- see §9
 reduction_S60/                             v1.1 layer: the Proposition 2 certificate for G1 - S60 (metadata only; its 95.2 GiB of leaf proofs are not deposited) -- see §10
+reduction_S30/                             v1.1 layer: the certificate for G1 - S30 (its leaf proofs were never retained) -- see §11
+reduction_blocked/                         v1.1 layer: the three batches that cannot be deleted, with their witness colourings -- see §11
 rerun.sh                                   re-verification driver (quick layer / full layer)
 zenodo/                                    (only in the Zenodo record) hadwiger_G3_proof_bundle.tar.gz.part000..NNN, SHA256SUMS.volumes
 ```
@@ -318,3 +320,23 @@ limit even compressed (binary DRAT compresses about 1.6× with gzip, 2.1× with 
 **There is no driver script in that directory** — unlike `rerun.sh` at the repository root (2131-vertex layer) and `best_S315/reverify.sh`
 (1501-vertex layer). `reduction_S60/README.md` gives the command line instead, and lists the checks that need no leaf proofs at all
 (cover certificate, L3′ certificate, edge-list completeness, `sha256sum -c SHA256SUMS`).
+
+
+---
+
+## 11. v1.1 layer — the rest of the G1 reduction (`reduction_S30/`, `reduction_blocked/`)
+
+Deleting the first batch of 30 vertices from G1 keeps the pair property; the first two batches together (60) also keep it; the third batch does not,
+and neither does either half of it. `reduction_S60/` (§10) covers the 60. These two directories cover the other two claims.
+
+**`reduction_S30/`** — the cube-and-conquer certificate for **G1 − S₃₀** (710 vertices, 3779 edges) and the L2′/L3′ assembly for the corresponding
+G3′ (2011 vertices). ⚠ Its situation is **not** the one in §10: those leaf proofs were **never retained** — checked with drat-trim as they were
+produced and deleted immediately, the v1.0 policy for un-lifted proofs — so there is nothing withheld and nothing to deposit. The per-leaf digests
+live in `cnc/state.json` (a `done` map, 16 383 entries, each with `proof_sha`, `cnf_sha`, `checker: "drat-trim"` and `checker_rc: 0`), **not** in a
+`LEAF_INDEX.json`; that file does not exist here. Regenerating all 16 383 leaves takes about 2.2 h on 14 threads.
+
+**`reduction_blocked/`** — the three blocked batches, each certified by a **witness colouring** rather than an UNSAT proof: a proper 4-colouring of
+G1 − S in which A and B get the *same* colour, which is exactly the failure of the pair property. All three are machine-checked
+(`witness/witness_blocked.json`: `verified: true`, 0 bad edges, col(A) = col(B) = 1). Greedy re-insertion of deleted vertices sharpens each one to a
+minimal blocking set: **8** vertices for the 90-batch, **12** for the first half of it, **7** for the second — the three numbers quoted in the note.
+There are no DRAT proofs in that directory and none are possible: the claim is satisfiability, and the colouring is the certificate.

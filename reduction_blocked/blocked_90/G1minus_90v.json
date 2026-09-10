@@ -1,0 +1,10 @@
+{
+ "col_file": "/home/user/hadwiger/phase3/probe/round3/G1minus_90v.col",
+ "verified": true,
+ "n_coloured": 650,
+ "missing": 0,
+ "bad_edges": 0,
+ "col_A": 1,
+ "col_B": 1,
+ "edges_checked": 3385
+}
