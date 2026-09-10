@@ -1,0 +1,2160 @@
+{
+ "generated": "2026-09-06 12:56:33",
+ "note": "Every number the paper cites, with its source file. verified=false entries are relayed information without a machine record.  Source paths were rewritten at publication time: a path was replaced by its repository-relative location only when the local file was byte-identical (sha256) to a file in the published tree. Sources with no published counterpart are marked '(not in the release)'; see source_status on each fact.",
+ "facts": {
+  "recon.H_vertices": {
+   "value": 21,
+   "unit": null,
+   "source": "(not in the release) counts.json",
+   "note": "paper value 21",
+   "verified": true,
+   "source_status": "not-released"
+  },
+  "recon.H_edges": {
+   "value": 42,
+   "unit": null,
+   "source": "(not in the release) counts.json",
+   "note": "paper value 42",
+   "verified": true,
+   "source_status": "not-released"
+  },
+  "recon.unit_vectors": {
+   "value": 84,
+   "unit": null,
+   "source": "(not in the release) counts.json",
+   "note": "paper value 84",
+   "verified": true,
+   "source_status": "not-released"
+  },
+  "recon.ball3": {
+   "value": 83581,
+   "unit": null,
+   "source": "(not in the release) counts.json",
+   "note": "paper value 83581",
+   "verified": true,
+   "source_status": "not-released"
+  },
+  "recon.T5": {
+   "value": 1042,
+   "unit": null,
+   "source": "(not in the release) counts.json",
+   "note": "paper value 1042",
+   "verified": true,
+   "source_status": "not-released"
+  },
+  "recon.T6": {
+   "value": 12856,
+   "unit": null,
+   "source": "(not in the release) counts.json",
+   "note": "paper value 12856",
+   "verified": true,
+   "source_status": "not-released"
+  },
+  "recon.G1_v": {
+   "value": 740,
+   "unit": null,
+   "source": "(not in the release) counts.json",
+   "note": "paper value 740",
+   "verified": true,
+   "source_status": "not-released"
+  },
+  "recon.G1_e": {
+   "value": 3985,
+   "unit": null,
+   "source": "(not in the release) counts.json",
+   "note": "paper value 3985",
+   "verified": true,
+   "source_status": "not-released"
+  },
+  "recon.G2_v": {
+   "value": 1066,
+   "unit": null,
+   "source": "(not in the release) counts.json",
+   "note": "paper value 1066",
+   "verified": true,
+   "source_status": "not-released"
+  },
+  "recon.G2_e": {
+   "value": 6264,
+   "unit": null,
+   "source": "(not in the release) counts.json",
+   "note": "paper value 6264",
+   "verified": true,
+   "source_status": "not-released"
+  },
+  "recon.G3_v": {
+   "value": 2131,
+   "unit": null,
+   "source": "(not in the release) counts.json",
+   "note": "paper value 2131",
+   "verified": true,
+   "source_status": "not-released"
+  },
+  "recon.G3_e": {
+   "value": 12530,
+   "unit": null,
+   "source": "(not in the release) counts.json",
+   "note": "paper value 12530",
+   "verified": true,
+   "source_status": "not-released"
+  },
+  "recon.G3_new_edges": {
+   "value": 2,
+   "unit": null,
+   "source": "(not in the release) counts.json",
+   "note": "paper value 2",
+   "verified": true,
+   "source_status": "not-released"
+  },
+  "recon.all_match": {
+   "value": true,
+   "unit": null,
+   "source": "(not in the release) counts.json",
+   "note": null,
+   "verified": true,
+   "source_status": "not-released"
+  },
+  "recon.total_time_s": {
+   "value": 6.3,
+   "unit": "s",
+   "source": "(not in the release) counts.json",
+   "note": "haugland.py wall on the idle machine (6.3 s); 13–14 s under load (fresh_test.log)",
+   "verified": true,
+   "source_status": "not-released"
+  },
+  "recon.G0": {
+   "value": 1294,
+   "unit": null,
+   "source": "(not in the release) phase2_results.md",
+   "note": "G0 = T6 vertices in T5 or with >= 7 neighbours in T5; 7-core needs 6 rounds",
+   "verified": true,
+   "source_status": "not-released"
+  },
+  "recon.V1capV2": {
+   "value": 414,
+   "unit": null,
+   "source": "(not in the release) phase2_results.md",
+   "note": "|V1 ∩ V2| = 2*740 - 1066",
+   "verified": true,
+   "source_status": "not-released"
+  },
+  "recon.appendixA_paths": {
+   "value": 231,
+   "unit": null,
+   "source": "scripts/refs/appendixA_paths.json",
+   "note": "all 231 paths land exactly on B; union = V(G1)",
+   "verified": true,
+   "source_status": "published"
+  },
+  "recon.near_miss_pair": {
+   "value": [
+    246,
+    1641
+   ],
+   "unit": null,
+   "source": "(not in the release) phase2_results.md",
+   "note": "float distance 1.00000062, exactly not 1 → not an edge",
+   "verified": true,
+   "source_status": "not-released"
+  },
+  "recon.field_degree_G3": {
+   "value": 96,
+   "unit": null,
+   "source": "inputs/G3.cvtx",
+   "note": "phi(420) = 96; G1/G2 in Q(zeta_84), phi(84)=24",
+   "verified": true,
+   "source_status": "published"
+  },
+  "recon.G3_special": {
+   "value": {
+    "(-1,0)": 172,
+    "(1,0)": 994,
+    "(3/4,√15/4)": 2059,
+    "(0,0)": 646,
+    "rho(0,0)": 1711,
+    "new_edges_1based": [
+     [
+      187,
+      1252
+     ],
+     [
+      994,
+      2059
+     ]
+    ],
+    "note": "1-based"
+   },
+   "unit": null,
+   "source": "inputs/G3.special.json",
+   "note": null,
+   "verified": true,
+   "source_status": "published"
+  },
+  "recon.G3_pairs_scanned": {
+   "value": 2269515,
+   "unit": null,
+   "source": "(not in the release) phase2_results.md",
+   "note": "all pairs of 2131 points scanned for completeness (exactfield --complete)",
+   "verified": true,
+   "source_status": "not-released"
+  },
+  "cert.C1.G3_edges_exact": {
+   "value": 12530,
+   "unit": null,
+   "source": "inputs/G3.edge",
+   "note": "exactfield check --complete: 12530/12530 unit, no missing pair",
+   "verified": true,
+   "source_status": "published"
+  },
+  "cert.C1.G1_edges_exact": {
+   "value": 3985,
+   "unit": null,
+   "source": "inputs/G1.edge",
+   "note": null,
+   "verified": true,
+   "source_status": "published"
+  },
+  "cert.C4.rhombi": {
+   "value": 858,
+   "unit": null,
+   "source": "(not in the release) phase2_results.md",
+   "note": "engine A exact rhombus-pair enumeration; 0 Moser spindle copies (subgraph sense)",
+   "verified": true,
+   "source_status": "not-released"
+  },
+  "cert.C4.sat_kissat_s": {
+   "value": 91,
+   "unit": "s",
+   "source": "(not in the release) both.log",
+   "note": "subgraph-monomorphism CNF, kissat UNSAT",
+   "verified": true,
+   "source_status": "not-released"
+  },
+  "cert.C4.drat_lines": {
+   "value": 789608,
+   "unit": null,
+   "source": "(not in the release) both.log",
+   "note": null,
+   "verified": true,
+   "source_status": "not-released"
+  },
+  "cert.C4.drat_bytes": {
+   "value": 2748292337,
+   "unit": "bytes",
+   "source": "(not in the release) spindle.drat",
+   "note": null,
+   "verified": true,
+   "source_status": "not-released"
+  },
+  "cert.C4.drattrim_s": {
+   "value": 211,
+   "unit": "s",
+   "source": "(not in the release) phase2_results.md",
+   "note": null,
+   "verified": true,
+   "source_status": "not-released"
+  },
+  "cert.C3.solve_s": {
+   "value": 0.1,
+   "unit": "s",
+   "source": "extra/G3-5.json",
+   "note": "kissat SAT; 12530/12530 edges checked bichromatic",
+   "verified": true,
+   "source_status": "published"
+  },
+  "cert.C3.colours_used": {
+   "value": 5,
+   "unit": null,
+   "source": "extra/G3-5.json",
+   "note": null,
+   "verified": true,
+   "source_status": "published"
+  },
+  "cert.L3.solve_s": {
+   "value": 0.12,
+   "unit": "s",
+   "source": "L3/L3.json",
+   "note": null,
+   "verified": true,
+   "source_status": "published"
+  },
+  "cert.L3.drat_lines": {
+   "value": 4891,
+   "unit": null,
+   "source": "L3/L3.json",
+   "note": null,
+   "verified": true,
+   "source_status": "published"
+  },
+  "cert.L3.drat_bytes": {
+   "value": 730744,
+   "unit": "bytes",
+   "source": "L3/L3.drat",
+   "note": null,
+   "verified": true,
+   "source_status": "published"
+  },
+  "cert.L3.lemma_clauses": {
+   "value": 16,
+   "unit": null,
+   "source": "L3/L3.json",
+   "note": null,
+   "verified": true,
+   "source_status": "published"
+  },
+  "cert.L3.nvars_clauses": {
+   "value": [
+    8524,
+    52270
+   ],
+   "unit": null,
+   "source": "L2/chain.log",
+   "note": null,
+   "verified": true,
+   "source_status": "published"
+  },
+  "cert.L2.pairs": {
+   "value": {
+    "1": {
+     "A": 172,
+     "B": 655,
+     "A_xy": [
+      -1.0,
+      -0.0
+     ],
+     "B_xy": [
+      0.5,
+      0.866025
+     ]
+    },
+    "2": {
+     "A": 994,
+     "B": 181,
+     "A_xy": [
+      1.0,
+      0.0
+     ],
+     "B_xy": [
+      -0.5,
+      0.866025
+     ]
+    },
+    "3": {
+     "A": 172,
+     "B": 1720,
+     "A_xy": [
+      -1.0,
+      -0.0
+     ],
+     "B_xy": [
+      -0.106763,
+      1.483957
+     ]
+    },
+    "4": {
+     "A": 2059,
+     "B": 1246,
+     "A_xy": [
+      0.75,
+      0.968246
+     ],
+     "B_xy": [
+      -0.981763,
+      0.999834
+     ]
+    }
+   },
+   "unit": null,
+   "source": "L2/pairs.json",
+   "note": "A_k, B_k indices (1-based) in G3 and float coordinates",
+   "verified": true,
+   "source_status": "published"
+  },
+  "cert.L2.edges_mapped_per_copy": {
+   "value": 3985,
+   "unit": null,
+   "source": "L2/chain.log",
+   "note": null,
+   "verified": true,
+   "source_status": "published"
+  },
+  "L1.cnf_a_sha": {
+   "value": "6d427680d5c0afd44a673bb61fcc5e6e9ebe7f458861c76da2a4a5e114061365",
+   "unit": null,
+   "source": "(not in the release) manifest.json",
+   "note": null,
+   "verified": true,
+   "source_status": "not-released"
+  },
+  "L1.cnf_a_vars_clauses": {
+   "value": [
+    2960,
+    16691
+   ],
+   "unit": null,
+   "source": "L1/L1_a.json",
+   "note": null,
+   "verified": true,
+   "source_status": "published"
+  },
+  "L1.cnf_b_vars_clauses": {
+   "value": [
+    2960,
+    21119
+   ],
+   "unit": null,
+   "source": "L1/L1_b.json",
+   "note": "L1_a + 4428 at-most-one clauses (A, B excluded)",
+   "verified": true,
+   "source_status": "published"
+  },
+  "L1.A_index": {
+   "value": 560,
+   "unit": null,
+   "source": "inputs/G1.special.json",
+   "note": null,
+   "verified": true,
+   "source_status": "published"
+  },
+  "L1.B_index": {
+   "value": 181,
+   "unit": null,
+   "source": "inputs/G1.special.json",
+   "note": null,
+   "verified": true,
+   "source_status": "published"
+  },
+  "L1.pin_triangle": {
+   "value": [
+    1,
+    13,
+    87
+   ],
+   "unit": null,
+   "source": "L1/L1_a.json",
+   "note": null,
+   "verified": true,
+   "source_status": "published"
+  },
+  "L1.march_depth": {
+   "value": 14,
+   "unit": null,
+   "source": "(not in the release) step2_summary.md",
+   "note": null,
+   "verified": true,
+   "source_status": "not-released"
+  },
+  "L1.march_s": {
+   "value": 17.7,
+   "unit": "s",
+   "source": "(not in the release) step2_summary.md",
+   "note": null,
+   "verified": true,
+   "source_status": "not-released"
+  },
+  "L1.n_cubes": {
+   "value": 14786,
+   "unit": null,
+   "source": "L1/cnc_bundle.json",
+   "note": null,
+   "verified": true,
+   "source_status": "published"
+  },
+  "L1.march_refuted_leaves": {
+   "value": 847,
+   "unit": null,
+   "source": "(not in the release) step2_summary.md",
+   "note": null,
+   "verified": true,
+   "source_status": "not-released"
+  },
+  "L1.leaves": {
+   "value": 14786,
+   "unit": null,
+   "source": "L1/cnc_bundle.json",
+   "note": null,
+   "verified": true,
+   "source_status": "published"
+  },
+  "L1.split_events": {
+   "value": 0,
+   "unit": null,
+   "source": "L1/cnc_bundle.json",
+   "note": null,
+   "verified": true,
+   "source_status": "published"
+  },
+  "L1.solver": {
+   "value": "kissat 4.0.4",
+   "unit": null,
+   "source": "L1/cnc_bundle.json",
+   "note": null,
+   "verified": true,
+   "source_status": "published"
+  },
+  "L1.timeout_s": {
+   "value": 600.0,
+   "unit": "s",
+   "source": "L1/cnc_bundle.json",
+   "note": null,
+   "verified": true,
+   "source_status": "published"
+  },
+  "L1.solver_cpu_s": {
+   "value": 6833.5,
+   "unit": "s",
+   "source": "L1/cnc_bundle.json",
+   "note": null,
+   "verified": true,
+   "source_status": "published"
+  },
+  "L1.verify_cpu_s": {
+   "value": 4752.4,
+   "unit": "s",
+   "source": "L1/cnc_bundle.json",
+   "note": null,
+   "verified": true,
+   "source_status": "published"
+  },
+  "L1.wall_s": {
+   "value": 948.0,
+   "unit": "s",
+   "source": "L1/cnc_bundle.json",
+   "note": "14 workers, includes 5 % audit",
+   "verified": true,
+   "source_status": "published"
+  },
+  "L1.max_leaf_solve_s": {
+   "value": 8.6,
+   "unit": "s",
+   "source": "L1/cnc_bundle.json",
+   "note": null,
+   "verified": true,
+   "source_status": "published"
+  },
+  "L1.mean_solve_s": {
+   "value": 0.462,
+   "unit": "s",
+   "source": "L1/cnc_bundle.json",
+   "note": null,
+   "verified": true,
+   "source_status": "published"
+  },
+  "L1.median_solve_s": {
+   "value": 0.2,
+   "unit": "s",
+   "source": "L1/cnc_bundle.json",
+   "note": null,
+   "verified": true,
+   "source_status": "published"
+  },
+  "L1.p90_solve_s": {
+   "value": 1.1,
+   "unit": "s",
+   "source": "L1/cnc_bundle.json",
+   "note": null,
+   "verified": true,
+   "source_status": "published"
+  },
+  "L1.p99_solve_s": {
+   "value": 3.1,
+   "unit": "s",
+   "source": "L1/cnc_bundle.json",
+   "note": null,
+   "verified": true,
+   "source_status": "published"
+  },
+  "L1.mean_verify_s": {
+   "value": 0.321,
+   "unit": "s",
+   "source": "L1/cnc_bundle.json",
+   "note": null,
+   "verified": true,
+   "source_status": "published"
+  },
+  "L1.max_verify_s": {
+   "value": 7.5,
+   "unit": "s",
+   "source": "L1/cnc_bundle.json",
+   "note": null,
+   "verified": true,
+   "source_status": "published"
+  },
+  "L1.conflicts_total": {
+   "value": 149702872,
+   "unit": null,
+   "source": "L1/cnc_bundle.json",
+   "note": null,
+   "verified": true,
+   "source_status": "published"
+  },
+  "L1.proof_total_mb": {
+   "value": 10780.4,
+   "unit": "MB",
+   "source": "L1/cnc_bundle.json",
+   "note": "binary DRAT, deleted after verification",
+   "verified": true,
+   "source_status": "published"
+  },
+  "L1.proof_max_mb": {
+   "value": 12.0,
+   "unit": "MB",
+   "source": "L1/cnc_bundle.json",
+   "note": null,
+   "verified": true,
+   "source_status": "published"
+  },
+  "L1.audit_n": {
+   "value": 739,
+   "unit": null,
+   "source": "L1/cnc_bundle.json",
+   "note": null,
+   "verified": true,
+   "source_status": "published"
+  },
+  "L1.audit_all_ok": {
+   "value": true,
+   "unit": null,
+   "source": "L1/cnc_bundle.json",
+   "note": null,
+   "verified": true,
+   "source_status": "published"
+  },
+  "L1.cover_mode": {
+   "value": "pure",
+   "unit": null,
+   "source": "L1/cnc_bundle.json",
+   "note": null,
+   "verified": true,
+   "source_status": "published"
+  },
+  "L1.cover_solve_s": {
+   "value": 0.1,
+   "unit": "s",
+   "source": "L1/cnc_bundle.json",
+   "note": null,
+   "verified": true,
+   "source_status": "published"
+  },
+  "L1.cover_drat_lines": {
+   "value": 63314,
+   "unit": null,
+   "source": "L1/cnc_bundle.json",
+   "note": null,
+   "verified": true,
+   "source_status": "published"
+  },
+  "L1.cover_drat_bytes": {
+   "value": 4457164,
+   "unit": "bytes",
+   "source": "cubes/cover_pure.drat",
+   "note": null,
+   "verified": true,
+   "source_status": "published"
+  },
+  "L1.lifted_verified": {
+   "value": 14786,
+   "unit": null,
+   "source": "L1/liftall.json",
+   "note": null,
+   "verified": true,
+   "source_status": "published"
+  },
+  "L1.lifted_all_ok": {
+   "value": true,
+   "unit": null,
+   "source": "L1/liftall.json",
+   "note": null,
+   "verified": true,
+   "source_status": "published"
+  },
+  "L1.lift_wall_s": {
+   "value": 1054,
+   "unit": "s",
+   "source": "(not in the release) phase2b_results.md",
+   "note": "liftall.py: rebuild each leaf CNF, kissat ASCII DRAT + 4428 AMO RAT lemmas, drat-trim vs L1_a",
+   "verified": true,
+   "source_status": "not-released"
+  },
+  "L1.lifted_total_gb": {
+   "value": 25,
+   "unit": "GB",
+   "source": "(not in the release) phase2b_results.md",
+   "note": "ASCII DRAT kept in bundle/L1/lifted/",
+   "verified": true,
+   "source_status": "not-released"
+  },
+  "L1.amo_lemmas_per_leaf": {
+   "value": 4428,
+   "unit": null,
+   "source": "L1/lifted.jsonl",
+   "note": null,
+   "verified": true,
+   "source_status": "published"
+  },
+  "L1.cake_lpr_checked": {
+   "value": 739,
+   "unit": null,
+   "source": "(not in the release) phase2b_results.md",
+   "note": "5 % sample: drat-trim -L → LRAT → cake_lpr 's VERIFIED UNSAT' 739/739 + lrat-check 739/739, 53 s",
+   "verified": true,
+   "source_status": "not-released"
+  },
+  "L1.verify_bundle_full_s": {
+   "value": [
+    729,
+    739,
+    745
+   ],
+   "unit": "s",
+   "source": "(not in the release) phase2b_results.md",
+   "note": "three full re-verifications, 14 workers idle machine",
+   "verified": true,
+   "source_status": "not-released"
+  },
+  "L1.verify_bundle_full_s_6workers_loaded": {
+   "value": 3221,
+   "unit": "s",
+   "source": "full_test.log",
+   "note": "release rerun.sh --full, 6 workers, machine shared with a 14-worker campaign",
+   "verified": true,
+   "source_status": "published"
+  },
+  "bundle.files": {
+   "value": 14830,
+   "unit": null,
+   "source": "SHA256SUMS.bundle",
+   "note": "entries in the archive's SHA256SUMS (+ SHA256SUMS itself = 14831 files)",
+   "verified": true,
+   "source_status": "published"
+  },
+  "bundle.size_gb": {
+   "value": 28,
+   "unit": "GB",
+   "source": "(not in the release) phase2b_results.md",
+   "note": null,
+   "verified": true,
+   "source_status": "not-released"
+  },
+  "direct.probe_runs": {
+   "value": [
+    {
+     "batch": "probe",
+     "tag": "a-cadical-unsat",
+     "variant": "a",
+     "config": "cadical-unsat",
+     "status": "timeout",
+     "wall_s": 1800.0,
+     "conflicts": 5899436.0,
+     "conflicts_per_s": 3696.94,
+     "proof_mb": 1370.6,
+     "proof_mb_per_min": 45.7,
+     "proof_lines": 11453051
+    },
+    {
+     "batch": "probe",
+     "tag": "a-cadical",
+     "variant": "a",
+     "config": "cadical",
+     "status": "timeout",
+     "wall_s": 1800.0,
+     "conflicts": 6070904.0,
+     "conflicts_per_s": 3921.73,
+     "proof_mb": 1661.7,
+     "proof_mb_per_min": 55.4,
+     "proof_lines": 11873971
+    },
+    {
+     "batch": "probe",
+     "tag": "a-kissat-unsat",
+     "variant": "a",
+     "config": "kissat-unsat",
+     "status": "timeout",
+     "wall_s": 1800.0,
+     "conflicts": 10214204.0,
+     "conflicts_per_s": 5739.81,
+     "proof_mb": 2532.5,
+     "proof_mb_per_min": 84.4,
+     "proof_lines": 20702825
+    },
+    {
+     "batch": "probe",
+     "tag": "a-cadical-lrat",
+     "variant": "a",
+     "config": "cadical-lrat",
+     "status": "timeout",
+     "wall_s": 1800.0,
+     "conflicts": 4810555.0,
+     "conflicts_per_s": 3573.41,
+     "proof_mb": 2646.7,
+     "proof_mb_per_min": 88.2,
+     "proof_lines": 5138348
+    },
+    {
+     "batch": "probe",
+     "tag": "a-kissat",
+     "variant": "a",
+     "config": "kissat",
+     "status": "timeout",
+     "wall_s": 1800.1,
+     "conflicts": 9999308.0,
+     "conflicts_per_s": 5624.76,
+     "proof_mb": 2660.5,
+     "proof_mb_per_min": 88.7,
+     "proof_lines": 20363344
+    },
+    {
+     "batch": "probe2",
+     "tag": "b-cadical-unsat",
+     "variant": "b",
+     "config": "cadical-unsat",
+     "status": "timeout",
+     "wall_s": 1800.1,
+     "conflicts": 5468023.0,
+     "conflicts_per_s": 3481.35,
+     "proof_mb": 1264.7,
+     "proof_mb_per_min": 42.2,
+     "proof_lines": 10639942
+    },
+    {
+     "batch": "probe2",
+     "tag": "c-cadical",
+     "variant": "c",
+     "config": "cadical",
+     "status": "timeout",
+     "wall_s": 1800.1,
+     "conflicts": 5028530.0,
+     "conflicts_per_s": 3261.6,
+     "proof_mb": 1422.8,
+     "proof_mb_per_min": 47.4,
+     "proof_lines": 9853179
+    },
+    {
+     "batch": "probe2",
+     "tag": "b-cadical",
+     "variant": "b",
+     "config": "cadical",
+     "status": "timeout",
+     "wall_s": 1800.1,
+     "conflicts": 5519438.0,
+     "conflicts_per_s": 3613.68,
+     "proof_mb": 1507.2,
+     "proof_mb_per_min": 50.2,
+     "proof_lines": 10820240
+    },
+    {
+     "batch": "probe2",
+     "tag": "b-kissat-unsat",
+     "variant": "b",
+     "config": "kissat-unsat",
+     "status": "timeout",
+     "wall_s": 1800.0,
+     "conflicts": 9621971.0,
+     "conflicts_per_s": 5425.89,
+     "proof_mb": 2348.8,
+     "proof_mb_per_min": 78.3,
+     "proof_lines": 19488856
+    },
+    {
+     "batch": "probe2",
+     "tag": "b-cadical-lrat",
+     "variant": "b",
+     "config": "cadical-lrat",
+     "status": "timeout",
+     "wall_s": 1800.1,
+     "conflicts": 4316652.0,
+     "conflicts_per_s": 3299.43,
+     "proof_mb": 2344.7,
+     "proof_mb_per_min": 78.2,
+     "proof_lines": 4625639
+    },
+    {
+     "batch": "probe2",
+     "tag": "c-kissat",
+     "variant": "c",
+     "config": "kissat",
+     "status": "timeout",
+     "wall_s": 1800.1,
+     "conflicts": 8658487.0,
+     "conflicts_per_s": 4881.63,
+     "proof_mb": 2369.2,
+     "proof_mb_per_min": 79.0,
+     "proof_lines": 17583448
+    },
+    {
+     "batch": "probe2",
+     "tag": "b-kissat",
+     "variant": "b",
+     "config": "kissat",
+     "status": "timeout",
+     "wall_s": 1800.1,
+     "conflicts": 9378512.0,
+     "conflicts_per_s": 5289.76,
+     "proof_mb": 2531.8,
+     "proof_mb_per_min": 84.4,
+     "proof_lines": 19126666
+    },
+    {
+     "batch": "probe3",
+     "tag": "c-cadical-unsat",
+     "variant": "c",
+     "config": "cadical-unsat",
+     "status": "timeout",
+     "wall_s": 1800.1,
+     "conflicts": 5293905.0,
+     "conflicts_per_s": 3323.33,
+     "proof_mb": 1244.9,
+     "proof_mb_per_min": 41.5,
+     "proof_lines": 10337534
+    },
+    {
+     "batch": "probe3",
+     "tag": "d-cadical-unsat",
+     "variant": "d",
+     "config": "cadical-unsat",
+     "status": "timeout",
+     "wall_s": 1800.1,
+     "conflicts": 5582156.0,
+     "conflicts_per_s": 3532.0,
+     "proof_mb": 1321.8,
+     "proof_mb_per_min": 44.1,
+     "proof_lines": 10993105
+    },
+    {
+     "batch": "probe3",
+     "tag": "d-cadical",
+     "variant": "d",
+     "config": "cadical",
+     "status": "timeout",
+     "wall_s": 1800.1,
+     "conflicts": 5668198.0,
+     "conflicts_per_s": 3684.16,
+     "proof_mb": 1559.3,
+     "proof_mb_per_min": 52.0,
+     "proof_lines": 11205281
+    },
+    {
+     "batch": "probe3",
+     "tag": "ctrl-a-cadical",
+     "variant": "a",
+     "config": "cadical",
+     "status": "timeout",
+     "wall_s": 1800.1,
+     "conflicts": 5868887.0,
+     "conflicts_per_s": 3830.59,
+     "proof_mb": 1608.7,
+     "proof_mb_per_min": 53.6,
+     "proof_lines": 11444776
+    },
+    {
+     "batch": "probe3",
+     "tag": "c-cadical-lrat",
+     "variant": "c",
+     "config": "cadical-lrat",
+     "status": "timeout",
+     "wall_s": 1800.1,
+     "conflicts": 4177212.0,
+     "conflicts_per_s": 3032.45,
+     "proof_mb": 2211.5,
+     "proof_mb_per_min": 73.7,
+     "proof_lines": 4509404
+    },
+    {
+     "batch": "probe3",
+     "tag": "d-cadical-lrat",
+     "variant": "d",
+     "config": "cadical-lrat",
+     "status": "timeout",
+     "wall_s": 1800.1,
+     "conflicts": 4374209.0,
+     "conflicts_per_s": 3243.29,
+     "proof_mb": 2357.0,
+     "proof_mb_per_min": 78.6,
+     "proof_lines": 4762037
+    },
+    {
+     "batch": "probe3",
+     "tag": "c-kissat-unsat",
+     "variant": "c",
+     "config": "kissat-unsat",
+     "status": "timeout",
+     "wall_s": 1800.1,
+     "conflicts": 10396483.0,
+     "conflicts_per_s": 5850.45,
+     "proof_mb": 2566.3,
+     "proof_mb_per_min": 85.5,
+     "proof_lines": 21095080
+    },
+    {
+     "batch": "probe3",
+     "tag": "d-kissat",
+     "variant": "d",
+     "config": "kissat",
+     "status": "timeout",
+     "wall_s": 1800.1,
+     "conflicts": 9419237.0,
+     "conflicts_per_s": 5301.77,
+     "proof_mb": 2642.0,
+     "proof_mb_per_min": 88.1,
+     "proof_lines": 19276933
+    },
+    {
+     "batch": "probe3",
+     "tag": "ctrl-a-kissat",
+     "variant": "a",
+     "config": "kissat",
+     "status": "timeout",
+     "wall_s": 1800.1,
+     "conflicts": 10239460.0,
+     "conflicts_per_s": 5767.7,
+     "proof_mb": 2710.3,
+     "proof_mb_per_min": 90.3,
+     "proof_lines": 20855315
+    },
+    {
+     "batch": "probe3",
+     "tag": "d-kissat-unsat",
+     "variant": "d",
+     "config": "kissat-unsat",
+     "status": "timeout",
+     "wall_s": 1800.1,
+     "conflicts": 10731159.0,
+     "conflicts_per_s": 6042.06,
+     "proof_mb": 2715.4,
+     "proof_mb_per_min": 90.5,
+     "proof_lines": 21907746
+    }
+   ],
+   "unit": null,
+   "source": "(not in the release; source file no longer on disk) results.jsonl",
+   "note": "22 encoding×solver runs (+2 controls), 30-min solver-internal time limit each; all timeout",
+   "verified": true,
+   "source_status": "gone"
+  },
+  "direct.probe_n_timeout": {
+   "value": 22,
+   "unit": null,
+   "source": "(not in the release; source file no longer on disk) results.jsonl",
+   "note": null,
+   "verified": true,
+   "source_status": "gone"
+  },
+  "direct.probe_n_runs": {
+   "value": 22,
+   "unit": null,
+   "source": "(not in the release; source file no longer on disk) results.jsonl",
+   "note": "phase2b_results.md counts 22 (5+7+10); results.jsonl may include the 2 control runs",
+   "verified": true,
+   "source_status": "gone"
+  },
+  "direct.L1_kissat_timeout_s": {
+   "value": 1800,
+   "unit": "s",
+   "source": "(not in the release) G1-4-sameAB.json",
+   "note": "Phase 2, DRAT 5.6 GB unfinished",
+   "verified": true,
+   "source_status": "not-released"
+  },
+  "direct.L1_cadical_timeout_s": {
+   "value": 7200,
+   "unit": "s",
+   "source": "(not in the release) G1-4-sameAB-cadical2.json",
+   "note": "Phase 2, DRAT 11.3 GB unfinished",
+   "verified": true,
+   "source_status": "not-released"
+  },
+  "direct.G3_kissat_timeout_s": {
+   "value": 7200,
+   "unit": "s",
+   "source": "(not in the release) G3-4.json",
+   "note": "DRAT 20.4 GB unfinished",
+   "verified": true,
+   "source_status": "not-released"
+  },
+  "direct.G3_cadical_timeout_s": {
+   "value": 7200,
+   "unit": "s",
+   "source": "(not in the release) G3-4-cadical.json",
+   "note": "DRAT 15.0 GB unfinished",
+   "verified": true,
+   "source_status": "not-released"
+  },
+  "direct.L1_drat_gb": {
+   "value": {
+    "kissat_30min": 5.6,
+    "cadical_2h": 11.3
+   },
+   "unit": "GB",
+   "source": "(not in the release) phase2_results.md",
+   "note": null,
+   "verified": true,
+   "source_status": "not-released"
+  },
+  "direct.G3_drat_gb": {
+   "value": {
+    "kissat_2h": 20.4,
+    "cadical_2h": 15.0
+   },
+   "unit": "GB",
+   "source": "(not in the release) phase2_results.md",
+   "note": null,
+   "verified": true,
+   "source_status": "not-released"
+  },
+  "sample.L1.d11": {
+   "value": {
+    "n_cubes": 2042,
+    "refuted_leaves": 4,
+    "march_s": 1.2,
+    "sampled": 30,
+    "done": 30,
+    "timeout": 0,
+    "solve_mean_s": 1.6,
+    "solve_median_s": 0.8,
+    "solve_p90_s": 3.7,
+    "solve_max_s": 9.4,
+    "verify_mean_s": 1.1,
+    "proof_mb_mean": 3.0,
+    "proof_mb_max": 18.3,
+    "E_floor_h": 0.11,
+    "timeout_upper95": 0.095,
+    "reliable": true,
+    "E_floor_ci90": [
+     0.07,
+     0.15
+    ]
+   },
+   "unit": null,
+   "source": "(not in the release) summary.json",
+   "note": null,
+   "verified": true,
+   "source_status": "not-released"
+  },
+  "sample.L1.d14": {
+   "value": {
+    "n_cubes": 14786,
+    "refuted_leaves": 847,
+    "march_s": 17.7,
+    "sampled": 30,
+    "done": 30,
+    "timeout": 0,
+    "solve_mean_s": 0.3,
+    "solve_median_s": 0.2,
+    "solve_p90_s": 0.6,
+    "solve_max_s": 0.7,
+    "verify_mean_s": 0.2,
+    "proof_mb_mean": 0.5,
+    "proof_mb_max": 1.6,
+    "E_floor_h": 0.13,
+    "timeout_upper95": 0.095,
+    "reliable": true,
+    "E_floor_ci90": [
+     0.1,
+     0.15
+    ]
+   },
+   "unit": null,
+   "source": "(not in the release) summary.json",
+   "note": null,
+   "verified": true,
+   "source_status": "not-released"
+  },
+  "sample.G3.d15": {
+   "value": {
+    "n_cubes": 32768,
+    "refuted_leaves": 0,
+    "march_s": 36.6,
+    "sampled": 30,
+    "done": 30,
+    "timeout": 0,
+    "solve_mean_s": 4.1,
+    "solve_median_s": 3.2,
+    "solve_p90_s": 8.2,
+    "solve_max_s": 11.4,
+    "verify_mean_s": 1.6,
+    "proof_mb_mean": 7.7,
+    "proof_mb_max": 19.5,
+    "E_floor_h": 3.75,
+    "timeout_upper95": 0.095,
+    "reliable": true,
+    "E_floor_ci90": [
+     3.08,
+     4.43
+    ]
+   },
+   "unit": null,
+   "source": "(not in the release) summary.json",
+   "note": null,
+   "verified": true,
+   "source_status": "not-released"
+  },
+  "sample.G2.d14": {
+   "value": {
+    "n_cubes": 16350,
+    "refuted_leaves": 32,
+    "march_s": 13.0,
+    "sampled": 30,
+    "done": 30,
+    "timeout": 0,
+    "solve_mean_s": 2.7,
+    "solve_median_s": 1.2,
+    "solve_p90_s": 6.2,
+    "solve_max_s": 15.0,
+    "verify_mean_s": 1.7,
+    "proof_mb_mean": 4.1,
+    "proof_mb_max": 22.9,
+    "E_floor_h": 1.43,
+    "timeout_upper95": 0.095,
+    "reliable": true,
+    "E_floor_ci90": [
+     0.88,
+     2.04
+    ]
+   },
+   "unit": null,
+   "source": "(not in the release) summary.json",
+   "note": "G2 mono-pair CNF (col(-1,0) != col(1,0)), depth 14; reconnaissance only",
+   "verified": true,
+   "source_status": "not-released"
+  },
+  "probe.rounds": {
+   "value": [
+    {
+     "tag": "round1",
+     "removed": 30,
+     "status": "certified",
+     "n_cubes": 16383,
+     "leaves": 16383,
+     "mean_solve_s": 3.515,
+     "median_solve_s": 2.4,
+     "max_solve_s": 51.2,
+     "mean_verify_s": 2.808,
+     "mean_sv_s": 6.322,
+     "x_L1_solve": 7.64,
+     "x_L1_sv": 8.11,
+     "cpu_solve_s": 57579.3,
+     "cpu_verify_s": 45998.2,
+     "proof_total_mb": 81824.5,
+     "wall_s": 7863.7,
+     "G3p_n": 2011,
+     "G3p_m": 11642,
+     "G1p_n": 710,
+     "l3_ok": true,
+     "half": null
+    },
+    {
+     "tag": "round2",
+     "removed": 60,
+     "status": "certified",
+     "n_cubes": 16384,
+     "leaves": 16384,
+     "mean_solve_s": 3.847,
+     "median_solve_s": 2.6,
+     "max_solve_s": 40.1,
+     "mean_verify_s": 3.171,
+     "mean_sv_s": 7.018,
+     "x_L1_solve": 8.36,
+     "x_L1_sv": 9.0,
+     "cpu_solve_s": 63024.9,
+     "cpu_verify_s": 51955.0,
+     "proof_total_mb": 90753.9,
+     "wall_s": 8711.3,
+     "G3p_n": 1891,
+     "G3p_m": 10786,
+     "G1p_n": 680,
+     "l3_ok": true,
+     "half": null
+    },
+    {
+     "tag": "round3",
+     "removed": 90,
+     "status": "SAT",
+     "n_cubes": 16384,
+     "leaves": 2712,
+     "mean_solve_s": 3.376,
+     "median_solve_s": 2.0,
+     "max_solve_s": 39.2,
+     "mean_verify_s": 2.817,
+     "mean_sv_s": 6.193,
+     "x_L1_solve": 7.34,
+     "x_L1_sv": 7.94,
+     "cpu_solve_s": 9155.4,
+     "cpu_verify_s": 7639.1,
+     "proof_total_mb": 12793.5,
+     "wall_s": 1215.7,
+     "G3p_n": null,
+     "G3p_m": null,
+     "G1p_n": null,
+     "l3_ok": null,
+     "half": null
+    },
+    {
+     "tag": "round3_bisecta",
+     "removed": 75,
+     "status": "SAT",
+     "n_cubes": 16384,
+     "leaves": 7455,
+     "mean_solve_s": 4.769,
+     "median_solve_s": 2.9,
+     "max_solve_s": 56.9,
+     "mean_verify_s": 4.181,
+     "mean_sv_s": 8.95,
+     "x_L1_solve": 10.37,
+     "x_L1_sv": 11.47,
+     "cpu_solve_s": 35550.0,
+     "cpu_verify_s": 31172.2,
+     "proof_total_mb": 47941.0,
+     "wall_s": 4812.2,
+     "G3p_n": null,
+     "G3p_m": null,
+     "G1p_n": null,
+     "l3_ok": null,
+     "half": [
+      611,
+      23,
+      655,
+      394,
+      740,
+      615,
+      616,
+      660,
+      596,
+      732,
+      546,
+      145,
+      563,
+      195,
+      362
+     ]
+    },
+    {
+     "tag": "round3_bisectb",
+     "removed": 75,
+     "status": "SAT",
+     "n_cubes": 16384,
+     "leaves": 2925,
+     "mean_solve_s": 2.773,
+     "median_solve_s": 1.7,
+     "max_solve_s": 37.3,
+     "mean_verify_s": 2.267,
+     "mean_sv_s": 5.04,
+     "x_L1_solve": 6.03,
+     "x_L1_sv": 6.46,
+     "cpu_solve_s": 8110.2,
+     "cpu_verify_s": 6632.2,
+     "proof_total_mb": 12057.1,
+     "wall_s": 1071.1,
+     "G3p_n": null,
+     "G3p_m": null,
+     "G1p_n": null,
+     "l3_ok": null,
+     "half": [
+      683,
+      447,
+      484,
+      257,
+      293,
+      448,
+      92,
+      682,
+      132,
+      675,
+      716,
+      499,
+      242,
+      295,
+      446
+     ]
+    }
+   ],
+   "unit": null,
+   "source": "(not in the release) rounds.json",
+   "note": null,
+   "verified": true,
+   "source_status": "not-released"
+  },
+  "probe.protected_set": {
+   "value": [
+    10,
+    172,
+    181,
+    560,
+    569,
+    574
+   ],
+   "unit": null,
+   "source": "(not in the release) batches.json",
+   "note": null,
+   "verified": true,
+   "source_status": "not-released"
+  },
+  "probe.batch_size": {
+   "value": 30,
+   "unit": null,
+   "source": "(not in the release) batches.json",
+   "note": null,
+   "verified": true,
+   "source_status": "not-released"
+  },
+  "probe.batches": {
+   "value": [
+    [
+     671,
+     690,
+     315,
+     426,
+     709,
+     495,
+     355,
+     263,
+     478,
+     605,
+     370,
+     371,
+     434,
+     373,
+     313,
+     529,
+     607,
+     417,
+     324,
+     237,
+     504,
+     726,
+     54,
+     600,
+     150,
+     584,
+     141,
+     579,
+     591,
+     610
+    ],
+    [
+     519,
+     397,
+     121,
+     354,
+     221,
+     398,
+     463,
+     710,
+     518,
+     597,
+     144,
+     531,
+     554,
+     192,
+     549,
+     422,
+     319,
+     457,
+     439,
+     643,
+     115,
+     385,
+     692,
+     469,
+     272,
+     303,
+     736,
+     669,
+     72,
+     642
+    ],
+    [
+     611,
+     23,
+     655,
+     394,
+     740,
+     615,
+     616,
+     660,
+     596,
+     732,
+     546,
+     145,
+     563,
+     195,
+     362,
+     683,
+     447,
+     484,
+     257,
+     293,
+     448,
+     92,
+     682,
+     132,
+     675,
+     716,
+     499,
+     242,
+     295,
+     446
+    ]
+   ],
+   "unit": null,
+   "source": "(not in the release) batches.json",
+   "note": null,
+   "verified": true,
+   "source_status": "not-released"
+  },
+  "probe.sort_key": {
+   "value": "(-influence, degree_G1, -|Re z|, index)",
+   "unit": null,
+   "source": "(not in the release) batches.json",
+   "note": null,
+   "verified": true,
+   "source_status": "not-released"
+  },
+  "probe.influence_hist": {
+   "value": {
+    "0": 372,
+    "1": 0,
+    "2": 84,
+    "3": 0,
+    "4": 284
+   },
+   "unit": null,
+   "source": "(not in the release) batches.json",
+   "note": null,
+   "verified": true,
+   "source_status": "not-released"
+  },
+  "probe.x_target": {
+   "value": 173,
+   "unit": null,
+   "source": "(not in the release) batches.json",
+   "note": "cumulative deletions along the ordering needed for |G3'| < 1441 (G1' = 567, G3' = 1439)",
+   "verified": true,
+   "source_status": "not-released"
+  },
+  "probe.gate_verdict": {
+   "value": "GREEN",
+   "unit": null,
+   "source": "(not in the release) hardness.json",
+   "note": "三個模型外推總成本 152–175 CPU-小時 全部 ≤ 200; **但係** SAT 輪 ['round3', 'round3_bisecta', 'round3_bisectb'] (每個都有逐邊覆核嘅染色證書) 證實所刪批次含必要頂點 —— 外推假設咗之後每輪都 UNSAT, 而呢個假設喺 x=75 已經被數據推翻: 成本 (每 cube / 每輪) 可行, 可剪性先係樽頸; 呢個成本估計只係下界",
+   "verified": true,
+   "source_status": "not-released"
+  },
+  "probe.extrapolation_cpu_h": {
+   "value": {
+    "headline_model": "exp",
+    "headline_total_cpu_h": 175.0,
+    "range_total_cpu_h": [
+     151.9,
+     175.0
+    ],
+    "measured_cpu_h_so_far": 64.5
+   },
+   "unit": "CPU-h",
+   "source": "(not in the release) hardness.json",
+   "note": "wall × 14 workers; assumes every future batch UNSAT (falsified at x=75)",
+   "verified": true,
+   "source_status": "not-released"
+  },
+  "probe.fits": {
+   "value": {
+    "exp": {
+     "final_cert_cpu_h": 49.8,
+     "total_future_cpu_h": 175.0,
+     "sv_at_target_s": 10.4,
+     "n_future_rounds": 4
+    },
+    "power": {
+     "final_cert_cpu_h": 39.6,
+     "total_future_cpu_h": 151.9,
+     "sv_at_target_s": 8.23,
+     "n_future_rounds": 4
+    },
+    "linear": {
+     "final_cert_cpu_h": 46.3,
+     "total_future_cpu_h": 167.7,
+     "sv_at_target_s": 9.64,
+     "n_future_rounds": 4
+    },
+    "exp_with_L1_anchor": {
+     "total_future_cpu_h": 4987.9,
+     "final_cert_cpu_h": 3088.9
+    }
+   },
+   "unit": null,
+   "source": "(not in the release) hardness.json",
+   "note": null,
+   "verified": true,
+   "source_status": "not-released"
+  },
+  "probe.witness_blocked": {
+   "value": [
+    {
+     "witness": "round3",
+     "S_size": 90,
+     "blocked": [
+      221,
+      295,
+      417,
+      591,
+      610,
+      615,
+      675,
+      732
+     ],
+     "blocked_size": 8,
+     "orders_tried": 504,
+     "edges_checked": 3929
+    },
+    {
+     "witness": "round3_bisecta",
+     "S_size": 75,
+     "blocked": [
+      72,
+      121,
+      141,
+      370,
+      371,
+      373,
+      422,
+      495,
+      529,
+      531,
+      563,
+      616
+     ],
+     "blocked_size": 12,
+     "orders_tried": 504,
+     "edges_checked": 3901
+    },
+    {
+     "witness": "round3_bisectb",
+     "S_size": 75,
+     "blocked": [
+      257,
+      272,
+      397,
+      446,
+      584,
+      597,
+      692
+     ],
+     "blocked_size": 7,
+     "orders_tried": 504,
+     "edges_checked": 3936
+    }
+   ],
+   "unit": null,
+   "source": "(not in the release) witness_blocked.json",
+   "note": null,
+   "verified": true,
+   "source_status": "not-released"
+  },
+  "probe.total_wall_h": {
+   "value": 6.58,
+   "unit": "h",
+   "source": "(not in the release) rounds.json",
+   "note": null,
+   "verified": true,
+   "source_status": "not-released"
+  },
+  "probe.total_cpu_h": {
+   "value": 88.0,
+   "unit": "CPU-h",
+   "source": "(not in the release) rounds.json",
+   "note": null,
+   "verified": true,
+   "source_status": "not-released"
+  },
+  "critscan.vertices": {
+   "value": 738,
+   "unit": null,
+   "source": "(not in the release) critscan_summary.md",
+   "note": "kissat 120 s per vertex, SAT direction: 738 timeouts, 0 SAT, 0 UNSAT",
+   "verified": true,
+   "source_status": "not-released"
+  },
+  "critscan.timeout_s": {
+   "value": 120,
+   "unit": "s",
+   "source": "(not in the release) critscan_summary.md",
+   "note": null,
+   "verified": true,
+   "source_status": "not-released"
+  },
+  "critscan.wall_s": {
+   "value": 6363,
+   "unit": "s",
+   "source": "(not in the release) phase2b_results.md",
+   "note": null,
+   "verified": true,
+   "source_status": "not-released"
+  },
+  "v1.cubes": {
+   "value": 16384,
+   "unit": null,
+   "source": "aborted_runs.md",
+   "note": null,
+   "verified": true,
+   "source_status": "published"
+  },
+  "v1.done": {
+   "value": 10958,
+   "unit": null,
+   "source": "aborted_runs.md",
+   "note": null,
+   "verified": true,
+   "source_status": "published"
+  },
+  "v1.mean_solve_s": {
+   "value": 3.35,
+   "unit": "s",
+   "source": "aborted_runs.md",
+   "note": null,
+   "verified": true,
+   "source_status": "published"
+  },
+  "v1.wall_s": {
+   "value": 4507,
+   "unit": "s",
+   "source": "aborted_runs.md",
+   "note": "aborted, not a certificate",
+   "verified": true,
+   "source_status": "published"
+  },
+  "part3.summary": {
+   "value": {
+    "status": "budget-stop (8 h cap) — NOT a certificate",
+    "base_cnf_sha": "ca34880f112ea898e6ccbec580068d36e96123d7efeb7134ceb03715f348961e",
+    "icnf_sha": "876aec4ffce74ea9bcb8e42fc6605ae460f416d3f5bf50148a7001f35c57a53c",
+    "n_cubes0": 32768,
+    "leaves_done_verified": 32943,
+    "pending": 210,
+    "stuck": 0,
+    "split_events": 55,
+    "timeouts": 227,
+    "solver_errors": 11,
+    "exceptions_deleted_proof_incident": 11,
+    "wasted_s": 169353.0,
+    "wall_s": 29572.8,
+    "mean_solve_s": 4.76,
+    "median_solve_s": 3.4,
+    "max_solve_s": 587.0,
+    "p99_solve_s": 18.2,
+    "mean_verify_s": 2.38,
+    "cpu_solve_s": 156927,
+    "cpu_verify_s": 78433,
+    "proof_total_gb": 254.0,
+    "leaf_depth_hist": {
+     "0": 32755,
+     "1": 34,
+     "2": 154
+    },
+    "pending_ids_sample": [
+     "14550.1.0",
+     "14550.1.1",
+     "14550.1.2",
+     "14550.1.3",
+     "14550.1.4",
+     "14550.1.5",
+     "14550.1.6",
+     "14550.1.7",
+     "14578.7.0",
+     "14578.7.1",
+     "14578.7.2",
+     "14578.7.3"
+    ],
+    "resume_cmd": "cd ~/hadwiger/phase2b && ~/hadwiger/venv/bin/python cnc2.py --resume --out ~/hadwiger/phase3/part3/cnc --workers 14 --time-budget 43200",
+    "started": "2026-09-05 23:04:55"
+   },
+   "unit": null,
+   "source": "(not in the release) summary.json",
+   "note": "8 h cap run of 2026-09-05/06; NOT a certificate",
+   "verified": true,
+   "source_status": "not-released"
+  },
+  "part3.resume_status": {
+   "value": {
+    "status": "killed-at-cap",
+    "done": 33179,
+    "pending": 308,
+    "split_events": 103,
+    "wall_s": 44430.0,
+    "updated_str": "2026-09-06 12:55:25"
+   },
+   "unit": null,
+   "source": "(not in the release) status.json",
+   "note": "Phase 4 resume (4 h cap); see phase4_results.md",
+   "verified": true,
+   "source_status": "not-released"
+  },
+  "g2.recon": {
+   "value": {
+    "run_id": "p4r2_g2recon",
+    "G2": {
+     "n": 1066,
+     "m": 6264,
+     "u": 172,
+     "v": 994,
+     "tri": [
+      172,
+      6,
+      8
+     ]
+    },
+    "cnf": {
+     "mono_sha": "9bfbffbcb30673a497bbd3d2e3ba175d07d7ceac449c55d45c368f72e606c0eb",
+     "mono_clauses": 32525,
+     "plain_sha": "efe573a0c0d6947579ef8fce66225ef853f5b4f8781feacc5c3cafeb46a96be1",
+     "plain_clauses": 32521
+    },
+    "selftest_plain": {
+     "status": "SAT",
+     "solve_s": 23.6,
+     "bad_edges": 0,
+     "col_u": 1,
+     "col_v": 1,
+     "mono_pair_holds_in_witness": true,
+     "source": "run.log 08:41:54 (first run)"
+    },
+    "sample": {
+     "cnf": "/home/user/hadwiger/phase4/runs/p4r2_g2recon/g2_mono.cnf",
+     "cnf_sha": "9bfbffbcb30673a497bbd3d2e3ba175d07d7ceac449c55d45c368f72e606c0eb",
+     "solver": "kissat",
+     "timeout": 600.0,
+     "sample": 30,
+     "workers": 14,
+     "campaign_workers": 14,
+     "seed": 20260906,
+     "proof_dir": "/home/user/hadwiger/phase2b/proofs_ext4/p4r2_g2recon",
+     "binary": true,
+     "cpu_count": 20,
+     "load_start": 1.3,
+     "tiers": [
+      {
+       "depth": 14,
+       "n_cubes": 16350,
+       "refuted_leaves": 32,
+       "march_s": 13.0,
+       "sampled": 30,
+       "done": 30,
+       "timeout": 0,
+       "other": 0,
+       "other_status": [],
+       "frac_timeout": 0.0,
+       "timeout_upper95": 0.095,
+       "all_verified": true,
+       "verified": 30,
+       "sample_short_cubes": 0,
+       "largest_proof_mb_seen": 22.9,
+       "T": 600.0,
+       "W": 14,
+       "solve_mean_s": 2.7,
+       "solve_median_s": 1.2,
+       "solve_p90_s": 6.2,
+       "solve_max_s": 15.0,
+       "solve_top3_s": [
+        9.7,
+        12.3,
+        15.0
+       ],
+       "max_share_of_sum": 0.187,
+       "verify_mean_s": 1.7,
+       "verify_max_s": 9.4,
+       "proof_mb_mean": 4.1,
+       "proof_mb_max": 22.9,
+       "E_survivor_h": 0.88,
+       "E_survivor_verify_h": 1.43,
+       "E_floor_h": 1.43,
+       "E_floor_ci90_h": [
+        0.88,
+        2.04
+       ],
+       "E_timeout_mass_upper_h": 55.47,
+       "peak_unverified_gb_est": 0.3,
+       "reliable": true,
+       "note": "外推可靠 (冇 timeout, max < T/3, 全部 VERIFIED, n ≥ 30)",
+       "load_end": 3.1
+      }
+     ],
+     "finished": "2026-09-06 08:42:34",
+     "load_end": 3.1
+    },
+    "sat_quick": [
+     {
+      "tag": "batch30",
+      "removed": [
+       947,
+       710,
+       78,
+       207,
+       606,
+       51,
+       344,
+       477,
+       273,
+       577,
+       298,
+       385,
+       3,
+       16,
+       421,
+       1037,
+       807,
+       722,
+       626,
+       631,
+       619,
+       688,
+       871,
+       337,
+       312,
+       457,
+       137,
+       547,
+       416,
+       256
+      ],
+      "n_removed": 30,
+      "clauses": 25267,
+      "cnf_sha": "4845d866c92d08ec29f7eb8f6c3f3ad08131b8b300f2577913bf9e7eabd7cf6f",
+      "rc": 0,
+      "solve_s": 120.0,
+      "status": "timeout"
+     },
+     {
+      "tag": "single_947",
+      "removed": [
+       947
+      ],
+      "n_removed": 1,
+      "clauses": 26100,
+      "cnf_sha": "e3c4846e1f9ea05683538b2a18f7b86beb85199a7a355c30a46380e7368b118c",
+      "rc": 0,
+      "solve_s": 120.0,
+      "status": "timeout"
+     },
+     {
+      "tag": "single_710",
+      "removed": [
+       710
+      ],
+      "n_removed": 1,
+      "clauses": 26100,
+      "cnf_sha": "1943c93cbf74634c01e99b6ef7d0c0f79bf205d8d9a1d795eb1762db9133071f",
+      "rc": 0,
+      "solve_s": 120.0,
+      "status": "timeout"
+     },
+     {
+      "tag": "single_78",
+      "removed": [
+       78
+      ],
+      "n_removed": 1,
+      "clauses": 26100,
+      "cnf_sha": "35e94583943951905d7704a980b199a2882ad02ec99670019b2e9c49037b30f1",
+      "rc": 0,
+      "solve_s": 120.0,
+      "status": "timeout"
+     }
+    ],
+    "batch_order_note": "候選 = 非特殊點; key = (度數升序, |Im z| 降序, 索引); 頭 30 粒 = 批次, 頭 3 粒單獨",
+    "t_s": 0.1
+   },
+   "unit": null,
+   "source": "(not in the release) g2_recon.json",
+   "note": "Phase 4 reconnaissance only; no campaign",
+   "verified": true,
+   "source_status": "not-released"
+  },
+  "haugland.reply_cadical_hours": {
+   "value": 8,
+   "unit": "h",
+   "source": "(not in the release; source file no longer on disk) MISSING:",
+   "note": "Haugland's CaDiCaL run for the pair property took about 8 hours (as relayed by the author of the release); NOT independently verified; version/hardware unknown",
+   "verified": false,
+   "source_status": "gone"
+  },
+  "haugland.permission_to_publish": {
+   "value": true,
+   "unit": null,
+   "source": "(not in the release; source file no longer on disk) MISSING:",
+   "note": null,
+   "verified": false,
+   "source_status": "gone"
+  },
+  "haugland.files_sent_to_heule": {
+   "value": true,
+   "unit": null,
+   "source": "(not in the release; source file no longer on disk) MISSING:",
+   "note": null,
+   "verified": false,
+   "source_status": "gone"
+  },
+  "tools": {
+   "value": {
+    "kissat": {
+     "path": "/home/user/hadwiger/kissat/build/kissat",
+     "sha256": "d00651aec73d168868840f20802b144a93d49bf535d48797cd689a0091a2bfa2",
+     "version": "4.0.4",
+     "git": "8af8e56f174b778aef3aa45af9f739b2a5f492c2 Thu Oct 16 19:24:28 2025 +0200"
+    },
+    "cadical": {
+     "path": "/home/user/hadwiger/cadical/build/cadical",
+     "sha256": "b1f76fbb86ea61667d8bf91c2b07fa6c0420704ba555f2b85febd39e11d7b9c3",
+     "version": "3.0.1",
+     "git": "c60730422e758ef1cebe7aeddf2dda31c996bf04 Sun Jul 19 16:40:55 2026 +0100"
+    },
+    "drat-trim": {
+     "path": "/home/user/hadwiger/drat-trim/drat-trim",
+     "sha256": "463a21fd1b8214280c55dfc32c4faf845c765cf98d54334e5d01c8c09bd76cef",
+     "git": "2e3b2dc0ecf938addbd779d42877b6ed69d9a985 Mon Nov 25 10:20:26 2024 -0500"
+    },
+    "lrat-check": {
+     "path": "/home/user/hadwiger/drat-trim/lrat-check",
+     "sha256": "e9a774c0a87e01c072a507366adf5a95a02a2fca277822f0a2c6ade653787a14"
+    },
+    "march_cu": {
+     "path": "/home/user/hadwiger/tools/CnC/march_cu/march_cu",
+     "sha256": "a8b7dfdf5af07d2fcc453b9ccabd1c9f5b935ebc888f1c9185914cc886505092",
+     "git": "705b60c6491ef2b61988b3ce6ac674be1b90571d Mon Jul 14 11:18:45 2025 +0200"
+    },
+    "cake_lpr": {
+     "path": "/home/user/hadwiger/tools/cake_lpr/cake_lpr",
+     "sha256": "567c0dfe400239149df1ea7382365840746cdae284d8a321661a813fef884fa6",
+     "git": "a36874a8b750b43fe4b385b8ddbf5b033e46a3fa Wed Jul 22 23:43:47 2026 +0100"
+    }
+   },
+   "unit": null,
+   "source": "(not in the release) tools.json",
+   "note": "paths, sha256, versions, git commits",
+   "verified": true,
+   "source_status": "not-released"
+  },
+  "env.cpu": {
+   "value": "Intel Core i7-12700K (8 P-cores + 4 E-cores, 20 threads), 31 GB RAM visible to WSL",
+   "unit": null,
+   "source": "(not in the release) phase2b_results.md",
+   "note": null,
+   "verified": true,
+   "source_status": "not-released"
+  },
+  "env.os": {
+   "value": "Windows 11 Home 10.0.26200; WSL2 Ubuntu 26.04 LTS, kernel 6.18.33.1-microsoft-standard-WSL2; gcc 15.2.0; Python 3.14.4, numpy 2.5.2, sympy 1.14.0",
+   "unit": null,
+   "source": "(not in the release) README.md",
+   "note": null,
+   "verified": true,
+   "source_status": "not-released"
+  },
+  "env.workers": {
+   "value": 14,
+   "unit": null,
+   "source": "(not in the release) phase2b_results.md",
+   "note": "parallel solver workers used in every campaign",
+   "verified": true,
+   "source_status": "not-released"
+  },
+  "release.github_files": {
+   "value": 50,
+   "unit": null,
+   "source": "(not in the release) SHA256SUMS",
+   "note": null,
+   "verified": true,
+   "source_status": "not-released"
+  },
+  "release.github_size_mb": {
+   "value": 34,
+   "unit": "MB",
+   "source": "(not in the release; a directory, not a file) release",
+   "note": null,
+   "verified": true,
+   "source_status": "gone"
+  },
+  "release.zenodo_volumes": {
+   "value": "# Zenodo layer volumes (prepared 2026-09-06 09:39:23, run p4r0_reseal) — reassemble: cat hadwiger_G3_proof_bundle.tar.gz.part* | tar xzf -   → bundle/ (28 GB, 14831 files)\n# file  bytes  sha256\nhadwiger_G3_proof_bundle.tar.gz.part000  3984588800  2bdb04611c46deaec25876ee6db0bce46495db3e895c03f58c7a727efa634fe8\nhadwiger_G3_proof_bundle.tar.gz.part001  3907873392  f81b2f5445cced480096ae75e047d799676a4d8bf594cc2d8655b1032ae83469\n# total bytes: 7892462192\n",
+   "unit": null,
+   "source": "(not in the release) VOLUMES.txt",
+   "note": null,
+   "verified": true,
+   "source_status": "not-released"
+  },
+  "release.fresh_test_s": {
+   "value": 13,
+   "unit": "s",
+   "source": "(not in the release; source file no longer on disk) fresh_test.log",
+   "note": "quick layer from a clean copy, 9/9 OK (13–26 s depending on load)",
+   "verified": true,
+   "source_status": "gone"
+  },
+  "release.author": {
+   "value": "King Tat Wong, independent researcher, ORCID 0009-0003-4009-3619",
+   "unit": null,
+   "source": "(not in the release) README.md",
+   "note": null,
+   "verified": true,
+   "source_status": "not-released"
+  },
+  "release.github_url": {
+   "value": "https://github.com/Amberlogy/haugland-2131-certificates",
+   "unit": null,
+   "source": "(not in the release) README.md",
+   "note": "public since 2026-09-06 09:42 HKT; commits 8b7e7b2 (v1.0), d5d2c9a, e842805, 75b9915 (Add Zenodo DOI), 4fdf23b",
+   "verified": true,
+   "source_status": "not-released"
+  },
+  "release.zenodo_doi": {
+   "value": "10.5281/zenodo.22435778",
+   "unit": null,
+   "source": "(not in the release) zenodo_draft.json",
+   "note": "reserved on draft deposition 22435778 (state unsubmitted at the time of writing; published by the author by hand)",
+   "verified": true,
+   "source_status": "not-released"
+  },
+  "release.zenodo_volumes_md5_match": {
+   "value": true,
+   "unit": null,
+   "source": "(not in the release) zenodo_draft.json",
+   "note": "API MD5 checksums of the 8 uploaded files equal the local MD5; sha256 in SHA256SUMS.volumes",
+   "verified": true,
+   "source_status": "not-released"
+  },
+  "release.ai_disclosure": {
+   "value": "Computations were orchestrated with Claude Code (Anthropic); all mathematical claims are independently machine-checked by drat-trim / cake_lpr and reproducible from the included scripts.",
+   "unit": null,
+   "source": "(not in the release) README.md",
+   "note": null,
+   "verified": true,
+   "source_status": "not-released"
+  },
+  "record.heule_1441": {
+   "value": 1441,
+   "unit": null,
+   "source": "(not in the release) 2608.04542.txt",
+   "note": "Heule, Geombinatorics 31(2) 2021: smallest known Moser-spindle-free 5-chromatic UDG",
+   "verified": true,
+   "source_status": "not-released"
+  },
+  "record.parts_509": {
+   "value": 509,
+   "unit": null,
+   "source": "(not in the release) 2608.04542.txt",
+   "note": "current record for 5-chromatic UDG (Parts), as cited in Haugland's introduction",
+   "verified": true,
+   "source_status": "not-released"
+  },
+  "record.voronov_64513": {
+   "value": 64513,
+   "unit": null,
+   "source": "(not in the release) 2608.04542.txt",
+   "note": null,
+   "verified": true,
+   "source_status": "not-released"
+  }
+ },
+ "paths_rewritten": {
+  "not-released": 76,
+  "published": 52,
+  "gone": 8
+ }
+}

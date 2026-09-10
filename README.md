@@ -83,6 +83,7 @@ L1 ∧ L2 ∧ L3 ⇒ G3 has no proper 4-colouring.
 README.md, CLAIM.md, CLAIM_en.md, LICENSE, ZENODO_METADATA.md, for_author_summary.md, aborted_runs.md
 fresh_test.log        transcript of `bash rerun.sh` (quick layer) from a clean copy of this repository
 full_test.log         transcript of `bash rerun.sh --full` on the extracted Zenodo archive (all 14786 leaves)
+facts.json            every number the paper cites, with the file it came from (see below)
 SHA256SUMS            sha256 of every file in this layer
 SHA256SUMS.bundle     sha256 of every file inside the Zenodo archive (14 830 entries; = the archive's own SHA256SUMS)
 inputs/   G1.cvtx G1.edge G1.special.json   (740 vertices, 3985 edges; A = #560, B = #181)
@@ -231,6 +232,14 @@ re-split, and one sub-cube alone needed 561 s and a 480 MB proof. An 8-hour, 14-
   of the v1.1 layer are **not** deposited — see §9 for why and for how to regenerate and check them.
 * v1.1 (the Proposition 2 certificate for G1 − S₆₀): `reduction_S60/` in this repository. Its 16 384 leaf DRAT proofs (95.2 GiB / 102.2 GB) are **not**
   deposited in either layer; every one of them is pinned by sha256 in `reduction_S60/LEAF_INDEX.json` — see §10.
+
+### `facts.json`
+
+Every number the paper cites, with the file it came from and whether that number was machine-verified. Source paths are **repository-relative**:
+they were rewritten at publication time, and a path was replaced by its location here only when the local file was **byte-identical (sha256)** to a
+file in this tree — never matched by filename, which produced false pointers on a first attempt. Of the 136 facts, 52 resolve to a published file,
+76 name a working file that is not part of the release, and 8 name a file that no longer exists on disk. Each fact carries `source_status`
+(`published` / `not-released` / `gone`) and `source_original_basename`, so nothing is hidden by the rewrite.
 
 ## 8. License
 
