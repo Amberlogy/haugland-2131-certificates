@@ -1,0 +1,69 @@
+{
+ "started": "2026-09-09 21:20:04",
+ "stage": "封存 → /mnt/d/hadwiger/release_v1_1_staging/best_S315 (leaf 證明 rename 自 /mnt/d/hadwiger/release_v1_1_staging/best_S315/L1pp/leaf_proofs)",
+ "done": false,
+ "updated": "2026-09-10 04:22:17",
+ "final": {
+  "tag": "r05a",
+  "dir": "/home/user/hadwiger/phase3e/runs/p3e1_step/r05a",
+  "vdir": "/home/user/hadwiger/phase3e/runs/p3e1_step/r05a",
+  "keep_dir": "/mnt/d/hadwiger/release_v1_1_staging/best_S315/L1pp/leaf_proofs",
+  "has_keep": true,
+  "arch": "/mnt/d/hadwiger/release_v1_1_staging/best_S315",
+  "n_disk_leaf": 16382,
+  "n_disk_audit": 819,
+  "G2p_n": 751,
+  "G2p_m": 4043,
+  "G3p_n": 1501,
+  "G3p_m": 8088,
+  "leaves": 16382
+ },
+ "rebuild_base": {
+  "rc": 0,
+  "tail": "[buildg2] S=315 粒 [1, 2, 3, 4, 5, 8, …]: G₂′ 751 點 4043 邊 (刪 2221 邊), 21436 子句, 釘 (172,11,166)=(1,2,3), 反 pair 4 條, sha 1516417ea9ba4cee → /home/user/hadwiger/phase3e/runs/p3e1_step/r05a/rebuild/base.cnf\n",
+  "rebuilt_sha256": "1516417ea9ba4ceee78c6579b90827d7c026d77cd4cd6b3befc2c766f2ad3d2c",
+  "archived_sha256": "1516417ea9ba4ceee78c6579b90827d7c026d77cd4cd6b3befc2c766f2ad3d2c",
+  "match": true,
+  "n_remaining": 751,
+  "n_edges": 4043,
+  "graph_match": true,
+  "ok": true
+ },
+ "verify_final": {
+  "all_ok": true,
+  "leaf_reverify": {
+   "n": 16382,
+   "ok": 16382,
+   "n_bad": 0,
+   "wall_s": 9275.8,
+   "verify_cpu_s": 126391.7,
+   "mean_verify_s": 7.715,
+   "proof_total_gb": 128.119,
+   "proof_sha_sum_sha256": "63fe311ba124f41a1efab7fef74da87b6417b6cab73cd74f6e35fd59099b789b"
+  },
+  "cover": true,
+  "audit": true,
+  "l3_final_all_ok": true,
+  "spindle_B_ok": true,
+  "t_s": 10013.2,
+  "error": null
+ },
+ "crosscheck": {
+  "n_sampled": 819,
+  "ok": 819,
+  "n_bad": 0,
+  "all_ok": true,
+  "wall_s": 908.3,
+  "lrat_total_gb": 25.033,
+  "error": null
+ },
+ "col5": {
+  "all_ok": true,
+  "archived_ok": true,
+  "fresh_ok": true,
+  "edge_same": true
+ },
+ "verify_all_ok": true,
+ "record_candidate_confirmed": false,
+ "improved": true
+}

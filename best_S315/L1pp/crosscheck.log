@@ -1,0 +1,22 @@
+[23:56:52] crosscheck (cake_lpr): 抽 819/16382 個 leaf (frac 0.050, seed 20260908); base.cnf sha 1516417ea9ba4cee; keep /mnt/d/hadwiger/phase3e/keep/r05a
+[23:59:15]   100/819, ok 100, 143 s
+[00:00:56]   200/819, ok 200, 244 s
+[00:01:55]   300/819, ok 300, 302 s
+[00:03:14]   400/819, ok 400, 382 s
+[00:04:27]   500/819, ok 500, 454 s
+[00:04:47]   600/819, ok 600, 475 s
+[00:06:01]   700/819, ok 700, 549 s
+[00:08:12]   800/819, ok 800, 680 s
+[00:08:12]   819/819, ok 819, 680 s
+[00:08:12] crosscheck: 819/819 個 leaf 三個檢查器 (drat-trim VERIFIED + cake_lpr 's VERIFIED UNSAT' + lrat-check 'c VERIFIED') 全過; LRAT 共 25.0 GB; 680 s → /home/user/hadwiger/phase3e/runs/p3e1_step/r05a/crosscheck.json
+[04:07:09] crosscheck (cake_lpr): 抽 819/16382 個 leaf (frac 0.050, seed 20260908); base.cnf sha 1516417ea9ba4cee; keep /mnt/d/hadwiger/release_v1_1_staging/best_S315/L1pp/leaf_proofs
+[04:10:03]   100/819, ok 100, 174 s
+[04:12:19]   200/819, ok 200, 310 s
+[04:13:32]   300/819, ok 300, 383 s
+[04:15:26]   400/819, ok 400, 497 s
+[04:17:08]   500/819, ok 500, 600 s
+[04:17:35]   600/819, ok 600, 626 s
+[04:19:19]   700/819, ok 700, 730 s
+[04:22:17]   800/819, ok 800, 908 s
+[04:22:17]   819/819, ok 819, 908 s
+[04:22:17] crosscheck: 819/819 個 leaf 三個檢查器 (drat-trim VERIFIED + cake_lpr 's VERIFIED UNSAT' + lrat-check 'c VERIFIED') 全過; LRAT 共 25.0 GB; 908 s → /home/user/hadwiger/phase3e/runs/p3e1_step/r05a/crosscheck.json

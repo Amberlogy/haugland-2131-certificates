@@ -9,6 +9,10 @@ Everything claimed below is backed by a machine certificate that you can re-chec
 This repository is the small "GitHub layer" (< 100 MB). The full proof archive (28 GB, 14 786 leaf DRAT proofs) is the "Zenodo layer";
 its per-file sha256 fingerprints are in `SHA256SUMS.bundle` here, so the two layers are cryptographically tied.
 
+Release **v1.1** adds `best_S315/`: the same kind of certificate set for a **1501-vertex** Moser-spindle-free 5-chromatic unit-distance graph
+obtained by deleting 315 vertices from Haugland's G2. If you arrived here from a citation of the 1501-vertex graph, that directory is what you want
+(§9). The v1.0 material for the 2131-vertex graph is unchanged.
+
 Author of the certificates: **King Tat Wong** (independent researcher, ORCID [0009-0003-4009-3619](https://orcid.org/0009-0003-4009-3619)).
 Graph construction: Haugland (see citation; the author has confirmed that the reconstruction may be published with a citation of his preprint). Prepared 2026-09-05, revised 2026-09-06.
 
@@ -35,8 +39,13 @@ Certified statements (each with the certificate that establishes it):
 C2 + C3 give **χ(G3) = 5**; with C4, G3 is a Moser-spindle-free 5-chromatic unit-distance graph, as the paper states.
 
 **Not claimed** (no certificate exists for these, and we do not assert them): that G3 or G1 is vertex-critical or minimal; that any vertex can be
-deleted; any statement about graphs with fewer than 1441 vertices (the current spindle-free record, Heule 2021). See `CLAIM.md` (original, Cantonese)
-and `CLAIM_en.md` (English rendering).
+deleted from G3; that any graph released here is the smallest possible. See `CLAIM.md` (original, Cantonese) and `CLAIM_en.md` (English rendering).
+
+**Smaller graphs.** Release v1.1 adds `best_S315/`, a separate certificate set for a **1501-vertex** Moser-spindle-free 5-chromatic unit-distance
+graph G3′, obtained by deleting a certified set of 315 vertices from Haugland's G2. It is certified to the same standard as the 2131-vertex material
+above (χ = 5, spindle-free by two independent engines). **1501 > 1441, so it is not a record**: the smallest previously known such graph has 1441
+vertices (Heule, *Geombinatorics* 31(2), 2021, as cited in arXiv:2608.04542), and that graph is a bibliographic reference here — it was not
+re-verified. See §9 and `best_S315/README.md`.
 
 ### The certificate chain for C2
 
@@ -89,6 +98,7 @@ L3/       L3.cnf L3.drat L3.json           assembly certificate (drat-trim: s VE
 extra/    G3-5.col G3-5.json               5-colouring; spindle.cnf (the spindle-freeness CNF; its 2.6 GB DRAT is in the Zenodo layer)
 scripts/  haugland.py exactfield.py spindlefind.py chain.py certify4.py l1enc.py cnc2.py cubes.py liftall.py verify_bundle.py
           refs/appendixA_paths.json        the 231 lattice paths of the paper's Appendix A (input to haugland.py)
+best_S315/                                 v1.1 layer: the 1501-vertex graph G3' (its own README, RECORD_README, certificates, scripts) -- see §9
 rerun.sh                                   re-verification driver (quick layer / full layer)
 zenodo/                                    (only in the Zenodo record) hadwiger_G3_proof_bundle.tar.gz.part000..NNN, SHA256SUMS.volumes
 ```
@@ -214,8 +224,64 @@ re-split, and one sub-cube alone needed 561 s and a 480 MB proof. An 8-hour, 14-
 * GitHub layer (this repository, https://github.com/Amberlogy/haugland-2131-certificates): all inputs, CNFs, cube file, cover certificate, L2/L3 certificates, 5-colouring, scripts and fingerprints (< 100 MB).
 * Zenodo layer (full proof archive, 28 GB, 14 786 leaf proofs + spindle-freeness DRAT): DOI [10.5281/zenodo.22435778](https://doi.org/10.5281/zenodo.22435778).
   The archive's per-file sha256 values are in `SHA256SUMS.bundle` here, so either layer can be checked against the other.
+  That DOI is the *concept* DOI and always resolves to the latest version, so it covers the v1.1 material as well.
+* v1.1 (the 1501-vertex graph G3'): `best_S315/` in this repository, and the corresponding files in the Zenodo record. The 16 382 leaf DRAT proofs
+  of the v1.1 layer are **not** deposited — see §9 for why and for how to regenerate and check them.
 
 ## 8. License
 
 Code (`scripts/`, `rerun.sh`): MIT. Data and certificates (`inputs/`, `L1/`, `cubes/`, `L2/`, `L3/`, `extra/`, the Zenodo archive): CC BY 4.0.
 See `LICENSE`. The graph itself is Haugland's construction; please cite the paper.
+
+---
+
+## 9. v1.1 layer — the 1501-vertex graph (`best_S315/`)
+
+`best_S315/` certifies **G3' = G2' u rho(G2')**, where G2' is Haugland's G2 minus a certified removable set S of **315** vertices:
+
+| quantity | value |
+|---|---|
+| G2' | 751 vertices, 4043 edges |
+| **G3'** | **1501 vertices, 8088 edges** |
+| deleted set S | 315 vertices (`best_S315/S315.txt`) |
+| our previous certified graph | 1591 vertices |
+| smallest previously known spindle-free 5-chromatic UDG (Heule 2021, bibliographic; **not** re-verified here) | 1441 vertices |
+
+Certified, to the same standard as the v1.0 material: chi(G3') = 5 (no proper 4-colouring by cube-and-conquer over 16 382 cubes, plus an explicit
+proper 5-colouring checked edge by edge), and G3' contains no Moser spindle as a subgraph, by two independent engines (exact rhombus enumeration
+finding 0 copies; a SAT subgraph-monomorphism CNF that is UNSAT with a drat-trim VERIFIED proof).
+
+**1501 > 1441: this is not a record.** `best_S315/RECORD_README.md` is the archive's own record and is the authoritative description of every
+certificate and of how to check each one.
+
+### Release notes
+
+finalize3e ran twice: once on 2026-09-09 and again on 2026-09-10 from the
+archive, after a packaging bug was fixed. Each run drew an independent
+random 5% sample for the cake_lpr cross-check; both passed 819/819. The
+sample released here is the second run's, recorded in crosscheck.json.
+The leaf_proofs/audit/ directory in the working tree holds the first run's
+DRAT artefacts and is not part of this release.
+
+The complete set of 16382 leaf proofs (128.1 GB; ~61 GB with xz, ~79 GB
+with gzip) is not uploaded: both exceed Zenodo's 50 GB per-record limit.
+Every leaf proof is pinned by sha256 in L1pp/LEAF_INDEX.json, and
+reverify.sh regenerates and re-checks all of them from base.cnf and the
+cube file.
+
+One further file is present here only by fingerprint, because GitHub rejects files above 100 MB: the engine-B spindle-freeness proof
+`L2L3/l3_final/spindle_B/spindle.drat` (542 778 955 B, sha256 `97cf230e02827a4b18c860b5b0b6a6b046f35d432431c71533e776ed8faff4fe`; the copy under
+`L2L3/l3/` is byte-identical). The CNF it refutes is present, and engine A is independent of it. See `best_S315/README.md`.
+
+### Line endings — this also fixes v1.0
+
+v1.0 shipped without .gitattributes. On Windows, git's autocrlf converted
+the released text files to CRLF on checkout, which breaks
+`sha256sum -c SHA256SUMS` -- the filenames themselves are mangled. The
+blobs in the repository were always correct; only the checkout was
+affected, and Linux/WSL clones were unaffected. v1.1 adds .gitattributes,
+which fixes this retroactively for v1.0 as well.
+
+If you tried to verify v1.0 on Windows and it failed, that was this, not
+anything you did. Re-clone (or run `git checkout -- .` after pulling
+v1.1) and the check will pass.

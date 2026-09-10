@@ -1,0 +1,12 @@
+[G3″] S = 315 粒 G₂ 頂點刪走 → G₂′ 751 點 4043 邊; G₃′ = G₂′ ∪ ρ(G₂′) 1501 點 8088 邊 (G₃ 少咗 630 點 4442 邊)
+[complete G2p] ✓ [G2p.cvtx] 邊表 == 點集嘅完整單位距離圖 ✓ (4043 條)
+[complete G3p] ✓ [G3p.cvtx] 邊表 == 點集嘅完整單位距離圖 ✓ (8088 條)
+[L2″] identity: V(G₂′) ⊂ V(G₃′) (751 點 injective) ✓, E(G₂′) 4043/4043 映落 E(G₃′) ✓; ρ: 751 點 injective ✓, E(G₂′) 4043/4043 映落 E(G₃′) ✓; u′=#109 v′=#709 ρ(v)′=#1459; 邊 v′–ρ(v)′ ✓
+[L3″] G₃′ 4 色 CNF + 16 引理 (6004 變量 33872 子句, 釘 (1, 2, 93)): kissat UNSAT 0.01s; DRAT 1121 行; drat-trim s VERIFIED ✓
+[spindle A] G₃′ 1501 點 8088 邊: 菱形 510 個, Moser spindle copies = 0 ✓ (0.01s; 由 G₃ 遺傳, 照跑記錄)
+[spindle B] spindlefind both: rc=0 ✓
+   [B SAT] CNF 21007 變量 / 100546 子句 (symbreak=True)
+   [B SAT] kissat UNSAT 16.17s; DRAT 340498 行; drat-trim s VERIFIED ✓ (27.5s)
+   [B SAT] 證書: /home/user/hadwiger/phase3e/runs/p3e1_step/r05a/l3/spindle_B/spindle.cnf + /home/user/hadwiger/phase3e/runs/p3e1_step/r05a/l3/spindle_B/spindle.drat
+   [對數] 引擎 A (0 隻) 同引擎 B (UNSAT) 一致 ✓
+[l3g2] 全部通過 ✓: G₂′ 751 點, G₃′ 1501 點 8088 邊; 完整性 ✓/✓, L2″ ✓, L3″ UNSAT VERIFIED ✓, spindle A copies=0 (47.5s)

@@ -1,0 +1,93 @@
+[10:28:43] seed: 由 p3br1_shrink 接力 —— round_done 3, S_acc 90 粒 (|G₂′| 976, |G₃′| 1951), 最後 certified r03a (bundle sha 40753add51ed5ef4…, l3 all_ok True); Phase 3c 由 round 4 (r04a) 起計預算 400 CPU-h / 40 h wall
+[10:28:43] ===== round 4: S_acc 90 粒 + batch 30 粒 [224, 422, 262, 554, 148, 205, 66, 615, 974, 723, 135, 466, 394, 209, 642, 5, 773, 737, 226, 295, 282, 276, 413, 50, 396, 109, 859, 519, 967, 925] (排除 0 粒); 輪上限 3.50 h (預測 2.60 h); CPU 已用 0.0 / 400 CPU-h; wall 剩 40.0 h =====
+[10:28:43] [buildg2] S=120 粒 [2, 3, 4, 5, 15, 16, …]: G₂′ 946 點 5433 邊 (刪 831 邊), 28361 子句, 釘 (172,6,8)=(1,2,3), 反 pair 4 條, sha 7fc8253947ad5318 → /home/user/hadwiger/phase3c/runs/p3c1_shrink/r04a/base.cnf
+[10:28:55] r04a: march_cu -d 14 → 16365 個 cube (含 refuted leaves 17), 11.7 s
+[10:28:55] r04a: cnc2k 開始 (time-budget 12588 s, 硬殺 13500 s, keep-dir /mnt/d/hadwiger/phase3c/keep/r04a): --cnf /home/user/hadwiger/phase3c/runs/p3c1_shrink/r04a/base.cnf --icnf /home/user/hadwiger/phase3c/runs/p3c1_shrink/r04a/cubes_d14.icnf --out /home/user/hadwiger/phase3c/runs/p3c1_shrink/r04a/cnc_r04a --workers 14 --timeout 600.0 --solver kissat --proof-dir /dev/shm/p3c1_shrink --binary --time-budget 12588 --split-depth 3 --max-split 4 --audit-frac 0.05 --progress 120 --keep-dir /mnt/d/hadwiger/phase3c/keep/r04a
+[12:36:34] r04a: certified —— cube 16365, leaf 完成 16365, mean solve 3.33 s, mean solve+verify 5.99 s (L1 ×7.68, G₂recon ×1.36), wall 7671 s (2.13 h = 29.8 CPU-h), leaf 證明保留 16365/16365 (81.42 GB, 搬失敗 0)
+[12:36:39]   [G3″] S = 120 粒 G₂ 頂點刪走 → G₂′ 946 點 5433 邊; G₃′ = G₂′ ∪ ρ(G₂′) 1891 點 10868 邊 (G₃ 少咗 240 點 1662 邊)
+[12:36:39]   [complete G2p] ✓ [G2p.cvtx] 邊表 == 點集嘅完整單位距離圖 ✓ (5433 條)
+[12:36:39]   [complete G3p] ✓ [G3p.cvtx] 邊表 == 點集嘅完整單位距離圖 ✓ (10868 條)
+[12:36:39]   [L2″] identity: V(G₂′) ⊂ V(G₃′) (946 點 injective) ✓, E(G₂′) 5433/5433 映落 E(G₃′) ✓; ρ: 946 點 injective ✓, E(G₂′) 5433/5433 映落 E(G₃′) ✓; u′=#147 v′=#881 ρ(v)′=#1826; 邊 v′–ρ(v)′ ✓
+[12:36:39]   [L3″] G₃′ 4 色 CNF + 16 引理 (7564 變量 45382 子句, 釘 (1, 53, 55)): kissat UNSAT 0.01s; DRAT 1611 行; drat-trim s VERIFIED ✓
+[12:36:39]   [spindle A] G₃′ 1891 點 10868 邊: 菱形 744 個, Moser spindle copies = 0 ✓ (0.01s; 由 G₃ 遺傳, 照跑記錄)
+[12:36:39]   [l3g2] 全部通過 ✓: G₂′ 946 點, G₃′ 1891 點 10868 邊; 完整性 ✓/✓, L2″ ✓, L3″ UNSAT VERIFIED ✓, spindle A copies=0 (4.8s)
+[12:36:59] round 4 結算: certified; 淨剪 30 (S_acc 90 → 120, |G₂′| 946, |G₃′| 1891); B 集合 []; 下一輪排除 0 粒 (永久 []); 輪 wall 2.13 h; Phase 3c 用時 2.14 h; CPU 29.8 / 400 CPU-h; 連續低淨剪 0; keep ['r04a']
+[12:37:18] ===== round 5: S_acc 120 粒 + batch 30 粒 [304, 469, 784, 30, 744, 33, 932, 133, 499, 105, 44, 1, 340, 106, 603, 455, 531, 853, 708, 936, 840, 878, 20, 709, 817, 101, 286, 253, 824, 1055] (排除 0 粒); 輪上限 3.50 h (預測 2.45 h); CPU 已用 29.8 / 400 CPU-h; wall 剩 37.9 h =====
+[12:37:38] [buildg2] S=150 粒 [1, 2, 3, 4, 5, 15, …]: G₂′ 916 點 5210 邊 (刪 1054 邊), 27259 子句, 釘 (172,6,8)=(1,2,3), 反 pair 4 條, sha 58778fa23dbb88f9 → /home/user/hadwiger/phase3c/runs/p3c1_shrink/r05a/base.cnf
+[12:37:49] r05a: march_cu -d 14 → 16379 個 cube (含 refuted leaves 5), 10.7 s
+[12:38:32] r05a: cnc2k 開始 (time-budget 12549 s, 硬殺 13481 s, keep-dir /mnt/d/hadwiger/phase3c/keep/r05a): --cnf /home/user/hadwiger/phase3c/runs/p3c1_shrink/r05a/base.cnf --icnf /home/user/hadwiger/phase3c/runs/p3c1_shrink/r05a/cubes_d14.icnf --out /home/user/hadwiger/phase3c/runs/p3c1_shrink/r05a/cnc_r05a --workers 14 --timeout 600.0 --solver kissat --proof-dir /dev/shm/p3c1_shrink --binary --time-budget 12549 --split-depth 3 --max-split 4 --audit-frac 0.05 --progress 120 --keep-dir /mnt/d/hadwiger/phase3c/keep/r05a
+[14:58:42] r05a: certified —— cube 16379, leaf 完成 16379, mean solve 3.626 s, mean solve+verify 6.596 s (L1 ×8.46, G₂recon ×1.5), wall 8484 s (2.36 h = 33.0 CPU-h), leaf 證明保留 16379/16379 (88.6 GB, 搬失敗 0)
+[14:59:08]   [G3″] S = 150 粒 G₂ 頂點刪走 → G₂′ 916 點 5210 邊; G₃′ = G₂′ ∪ ρ(G₂′) 1831 點 10422 邊 (G₃ 少咗 300 點 2108 邊)
+[14:59:08]   [complete G2p] ✓ [G2p.cvtx] 邊表 == 點集嘅完整單位距離圖 ✓ (5210 條)
+[14:59:08]   [complete G3p] ✓ [G3p.cvtx] 邊表 == 點集嘅完整單位距離圖 ✓ (10422 條)
+[14:59:08]   [L2″] identity: V(G₂′) ⊂ V(G₃′) (916 點 injective) ✓, E(G₂′) 5210/5210 映落 E(G₃′) ✓; ρ: 916 點 injective ✓, E(G₂′) 5210/5210 映落 E(G₃′) ✓; u′=#138 v′=#852 ρ(v)′=#1767; 邊 v′–ρ(v)′ ✓
+[14:59:08]   [L3″] G₃′ 4 色 CNF + 16 引理 (7324 變量 43538 子句, 釘 (1, 2, 116)): kissat UNSAT 0.01s; DRAT 1379 行; drat-trim s VERIFIED ✓
+[14:59:08]   [spindle A] G₃′ 1831 點 10422 邊: 菱形 718 個, Moser spindle copies = 0 ✓ (0.01s; 由 G₃ 遺傳, 照跑記錄)
+[14:59:08]   [l3g2] 全部通過 ✓: G₂′ 916 點, G₃′ 1831 點 10422 邊; 完整性 ✓/✓, L2″ ✓, L3″ UNSAT VERIFIED ✓, spindle A copies=0 (4.5s)
+[15:00:01] 封存: r05a 已認證 ⇒ 刪上一輪 r04a 嘅 keep 目錄 /mnt/d/hadwiger/phase3c/keep/r04a (17183 檔, 81.42 GB)
+[15:00:11] round 5 結算: certified; 淨剪 30 (S_acc 120 → 150, |G₂′| 916, |G₃′| 1831); B 集合 []; 下一輪排除 0 粒 (永久 []); 輪 wall 2.38 h; Phase 3c 用時 4.52 h; CPU 62.8 / 400 CPU-h; 連續低淨剪 0; keep ['r05a']
+[15:00:32] ===== round 6: S_acc 150 粒 + batch 30 粒 [24, 231, 412, 71, 573, 941, 27, 791, 245, 395, 353, 1017, 526, 439, 397, 912, 270, 484, 130, 173, 992, 993, 8, 169, 695, 914, 168, 998, 1064, 478] (排除 0 粒); 輪上限 3.50 h (預測 2.71 h); CPU 已用 62.8 / 400 CPU-h; wall 剩 35.5 h =====
+[15:00:52] [buildg2] S=180 粒 [1, 2, 3, 4, 5, 8, …]: G₂′ 886 點 4987 邊 (刪 1277 邊), 26157 子句, 釘 (172,10,181)=(1,2,3), 反 pair 4 條, sha 8f7ab81eb855850a → /home/user/hadwiger/phase3c/runs/p3c1_shrink/r06a/base.cnf
+[15:01:01] r06a: march_cu -d 14 → 16384 個 cube (含 refuted leaves 0), 9.0 s
+[15:01:22] r06a: cnc2k 開始 (time-budget 12550 s, 硬殺 13480 s, keep-dir /mnt/d/hadwiger/phase3c/keep/r06a): --cnf /home/user/hadwiger/phase3c/runs/p3c1_shrink/r06a/base.cnf --icnf /home/user/hadwiger/phase3c/runs/p3c1_shrink/r06a/cubes_d14.icnf --out /home/user/hadwiger/phase3c/runs/p3c1_shrink/r06a/cnc_r06a --workers 14 --timeout 600.0 --solver kissat --proof-dir /dev/shm/p3c1_shrink --binary --time-budget 12550 --split-depth 3 --max-split 4 --audit-frac 0.05 --progress 120 --keep-dir /mnt/d/hadwiger/phase3c/keep/r06a
+[16:50:45] r06a: certified —— cube 16384, leaf 完成 16384, mean solve 2.93 s, mean solve+verify 5.128 s (L1 ×6.57, G₂recon ×1.17), wall 6613 s (1.84 h = 25.7 CPU-h), leaf 證明保留 16384/16384 (81.83 GB, 搬失敗 0)
+[16:51:10]   [G3″] S = 180 粒 G₂ 頂點刪走 → G₂′ 886 點 4987 邊; G₃′ = G₂′ ∪ ρ(G₂′) 1771 點 9976 邊 (G₃ 少咗 360 點 2554 邊)
+[16:51:10]   [complete G2p] ✓ [G2p.cvtx] 邊表 == 點集嘅完整單位距離圖 ✓ (4987 條)
+[16:51:10]   [complete G3p] ✓ [G3p.cvtx] 邊表 == 點集嘅完整單位距離圖 ✓ (9976 條)
+[16:51:10]   [L2″] identity: V(G₂′) ⊂ V(G₃′) (886 點 injective) ✓, E(G₂′) 4987/4987 映落 E(G₃′) ✓; ρ: 886 點 injective ✓, E(G₂′) 4987/4987 映落 E(G₃′) ✓; u′=#131 v′=#825 ρ(v)′=#1710; 邊 v′–ρ(v)′ ✓
+[16:51:10]   [L3″] G₃′ 4 色 CNF + 16 引理 (7084 變量 41694 子句, 釘 (1, 2, 111)): kissat UNSAT 0.01s; DRAT 1300 行; drat-trim s VERIFIED ✓
+[16:51:10]   [spindle A] G₃′ 1771 點 9976 邊: 菱形 646 個, Moser spindle copies = 0 ✓ (0.01s; 由 G₃ 遺傳, 照跑記錄)
+[16:51:10]   [l3g2] 全部通過 ✓: G₂′ 886 點, G₃′ 1771 點 9976 邊; 完整性 ✓/✓, L2″ ✓, L3″ UNSAT VERIFIED ✓, spindle A copies=0 (4.3s)
+[16:52:04] 封存: r06a 已認證 ⇒ 刪上一輪 r05a 嘅 keep 目錄 /mnt/d/hadwiger/phase3c/keep/r05a (17198 檔, 88.60 GB)
+[16:52:26] round 6 結算: certified; 淨剪 30 (S_acc 150 → 180, |G₂′| 886, |G₃′| 1771); B 集合 []; 下一輪排除 0 粒 (永久 []); 輪 wall 1.86 h; Phase 3c 用時 6.40 h; CPU 88.5 / 400 CPU-h; 連續低淨剪 0; keep ['r06a']
+[16:52:45] ===== round 7: S_acc 180 粒 + batch 30 粒 [516, 868, 118, 115, 258, 10, 999, 804, 487, 246, 1041, 1060, 549, 724, 1020, 188, 214, 869, 776, 131, 701, 702, 61, 948, 1033, 797, 846, 721, 1006, 190] (排除 0 粒); 輪上限 3.50 h (預測 2.11 h); CPU 已用 88.5 / 400 CPU-h; wall 剩 33.6 h =====
+[16:53:05] [buildg2] S=210 粒 [1, 2, 3, 4, 5, 8, …]: G₂′ 856 點 4771 邊 (刪 1493 邊), 25083 子句, 釘 (172,11,13)=(1,2,3), 反 pair 4 條, sha 93c11c4eb57e1ba6 → /home/user/hadwiger/phase3c/runs/p3c1_shrink/r07a/base.cnf
+[16:53:15] r07a: march_cu -d 14 → 16379 個 cube (含 refuted leaves 5), 10.2 s
+[16:53:34] r07a: cnc2k 開始 (time-budget 12550 s, 硬殺 13480 s, keep-dir /mnt/d/hadwiger/phase3c/keep/r07a): --cnf /home/user/hadwiger/phase3c/runs/p3c1_shrink/r07a/base.cnf --icnf /home/user/hadwiger/phase3c/runs/p3c1_shrink/r07a/cubes_d14.icnf --out /home/user/hadwiger/phase3c/runs/p3c1_shrink/r07a/cnc_r07a --workers 14 --timeout 600.0 --solver kissat --proof-dir /dev/shm/p3c1_shrink --binary --time-budget 12550 --split-depth 3 --max-split 4 --audit-frac 0.05 --progress 120 --keep-dir /mnt/d/hadwiger/phase3c/keep/r07a
+[19:45:41] r07a: certified —— cube 16379, leaf 完成 16379, mean solve 4.402 s, mean solve+verify 8.135 s (L1 ×10.43, G₂recon ×1.85), wall 10376 s (2.88 h = 40.4 CPU-h), leaf 證明保留 16379/16379 (106.74 GB, 搬失敗 0)
+[19:46:07]   [G3″] S = 210 粒 G₂ 頂點刪走 → G₂′ 856 點 4771 邊; G₃′ = G₂′ ∪ ρ(G₂′) 1711 點 9544 邊 (G₃ 少咗 420 點 2986 邊)
+[19:46:07]   [complete G2p] ✓ [G2p.cvtx] 邊表 == 點集嘅完整單位距離圖 ✓ (4771 條)
+[19:46:07]   [complete G3p] ✓ [G3p.cvtx] 邊表 == 點集嘅完整單位距離圖 ✓ (9544 條)
+[19:46:07]   [L2″] identity: V(G₂′) ⊂ V(G₃′) (856 點 injective) ✓, E(G₂′) 4771/4771 映落 E(G₃′) ✓; ρ: 856 點 injective ✓, E(G₂′) 4771/4771 映落 E(G₃′) ✓; u′=#126 v′=#801 ρ(v)′=#1656; 邊 v′–ρ(v)′ ✓
+[19:46:07]   [L3″] G₃′ 4 色 CNF + 16 引理 (6844 變量 39906 子句, 釘 (1, 2, 106)): kissat UNSAT 0.01s; DRAT 1261 行; drat-trim s VERIFIED ✓
+[19:46:07]   [spindle A] G₃′ 1711 點 9544 邊: 菱形 614 個, Moser spindle copies = 0 ✓ (0.01s; 由 G₃ 遺傳, 照跑記錄)
+[19:46:07]   [l3g2] 全部通過 ✓: G₂′ 856 點, G₃′ 1711 點 9544 邊; 完整性 ✓/✓, L2″ ✓, L3″ UNSAT VERIFIED ✓, spindle A copies=0 (4.2s)
+[19:46:59] 封存: r07a 已認證 ⇒ 刪上一輪 r06a 嘅 keep 目錄 /mnt/d/hadwiger/phase3c/keep/r06a (17203 檔, 81.83 GB)
+[19:47:19] round 7 結算: certified; 淨剪 30 (S_acc 180 → 210, |G₂′| 856, |G₃′| 1711); B 集合 []; 下一輪排除 0 粒 (永久 []); 輪 wall 2.90 h; Phase 3c 用時 9.31 h; CPU 128.9 / 400 CPU-h; 連續低淨剪 0; keep ['r07a']
+[19:47:40] ===== round 8: S_acc 210 粒 + batch 30 粒 [987, 601, 335, 1059, 1043, 898, 83, 903, 1047, 778, 84, 819, 985, 157, 1004, 865, 34, 837, 583, 428, 964, 753, 851, 427, 372, 1062, 582, 387, 543, 303] (排除 0 粒); 輪上限 3.50 h (預測 3.31 h); CPU 已用 128.9 / 400 CPU-h; wall 剩 30.7 h =====
+[19:48:01] [buildg2] S=240 粒 [1, 2, 3, 4, 5, 8, …]: G₂′ 826 點 4558 邊 (刪 1706 邊), 24021 子句, 釘 (172,11,13)=(1,2,3), 反 pair 4 條, sha 65096736d85c7dcf → /home/user/hadwiger/phase3c/runs/p3c1_shrink/r08a/base.cnf
+[19:48:11] r08a: march_cu -d 14 → 16378 個 cube (含 refuted leaves 6), 10.0 s
+[19:48:31] r08a: cnc2k 開始 (time-budget 12548 s, 硬殺 13479 s, keep-dir /mnt/d/hadwiger/phase3c/keep/r08a): --cnf /home/user/hadwiger/phase3c/runs/p3c1_shrink/r08a/base.cnf --icnf /home/user/hadwiger/phase3c/runs/p3c1_shrink/r08a/cubes_d14.icnf --out /home/user/hadwiger/phase3c/runs/p3c1_shrink/r08a/cnc_r08a --workers 14 --timeout 600.0 --solver kissat --proof-dir /dev/shm/p3c1_shrink --binary --time-budget 12548 --split-depth 3 --max-split 4 --audit-frac 0.05 --progress 120 --keep-dir /mnt/d/hadwiger/phase3c/keep/r08a
+[22:51:12] r08a: certified —— cube 16378, leaf 完成 16378, mean solve 4.587 s, mean solve+verify 8.568 s (L1 ×10.98, G₂recon ×1.95), wall 11012 s (3.06 h = 42.8 CPU-h), leaf 證明保留 16378/16378 (113.59 GB, 搬失敗 0)
+[22:51:37]   [G3″] S = 240 粒 G₂ 頂點刪走 → G₂′ 826 點 4558 邊; G₃′ = G₂′ ∪ ρ(G₂′) 1651 點 9118 邊 (G₃ 少咗 480 點 3412 邊)
+[22:51:37]   [complete G2p] ✓ [G2p.cvtx] 邊表 == 點集嘅完整單位距離圖 ✓ (4558 條)
+[22:51:37]   [complete G3p] ✓ [G3p.cvtx] 邊表 == 點集嘅完整單位距離圖 ✓ (9118 條)
+[22:51:37]   [L2″] identity: V(G₂′) ⊂ V(G₃′) (826 點 injective) ✓, E(G₂′) 4558/4558 映落 E(G₃′) ✓; ρ: 826 點 injective ✓, E(G₂′) 4558/4558 映落 E(G₃′) ✓; u′=#122 v′=#776 ρ(v)′=#1601; 邊 v′–ρ(v)′ ✓
+[22:51:37]   [L3″] G₃′ 4 色 CNF + 16 引理 (6604 變量 38142 子句, 釘 (1, 2, 103)): kissat UNSAT 0.01s; DRAT 1201 行; drat-trim s VERIFIED ✓
+[22:51:37]   [spindle A] G₃′ 1651 點 9118 邊: 菱形 568 個, Moser spindle copies = 0 ✓ (0.01s; 由 G₃ 遺傳, 照跑記錄)
+[22:51:37]   [l3g2] 全部通過 ✓: G₂′ 826 點, G₃′ 1651 點 9118 邊; 完整性 ✓/✓, L2″ ✓, L3″ UNSAT VERIFIED ✓, spindle A copies=0 (4.1s)
+[22:52:32] 封存: r08a 已認證 ⇒ 刪上一輪 r07a 嘅 keep 目錄 /mnt/d/hadwiger/phase3c/keep/r07a (17198 檔, 106.74 GB)
+[22:52:53] round 8 結算: certified; 淨剪 30 (S_acc 210 → 240, |G₂′| 826, |G₃′| 1651); B 集合 []; 下一輪排除 0 粒 (永久 []); 輪 wall 3.08 h; Phase 3c 用時 12.40 h; CPU 171.7 / 400 CPU-h; 連續低淨剪 0; keep ['r08a']
+[22:53:13] ===== round 9: S_acc 240 粒 + batch 30 粒 [156, 161, 1054, 921, 749, 405, 333, 296, 431, 929, 704, 839, 1057, 928, 581, 612, 152, 1007, 716, 563, 952, 21, 1026, 69, 271, 72, 953, 85, 365, 835] (排除 0 粒); 輪上限 3.50 h (預測 3.52 h); CPU 已用 171.7 / 400 CPU-h; wall 剩 27.6 h =====
+[22:53:34] [buildg2] S=270 粒 [1, 2, 3, 4, 5, 8, …]: G₂′ 796 點 4356 邊 (刪 1908 邊), 23003 子句, 釘 (172,11,13)=(1,2,3), 反 pair 4 條, sha f9acc9fe82981f39 → /home/user/hadwiger/phase3c/runs/p3c1_shrink/r09a/base.cnf
+[22:53:44] r09a: march_cu -d 14 → 16384 個 cube (含 refuted leaves 0), 10.0 s
+[22:54:05] r09a: cnc2k 開始 (time-budget 12549 s, 硬殺 13479 s, keep-dir /mnt/d/hadwiger/phase3c/keep/r09a): --cnf /home/user/hadwiger/phase3c/runs/p3c1_shrink/r09a/base.cnf --icnf /home/user/hadwiger/phase3c/runs/p3c1_shrink/r09a/cubes_d14.icnf --out /home/user/hadwiger/phase3c/runs/p3c1_shrink/r09a/cnc_r09a --workers 14 --timeout 600.0 --solver kissat --proof-dir /dev/shm/p3c1_shrink --binary --time-budget 12548 --split-depth 3 --max-split 4 --audit-frac 0.05 --progress 120 --keep-dir /mnt/d/hadwiger/phase3c/keep/r09a
+[02:32:29] r09a: certified —— cube 16384, leaf 完成 16384, mean solve 5.506 s, mean solve+verify 10.382 s (L1 ×13.31, G₂recon ×2.36), wall 13155 s (3.65 h = 51.2 CPU-h), leaf 證明保留 16384/16384 (124.93 GB, 搬失敗 0)
+[02:32:59]   [G3″] S = 270 粒 G₂ 頂點刪走 → G₂′ 796 點 4356 邊; G₃′ = G₂′ ∪ ρ(G₂′) 1591 點 8714 邊 (G₃ 少咗 540 點 3816 邊)
+[02:32:59]   [complete G2p] ✓ [G2p.cvtx] 邊表 == 點集嘅完整單位距離圖 ✓ (4356 條)
+[02:32:59]   [complete G3p] ✓ [G3p.cvtx] 邊表 == 點集嘅完整單位距離圖 ✓ (8714 條)
+[02:32:59]   [L2″] identity: V(G₂′) ⊂ V(G₃′) (796 點 injective) ✓, E(G₂′) 4356/4356 映落 E(G₃′) ✓; ρ: 796 點 injective ✓, E(G₂′) 4356/4356 映落 E(G₃′) ✓; u′=#115 v′=#750 ρ(v)′=#1545; 邊 v′–ρ(v)′ ✓
+[02:32:59]   [L3″] G₃′ 4 色 CNF + 16 引理 (6364 變量 36466 子句, 釘 (1, 2, 99)): kissat UNSAT 0.01s; DRAT 1154 行; drat-trim s VERIFIED ✓
+[02:32:59]   [spindle A] G₃′ 1591 點 8714 邊: 菱形 542 個, Moser spindle copies = 0 ✓ (0.01s; 由 G₃ 遺傳, 照跑記錄)
+[02:32:59]   [l3g2] 全部通過 ✓: G₂′ 796 點, G₃′ 1591 點 8714 邊; 完整性 ✓/✓, L2″ ✓, L3″ UNSAT VERIFIED ✓, spindle A copies=0 (3.9s)
+[02:34:04] 封存: r09a 已認證 ⇒ 刪上一輪 r08a 嘅 keep 目錄 /mnt/d/hadwiger/phase3c/keep/r08a (17197 檔, 113.59 GB)
+[02:34:30] round 9 結算: certified; 淨剪 30 (S_acc 240 → 270, |G₂′| 796, |G₃′| 1591); B 集合 []; 下一輪排除 0 粒 (永久 []); 輪 wall 3.68 h; Phase 3c 用時 16.10 h; CPU 222.9 / 400 CPU-h; 連續低淨剪 0; keep ['r09a']
+[02:34:54] ===== round 10: S_acc 270 粒 + batch 30 粒 [901, 890, 759, 384, 564, 415, 713, 942, 1050, 73, 463, 590, 794, 79, 468, 13, 1014, 1063, 809, 38, 26, 511, 317, 799, 940, 566, 81, 792, 771, 382] (排除 0 粒); 輪上限 3.50 h (預測 4.20 h); CPU 已用 222.9 / 400 CPU-h; wall 剩 23.9 h =====
+[02:35:17] [buildg2] S=300 粒 [1, 2, 3, 4, 5, 8, …]: G₂′ 766 點 4150 邊 (刪 2114 邊), 21969 子句, 釘 (172,11,166)=(1,2,3), 反 pair 4 條, sha 024f7154ef260335 → /home/user/hadwiger/phase3c/runs/p3c1_shrink/r10a/base.cnf
+[02:35:27] r10a: march_cu -d 14 → 16384 個 cube (含 refuted leaves 0), 9.7 s
+[02:35:50] r10a: cnc2k 開始 (time-budget 12543 s, 硬殺 13476 s, keep-dir /mnt/d/hadwiger/phase3c/keep/r10a): --cnf /home/user/hadwiger/phase3c/runs/p3c1_shrink/r10a/base.cnf --icnf /home/user/hadwiger/phase3c/runs/p3c1_shrink/r10a/cubes_d14.icnf --out /home/user/hadwiger/phase3c/runs/p3c1_shrink/r10a/cnc_r10a --workers 14 --timeout 600.0 --solver kissat --proof-dir /dev/shm/p3c1_shrink --binary --time-budget 12543 --split-depth 3 --max-split 4 --audit-frac 0.05 --progress 120 --keep-dir /mnt/d/hadwiger/phase3c/keep/r10a
+[06:05:02] r10a: budget-stop —— cube 16384, leaf 完成 15698, mean solve 5.727 s, mean solve+verify 10.94 s (L1 ×14.03, G₂recon ×2.49), wall 12609 s (3.50 h = 49.0 CPU-h), 未完: 估計仲要 0.15 h
+[06:05:33] r10a: 唔係 certified, 刪 keep 目錄 /mnt/d/hadwiger/phase3c/keep/r10a (15698 檔, 115.59 GB)
+[06:06:26] round 10 結算: cap-hit; 淨剪 0 (S_acc 270 → 270, |G₂′| 796, |G₃′| 1591); B 集合 []; 下一輪排除 0 粒 (永久 []); 輪 wall 3.53 h; Phase 3c 用時 19.63 h; CPU 271.9 / 400 CPU-h; 連續低淨剪 1; keep ['r09a']
+[06:06:47] 完場外推 (hardness_g2, 資訊): STOP —— 有證書超輪上限未完: [('r10a', 'budget-stop', 'leaf 15698/16384')]
+[06:07:10] PROBE3C DONE: round 10 第 1 張證書超 3.50 h 輪上限未完 (budget-stop: leaf 15698/16384, 估計仲要 0.15 h) —— 停, 之後只會更難

@@ -1,0 +1,658 @@
+--- phase3d/finalize3d.py
++++ phase3e/finalize3e.py
+@@ -1,7 +1,8 @@
+ #!/usr/bin/env python3
+ # -*- coding: utf-8 -*-
+ """
+-finalize3d.py —— Phase 3d 收爐 / RECORD 程序 (probe3d 停機之後自動跑; 幂等, 可重跑):
++finalize3e.py —— Phase 3e 收爐 / RECORD 程序 (probe3e 停機之後自動跑; 幂等, 可重跑)
++  **機械生成**: 由 phase3d/finalize3d.py 經 phase3e/make_finalize3e.py 改名 + 加「輪」帳而成; diff 喺 phase3e/finalize3e.diff。唔好手改呢個檔, 改 make_finalize3e.py 再生成。
+   1. 搵最終認證圖 (state.best: certified + l3_ok + col5_ok 嘅嘗試)
+   2. 獨立重驗 (由碟上檔案出發, 唔信戰役結果):
+      (a) verify_final.py —— **全部** leaf 證明重跑 drat-trim (唔抽樣) + cnf/proof sha 對數 + cover 子句重建 + 審計證明 + l3g2 --engine-b 重跑 + exactfield --complete
+@@ -10,16 +11,18 @@
+   3. 封存 → /mnt/d/hadwiger/release_v1_1_staging/record/ (|G₃′| < 1441) 或者 best_S<n>/ (有進步但未到);
+      leaf 證明由 keep 目錄 rename 過去 (同一隻碟), SHA256SUMS 逐檔, RECORD_README.md (英文), reverify.sh; Windows 鏡像唔含 leaf 證明
+   4. RECORD_CANDIDATE.md + status RECORD_CANDIDATE —— **只有喺 (a)(b)(c) 全部通過而且 |G₃′| < 1441 先寫**; 否則寫 VERIFY_FAILED.md / RECORD_CANDIDATE_BLOCKED.md
+-  5. 每輪細檔 → ~/hadwiger/release_v1_1_staging/reduction/phase3d_G2_final/ + 報告 phase3d_results.md + facts.json (g2shrink3d.*) + DECISION.md 路線 A + MEMORY
++  5. 每輪細檔 → ~/hadwiger/release_v1_1_staging/reduction/phase3e_G2_final/ + 報告 phase3e_results.md + facts.json (g2shrink3e.*) + DECISION.md 路線 A + MEMORY
+   唔准公開: 冇 git push, 冇 Zenodo, 冇 email.
+-用法: python3 finalize3d.py --run ~/hadwiger/phase3d/runs/p3d1_final [--workers 14] [--dry-run] [--force-verify] [--frac 0.05]
++用法: python3 finalize3e.py --run ~/hadwiger/phase3e/runs/p3e1_step [--workers 14] [--dry-run] [--force-verify] [--frac 0.05]
+ """
+ import sys, os, json, time, argparse, subprocess, shutil, hashlib, glob, re
+ from concurrent.futures import ThreadPoolExecutor
+ if not __debug__:
+     sys.exit("!! 唔准用 python -O")
+ PH2 = os.path.expanduser("~/hadwiger/phase2"); PH2B = os.path.expanduser("~/hadwiger/phase2b")
+-PH3B = os.path.expanduser("~/hadwiger/phase3b"); PH3C = os.path.expanduser("~/hadwiger/phase3c"); PH3D = os.path.expanduser("~/hadwiger/phase3d")
++PH3B = os.path.expanduser("~/hadwiger/phase3b"); PH3C = os.path.expanduser("~/hadwiger/phase3c")
++PH3D = os.path.expanduser("~/hadwiger/phase3d")     # crosscheck3d.py + probe3e 繼承嘅 probe3d.py 都喺呢度 (封存源碼要抄埋)
++PH3E = os.path.expanduser("~/hadwiger/phase3e")
+ ARCH_ROOT = "/mnt/d/hadwiger/release_v1_1_staging"
+ STAGE = os.path.expanduser("~/hadwiger/release_v1_1_staging/reduction")
+ WIN = "/mnt/c/Users/user/Desktop/spindle"
+@@ -73,11 +76,56 @@
+             E.append((int(t[1]), int(t[2])))
+     return n, E
+ 
++
++# ---------------- Phase 3e 加: 擋路集分析 (Amber 要嘅「雷區密度隨深度點變」) ----------------
++N_G2 = 1066                      # |V(G₂)| (phase3b/g2common.py G2().n); |G₂′| = N_G2 − |S|
++
++
++def phase3d_B_sets():
++    """Phase 3d 一刀剪 80 (|S| = 350) 嗰三個擋路集, 用嚟同 Phase 3e 對照。讀唔到就當冇。"""
++    try:
++        return json.load(open(os.path.join(PH3D, "runs", "p3d1_final", "state.json"))).get("B_sets") or []
++    except Exception:
++        return []
++
++
++def b_analysis(B_sets, prev_sets=None):
++    """每個擋路集嘅大小 + 兩兩重疊 (交集 / Jaccard) + 同 Phase 3d 三個 B 嘅重疊。純函數, 冇 solver, 冇 I/O。"""
++    S = [{"round": b.get("round"), "tag": b.get("tag"), "step": b.get("step"), "S_size": b.get("S_size"),
++          "G2p": (N_G2 - b["S_size"]) if b.get("S_size") else None,
++          "size": b.get("size") if b.get("size") is not None else len(b.get("B") or []),
++          "in_S_acc": len(b.get("B_in_S_acc") or []), "in_batch": len(b.get("B_in_batch") or []),
++          "B": sorted(b.get("B") or [])} for b in (B_sets or [])]
++    pw = []
++    for i in range(len(S)):
++        for j in range(i + 1, len(S)):
++            a, c = set(S[i]["B"]), set(S[j]["B"])
++            pw.append({"a": S[i]["tag"], "b": S[j]["tag"], "inter": len(a & c), "union": len(a | c),
++                       "jaccard": (round(len(a & c) / len(a | c), 4) if (a | c) else None)})
++    vs = []
++    for b in (prev_sets or []):
++        pb = set(b.get("B") or [])
++        for x in S:
++            a = set(x["B"])
++            vs.append({"phase3e": x["tag"], "phase3d": b.get("tag"), "inter": len(a & pb),
++                       "jaccard": (round(len(a & pb) / len(a | pb), 4) if (a | pb) else None)})
++    u = set().union(*[set(x["B"]) for x in S]) if S else set()
++    pu = set().union(*[set(b.get("B") or []) for b in (prev_sets or [])]) if prev_sets else set()
++    return {"n": len(S), "mean_size": (round(sum(x["size"] for x in S) / len(S), 2) if S else None),
++            "by_set": S, "pairwise": pw, "vs_phase3d": vs,
++            "union_size": len(u), "union": sorted(u),
++            "phase3d_n": len(prev_sets or []), "phase3d_union_size": len(pu),
++            "inter_with_phase3d_union": len(u & pu),
++            "note": "|B| = minimal blocking subset found by witness_g2 greedy put-back; each has an edge-checked 4-colouring of G2 - B with col(u) != col(v). Jaccard = |A n B| / |A u B|."}
++
++
+ class Fin:
+     def __init__(self, a):
+         self.a = a; self.rdir = os.path.abspath(os.path.expanduser(a.run)); self.rid = os.path.basename(self.rdir)
+         self.st = json.load(open(os.path.join(self.rdir, "state.json")))
+         self.attempts = json.load(open(os.path.join(self.rdir, "attempts.json"))) if os.path.exists(os.path.join(self.rdir, "attempts.json")) else []
++        rp = os.path.join(self.rdir, "rounds.json")                                       # Phase 3e: 輪; 未結算嘅尾巴輪 (round > round_done) 唔算
++        self.rounds = [r for r in (json.load(open(rp)) if os.path.exists(rp) else []) if (r.get("round") or 0) <= (self.st.get("round_done") or 0)]
+         self.fs_p = os.path.join(self.rdir, "finalize_status.json")
+         self.fs = json.load(open(self.fs_p)) if os.path.exists(self.fs_p) else {"started": time.strftime("%Y-%m-%d %H:%M:%S")}
+         self.fs["stage"] = "start"; self.fs["done"] = False; self.save()
+@@ -86,10 +134,10 @@
+         if not self.st.get("finished"):
+             tail = ""
+             try:
+-                tail = " | ".join([l.strip() for l in open(os.path.join(self.rdir, "probe3d.log"), errors="ignore").read().splitlines() if l.strip()][-3:])[:600]
++                tail = " | ".join([l.strip() for l in open(os.path.join(self.rdir, "probe3e.log"), errors="ignore").read().splitlines() if l.strip()][-3:])[:600]
+             except Exception:
+                 pass
+-            self.st["stop_reason"] = "!! probe3d 未正常結束 (state.finished 冇): %s || probe3d.log 尾: %s" % (self.st.get("stop_reason"), tail)
++            self.st["stop_reason"] = "!! probe3e 未正常結束 (state.finished 冇): %s || probe3e.log 尾: %s" % (self.st.get("stop_reason"), tail)
+             self.fs["probe_unfinished"] = True; log(self.st["stop_reason"])
+ 
+     def save(self, **kw):
+@@ -99,7 +147,7 @@
+     def step(self, msg):
+         self.fs["stage"] = msg; self.save(); log(msg)
+         try:
+-            open(os.path.join(PH3D, "STEP.txt"), "w").write("Phase 3d 收爐 (finalize3d): " + msg)
++            open(os.path.join(PH3E, "STEP.txt"), "w").write("Phase 3e 收爐 (finalize3e): " + msg)
+         except Exception:
+             pass
+ 
+@@ -116,7 +164,7 @@
+     # ---------------- 1. 最終認證圖 ----------------
+     def final_attempt(self):
+         best = self.st.get("best")
+-        assert best, "!! state.best 冇 —— probe3d 冇拎到新證書 (stop: %s); 冇嘢好封存" % self.st.get("stop_reason")
++        assert best, "!! state.best 冇 —— probe3e 冇拎到新證書 (stop: %s); 冇嘢好封存" % self.st.get("stop_reason")
+         cand = [x for x in self.attempts if x["tag"] == best["tag"] and x.get("status") == "certified" and x.get("l3_ok") is True and x.get("col5_ok") is True]
+         assert cand, "!! attempts.json 搵唔到 %s 嘅 certified + l3_ok + col5_ok 記錄" % best["tag"]
+         x = cand[-1]; d = x.get("dir") or os.path.join(self.rdir, x["tag"])
+@@ -324,7 +372,7 @@
+             for f in glob.glob(os.path.join(d, sub, "*")):
+                 if os.path.isfile(f):
+                     cp(f, os.path.join(F, "COL5", sub))
+-        for f in ("state.json", "attempts.json", "ledger_g2.md", "status.json", "probe3d.log", "finalize_status.json"):
++        for f in ("state.json", "attempts.json", "rounds.json", "ledger_g2.md", "status.json", "probe3e.log", "finalize_status.json"):
+             cp(os.path.join(self.rdir, f), os.path.join(F, "run"))
+         for f in ("batches_g2.json", "batches_g2.md"):
+             cp(os.path.join(PH3B, f), os.path.join(F, "run"))
+@@ -332,7 +380,7 @@
+         if seed.get("run_dir"):
+             for f in ("state.json", "rounds.json", "ledger_g2.md", "probe3c.log"):
+                 cp(os.path.join(seed["run_dir"], f), os.path.join(F, "run", "seed_" + seed.get("run_id", "phase3c")))
+-        for sub, src in (("phase3d", PH3D), ("phase3c", PH3C), ("phase3b", PH3B)):
++        for sub, src in (("phase3e", PH3E), ("phase3d", PH3D), ("phase3c", PH3C), ("phase3b", PH3B)):
+             for f in glob.glob(os.path.join(src, "*.py")) + glob.glob(os.path.join(src, "*.sh")) + glob.glob(os.path.join(src, "*.diff")):
+                 cp(f, os.path.join(F, "scripts", sub))
+         for f in ("cnc2.py", "cubes.py", "crosscheck_cakelpr.py"):
+@@ -342,7 +390,7 @@
+         self.write_reverify(F, fa)
+         self.write_readme(F, fa, vres, xres, c5, n_leaf, n_aud)
+         for stale in ("RECORD_CANDIDATE.md", "RECORD_CANDIDATE_BLOCKED.md", "VERIFY_FAILED.md"):    # 審查: 封存目錄以外嘅副本都要清, 免得舊判斷留低誤導
+-            for base_ in (F, PH3D, os.path.join(WIN, "phase3d")):
++            for base_ in (F, PH3E, os.path.join(WIN, "phase3e")):
+                 p_ = os.path.join(base_, stale)
+                 if os.path.exists(p_):
+                     os.remove(p_)
+@@ -354,15 +402,15 @@
+                 self.now, vres.get("all_ok"), vres.get("error"), json.dumps({k: v for k, v in lr_.items() if k != "bad"}, default=str), json.dumps(lr_.get("bad"), default=str)[:3000],
+                 json.dumps(vres.get("cover_reverify"), default=str), json.dumps(vres.get("audit_reverify"), default=str)[:1500],
+                 json.dumps(vres.get("l3_final"), default=str)[:2000], json.dumps({k: v for k, v in (xres or {}).items() if k != "records"}, default=str)[:2000], json.dumps(c5, default=str)[:2000])
+-            for p_ in (os.path.join(F, "VERIFY_FAILED.md"), os.path.join(PH3D, "VERIFY_FAILED.md"), os.path.join(WIN, "phase3d", "VERIFY_FAILED.md")):
++            for p_ in (os.path.join(F, "VERIFY_FAILED.md"), os.path.join(PH3E, "VERIFY_FAILED.md"), os.path.join(WIN, "phase3e", "VERIFY_FAILED.md")):
+                 write(p_, txt)
+         if self.rec_ok:
+             rec_md = self.write_record_candidate(F, fa, vres, xres, c5)
+         elif fa["G3p_n"] < RECORD_G3P:
+-            txt = ("# RECORD_CANDIDATE_BLOCKED.md (%s)\n\nprobe3d reached |G3'| = %d < %d, but the independent re-verification did NOT pass "
++            txt = ("# RECORD_CANDIDATE_BLOCKED.md (%s)\n\nprobe3e reached |G3'| = %d < %d, but the independent re-verification did NOT pass "
+                    "(verify_final all_ok = %s, cake_lpr crosscheck all_ok = %s, 5-colouring all_ok = %s). NOT a record candidate until re-verified. See VERIFY_FAILED.md.\n") % (
+                 self.now, fa["G3p_n"], RECORD_G3P, vres.get("all_ok"), (xres or {}).get("all_ok"), (c5 or {}).get("all_ok"))
+-            for p_ in (os.path.join(F, "RECORD_CANDIDATE_BLOCKED.md"), os.path.join(PH3D, "RECORD_CANDIDATE_BLOCKED.md"), os.path.join(WIN, "phase3d", "RECORD_CANDIDATE_BLOCKED.md")):
++            for p_ in (os.path.join(F, "RECORD_CANDIDATE_BLOCKED.md"), os.path.join(PH3E, "RECORD_CANDIDATE_BLOCKED.md"), os.path.join(WIN, "phase3e", "RECORD_CANDIDATE_BLOCKED.md")):
+                 write(p_, txt)
+         self.step("SHA256SUMS (%s, 逐檔, %d threads; 約 %d 個檔)" % (F, self.W, n_leaf + 200))
+         ss = shasums(F, self.W)
+@@ -406,7 +454,7 @@
+         S = ",".join(map(str, fa["S"])); tag = fa["tag"]
+         txt = """#!/bin/bash
+ # reverify.sh — independent re-verification of this archived certificate set.
+-# Needs the v1.0 tool environment: ~/hadwiger/{phase2,phase2b,phase3b,phase3c,phase3d}, kissat, drat-trim, march_cu, cake_lpr; python venv ~/hadwiger/venv.
++# Needs the v1.0 tool environment: ~/hadwiger/{phase2,phase2b,phase3b,phase3c,phase3d,phase3e}, kissat, drat-trim, march_cu, cake_lpr; python venv ~/hadwiger/venv.
+ # Wall-clock on 14 threads: ~3 h (step 3 dominates: every one of the %d leaf proofs is re-checked).
+ set -u
+ cd "$(dirname "$0")"
+@@ -449,7 +497,7 @@
+ rm -rf "$T"
+ if [ "$RC" = "0" ]; then echo "REVERIFY DONE: ALL CHECKS PASSED $(date)"; else echo "REVERIFY DONE: !! SOME CHECKS FAILED $(date)"; fi
+ exit $RC
+-""" % (S, fa["leaves"], tag, tag, S)
++""" % (fa["leaves"], S, fa["leaves"], tag, tag, S)
+         write(os.path.join(F, "reverify.sh"), txt)
+ 
+     def write_readme(self, F, fa, vres, xres, c5, n_leaf, n_aud):
+@@ -463,7 +511,7 @@
+                 ("# RECORD_README.md — %d-vertex graph, independent re-verification FAILED (EVIDENCE ONLY, see VERIFY_FAILED.md)" % G3n) if not vok else
+                 ("# RECORD_README.md — improved Moser-spindle-free 5-chromatic unit-distance graph on %d vertices (not a record; **NOT released**)" % G3n))
+         L = [title, "",
+-             ("Archived %s by `scripts/phase3d/finalize3d.py` (run `%s`, certificate `%s`, seeded from Phase 3c `%s` %s). Author of the project: King Tat Wong (Amber). "
++             ("Archived %s by `scripts/phase3e/finalize3e.py` (run `%s`, certificate `%s`, seeded from Phase 3c `%s` %s). Author of the project: King Tat Wong (Amber). "
+               "Every statement below is backed by a machine certificate in this directory and was re-verified from those files at archive time%s." % (
+                  self.now, self.rid, fa["tag"], (self.st.get("seed") or {}).get("run_id"), (self.st.get("seed") or {}).get("last_certified_tag"),
+                  " (`L1pp/verify_final.json`, `L1pp/crosscheck.json`, `L1pp/col5_check.json`: all_ok = true)" if vok else
+@@ -503,7 +551,9 @@
+              "* Seed: Phase 3c run `%s`, certificate `%s` (S_acc = %s vertices, |G2′| = %s, |G3′| = %s; its own full archive with all leaf proofs is in `../final/`)." % (
+                  (self.st.get("seed") or {}).get("run_id"), (self.st.get("seed") or {}).get("last_certified_tag"),
+                  (1066 - ((self.st.get("seed") or {}).get("G2p_n") or 0)) or "?", (self.st.get("seed") or {}).get("G2p_n"), (self.st.get("seed") or {}).get("G3p_n")),
+-             "* Phase 3d cut %d further G2 vertices in one shot (candidate order: G2 degree ascending, |Im z| descending, index ascending; protected set P2 = {172, 187, 646, 994} never touched)." % (len(fa["S"]) - 270),
++             "* Phase 3e cut %d further G2 vertices in %d certified rounds of %s (candidate order: G2 degree ascending, |Im z| descending, index ascending; protected set P2 = {172, 187, 646, 994} never touched)." % (
++                 len(fa["S"]) - 270, len([r for r in self.rounds if r.get("status") == "certified"]),
++                 "/".join(str(r.get("step")) for r in self.rounds if r.get("status") == "certified") or "?"),
+              "* Attempts: %s. Budget: %.1f / %.0f CPU-h (Σ certificate wall-clock × %d workers), %.2f / %.0f h wall-clock; per-certificate cap 8 h + up to 1 h automatic extension when the run was nearly finished." % (
+                  [(x["tag"], x["status"], round((x.get("wall_s") or 0) / 3600, 2)) for x in self.attempts], self.st.get("cpu_h_used") or 0, (self.st.get("config") or {}).get("cpu_cap_h", 160), self.W, (self.st.get("elapsed_s") or 0) / 3600, (self.st.get("config") or {}).get("total_cap", 86400) / 3600),
+              "* Solver / checkers (same binaries as v1.0; sha256 in `L1pp/cnc_%s/bundle.json` → `tools`): kissat (proofs), drat-trim (checking), march_cu (cube-and-conquer split), cake_lpr + lrat-check (cross-check). `scripts/phase3c/cnc2k.py` = the audited v1.0 `cnc2.py` plus `--keep-dir` (leaf proofs are kept instead of deleted); the diff is `scripts/phase3c/cnc2k.diff`." % fa["tag"],
+@@ -532,7 +582,7 @@
+             p = os.path.join(fa["dir"], "col5", f)
+             if os.path.exists(p):
+                 shas["COL5/col5/" + f] = sha(p)
+-        L = ["# RECORD_CANDIDATE.md —— |G₃′| = %d < %d (Phase 3d, %s)" % (G3n, RECORD_G3P, self.now), "",
++        L = ["# RECORD_CANDIDATE.md —— |G₃′| = %d < %d (Phase 3e, %s)" % (G3n, RECORD_G3P, self.now), "",
+              "## 廣東話摘要 (俾 Amber)", "",
+              "- **圖**: G₃′ = (G₂ − S) ∪ ρ(G₂ − S), **%d 點 %d 邊**, 平面單位距離圖, **冇 Moser spindle**(兩個引擎), **5 色可染**(逐邊覆核), **機器證書話唔可以 4 色** ⇒ χ(G₃′) = 5." % (G3n, G3m),
+              "- **紀錄**: 我哋上一個已認證圖係 %d 點 (Phase 3c); 文獻已知最細嘅無-spindle 5-chromatic UDG 係 %d 點 (Amber 提供嘅數, 我哋冇獨立重驗過)。而今 **%d < %d**." % (PREV_G3P, RECORD_G3P, G3n, RECORD_G3P),
+@@ -554,16 +604,16 @@
+                  fa["tag"], cb["cover_mode"], fa["tag"], cb["cover_mode"]), "",
+              "Status: **RECORD_CANDIDATE — waiting for Amber (K. T. Wong).** Not published, not e-mailed, not pushed, no Zenodo version."]
+         p = os.path.join(F, "RECORD_CANDIDATE.md"); write(p, "\n".join(L) + "\n")
+-        cp(p, PH3D); cp(p, os.path.join(WIN, "phase3d"))
++        cp(p, PH3E); cp(p, os.path.join(WIN, "phase3e"))
+         return p
+ 
+-    # ---------------- 4. reduction/phase3d_G2_final ----------------
++    # ---------------- 4. reduction/phase3e_G2_final ----------------
+     def stage_small(self):
+-        self.step("封存細檔 → %s/phase3d_G2_final (+ 重算 reduction/SHA256SUMS)" % STAGE)
++        self.step("封存細檔 → %s/phase3e_G2_final (+ 重算 reduction/SHA256SUMS)" % STAGE)
+         if self.a.dry_run:
+             return {"dry_run": True}
+-        D = os.path.join(STAGE, "phase3d_G2_final")
+-        for f in ("state.json", "attempts.json", "ledger_g2.md", "status.json", "probe3d.log", "finalize_status.json"):
++        D = os.path.join(STAGE, "phase3e_G2_final")
++        for f in ("state.json", "attempts.json", "rounds.json", "ledger_g2.md", "status.json", "probe3e.log", "finalize_status.json"):
+             cp(os.path.join(self.rdir, f), D)
+         for x in self.attempts:
+             tag = x["tag"]; sd = x.get("dir") or os.path.join(self.rdir, tag); dd = os.path.join(D, tag)
+@@ -582,15 +632,18 @@
+                     cp(f, os.path.join(dd, sub, "spindle_B"))
+             for f in glob.glob(os.path.join(sd, "witness", "*")):
+                 cp(f, os.path.join(dd, "witness"))
+-        for f in glob.glob(os.path.join(PH3D, "*.py")) + glob.glob(os.path.join(PH3D, "*.sh")):
+-            cp(f, os.path.join(STAGE, "scripts", "phase3d"))
++        for f in glob.glob(os.path.join(PH3E, "*.py")) + glob.glob(os.path.join(PH3E, "*.sh")):
++            cp(f, os.path.join(STAGE, "scripts", "phase3e"))
+         best = self.st.get("best") or {}
+-        L = ["# PHASE3D_README.md — Phase 3d: the last cut (run %s; staged %s; NOT released)" % (self.rid, self.now), "",
+-             "Same certificate types as `../REDUCTION_README.md` §A (L1″ cube-and-conquer bundle, L2″/L3″ assembly, blocking colourings), continuing Phase 3c. "
+-             "Difference: **one cut of %d vertices instead of several rounds of 30** (a certificate costs the same whether we delete 30 or 80 — march_cu always splits into ~16 384 cubes), "
+-             "per-certificate cap 8 h + up to 1 h automatic extension when a run is nearly finished, at most 3 certificates (a/b/c). "
++        L = ["# PHASE3E_README.md — Phase 3e: the last cut (run %s; staged %s; NOT released)" % (self.rid, self.now), "",
++             "Same certificate types as `../REDUCTION_README.md` §A (L1″ cube-and-conquer bundle, L2″/L3″ assembly, blocking colourings), continuing Phase 3c and Phase 3e. "
++             "Difference from Phase 3d: **small steps again** — %d further vertices removed over %d rounds of %s (Phase 3d tried one cut of 80 and hit SAT three times, with three disjoint 30-vertex blocking sets). "
++             "Per round: at most 2 certificates (a, b); if both are SAT the step is halved (20 → 10 → 5). Round cap %.0f h shared by a and b, plus up to %.0f h automatic extension when a run is nearly finished. "
++             "Every certified round is fully certified on the spot (l3g2 --engine-b: spindle engines A and B; certify4 --k 5: 5-colouring checked edge by edge). "
+              "The complete certificate set of the final graph, including every leaf proof, is in `%s`." % (
+-                 (best.get("removed") or 0) - 270, (self.fs.get("archive") or {}).get("dir", ARCH_ROOT)), "",
++                 (best.get("removed") or 0) - 270, len(self.rounds), "/".join(str(s) for s in sorted({r.get("step") for r in self.rounds if r.get("step")}, reverse=True)) or "?",
++                 ((self.st.get("config") or {}).get("cap") or 0) / 3600, ((self.st.get("config") or {}).get("extend") or 0) / 3600,
++                 (self.fs.get("archive") or {}).get("dir", ARCH_ROOT)), "",
+              "Seed: Phase 3c `%s` %s — S_acc = 270, |G2′| = 796, |G3′| = %d." % ((self.st.get("seed") or {}).get("run_id"), (self.st.get("seed") or {}).get("last_certified_tag"), PREV_G3P), "",
+              "| attempt | \\|S\\| | result | cubes | leaves | mean solve+verify / cube | max cube | wall (extension) | CPU-h (×%d) | \\|G2′\\| | \\|G3′\\| | L2″/L3″/complete/spindle A+B | 5-colouring | blocking set B |" % self.W,
+              "|---|---|---|---|---|---|---|---|---|---|---|---|---|---|"]
+@@ -608,14 +661,14 @@
+         if self.st.get("B_sets"):
+             L += ["", "Blocking sets from SAT attempts (each has a machine-checkable 4-colouring of G2 − B with col(u) ≠ col(v), i.e. B cannot be deleted as a whole):"]
+             L += ["- %s: |B| = %d, B = %s" % (b["tag"], b["size"], b["B"]) for b in self.st["B_sets"]]
+-        write(os.path.join(D, "PHASE3D_README.md"), "\n".join(L) + "\n")
++        write(os.path.join(D, "PHASE3E_README.md"), "\n".join(L) + "\n")
+         ss = shasums(STAGE, self.W)
+         n_m = 0
+         for root, _, fs in os.walk(D):
+             for f in fs:
+                 rel = os.path.relpath(os.path.join(root, f), STAGE); cp(os.path.join(root, f), os.path.join(WIN_STAGE, os.path.dirname(rel))); n_m += 1
+-        for f in glob.glob(os.path.join(STAGE, "scripts", "phase3d", "*")):
+-            cp(f, os.path.join(WIN_STAGE, "scripts", "phase3d")); n_m += 1
++        for f in glob.glob(os.path.join(STAGE, "scripts", "phase3e", "*")):
++            cp(f, os.path.join(WIN_STAGE, "scripts", "phase3e")); n_m += 1
+         cp(os.path.join(STAGE, "SHA256SUMS"), WIN_STAGE)
+         res = {"dir": D, "reduction_files": ss["n_files"], "reduction_bytes": ss["bytes"], "check_rc": ss["check_rc"], "mirrored": n_m}
+         self.save(stage=res); log("reduction/: %d 檔 %.1f MB, sha256sum -c rc=%d; 鏡像 %d 檔" % (ss["n_files"], ss["bytes"] / 1e6, ss["check_rc"], n_m))
+@@ -623,12 +676,15 @@
+ 
+     # ---------------- 5. 報告 / facts / DECISION / MEMORY ----------------
+     def report(self, fa, vres, xres, c5, arch, stg):
+-        self.step("寫 phase3d_results.md")
++        self.step("寫 phase3e_results.md")
+         st = self.st; W = self.W; lr = vres.get("leaf_reverify") or {}
+         G2n, G2m, G3n, G3m = (fa or {}).get("G2p_n"), (fa or {}).get("G2p_m"), (fa or {}).get("G3p_n"), (fa or {}).get("G3p_m")
+-        L = ["# phase3d_results.md —— Phase 3d: 最後一刀 (一刀剪 %s 粒; run %s, 接力 Phase 3c %s)" % (
+-                (len(fa["S"]) - 270) if fa else "?", self.rid, (st.get("seed") or {}).get("last_certified_tag")), "",
+-             "定稿 %s (自動收爐 finalize3d.py). 開跑 %s; probe3d 停 %s; Phase 3d wall %.2f h / %.0f h; **CPU-h (Σ 證書 wall × %d) %.1f / %.0f**." % (
++        cfg = st.get("config") or {}
++        n_cert = len([r for r in self.rounds if r.get("status") == "certified"])
++        steps_used = "/".join(str(s) for s in sorted({r.get("step") for r in self.rounds if r.get("step")}, reverse=True)) or str(cfg.get("step"))
++        L = ["# phase3e_results.md —— Phase 3e: 小步慢行 (每輪剪 %s 粒; %d 輪, %d 輪 certified, 淨剪 %s 粒; run %s, 接力 Phase 3c %s)" % (
++                steps_used, len(self.rounds), n_cert, (len(fa["S"]) - 270) if fa else 0, self.rid, (st.get("seed") or {}).get("last_certified_tag")), "",
++             "定稿 %s (自動收爐 finalize3e.py). 開跑 %s; probe3e 停 %s; Phase 3e wall %.2f h / %.0f h; **CPU-h (Σ 證書 wall × %d) %.1f / %.0f**." % (
+                  self.now, st.get("started"), st.get("finished"), (st.get("elapsed_s") or 0) / 3600, (st.get("config") or {}).get("total_cap", 86400) / 3600, W,
+                  st.get("cpu_h_used") or 0, (st.get("config") or {}).get("cpu_cap_h", 160)), "",
+              "## 一句結果", ""]
+@@ -644,14 +700,33 @@
+             L += ["**!! 有 certified 證書但獨立重驗唔過**:|G₃′| = %d,verify_final all_ok=%s、cake_lpr all_ok=%s、5 色 all_ok=%s —— **唔算數**,封存只係證據(`%s`,VERIFY_FAILED.md);要人手睇。" % (
+                 G3n, vres.get("all_ok"), (xres or {}).get("all_ok"), (c5 or {}).get("all_ok"), arch.get("dir"))]
+         else:
+-            L += ["**冇新證書**:%d 次嘗試全部冇拎到 certified;最新認證圖仍然係 Phase 3c 嘅 |G₃′| = %d(封存喺 `../final/`)。停機原因:%s" % (
+-                len(self.attempts), PREV_G3P, st.get("stop_reason"))]
+-        L += ["", "## 設計修正 (Amber 2026-09-08) 同今次點做", "",
+-              "- **成本按證書計,唔係按粒數計**:march_cu d=14 每次都切約 16 384 個 cube,剪 30 同剪 80 一樣貴 ⇒ 今次**一刀剪 80 粒**(Phase 3c 用咗 6 輪 × 30 粒 = 271.9 CPU-h 先剪到 180 粒)。",
+-              "- **唔用細規則殺死接近完成嘅 run**:每張證書輪上限 8 h,cnc2k budget-stop 之後如果剩餘估計 ≤ 0.5 h 就自動 `--resume` 延長(累計 ≤ 1 h)。Phase 3c round 10 就係喺 15 698/16 384(差 ~9 分鐘)撞 3.5 h 上限而報廢。",
+-              "- 預算:%.0f CPU-h、%.0f h wall、最多 3 張證書(a/b/c);SAT 就 witness 分析出擋路集 B,排除之後由候選表補足返到 |S| = %d 再證。" % (
+-                  (st.get("config") or {}).get("cpu_cap_h", 160), (st.get("config") or {}).get("total_cap", 86400) / 3600, (st.get("config") or {}).get("target_removed", 350)), "",
+-              "## 帳 (每張證書)", "",
++            L += ["**冇新證書**:%d 輪 / %d 次嘗試全部冇拎到 certified;最新認證圖仍然係 Phase 3c 嘅 |G₃′| = %d(封存喺 `../final/`)。停機原因:%s" % (
++                len(self.rounds), len(self.attempts), PREV_G3P, st.get("stop_reason"))]
++        L += ["", "## 設計 (Amber Phase 3e mega-prompt 2026-09-08) 同今次點做", "",
++              "- **點解退返細步幅**:Phase 3d 由 796 一刀剪 80 粒,三張證書全部 SAT,三個擋路集各 30 粒而且互不重疊(90 個索引全部唔同)⇒ 唔係「有幾粒地雷」,而係喺嗰個深度任何 80 粒嘅選法都約有三成剪唔得 ⇒ 一刀太大。",
++              "- **每輪剪 %s 粒**(796 → 776 → 756 → 736 → 716,四輪到目標);每輪最多 %s 張證書(a、b);**兩張都 SAT ⇒ 步幅減半**(20 → 10 → 5),用新步幅開下一輪(仍然計入輪數上限);步幅去到 %s 仍然兩張都 SAT 就停。" % (
++                  cfg.get("step"), cfg.get("attempts_per_round"), cfg.get("min_step")),
++              "- **排除集逐輪重置**:一粒點喺 |S| = 350 擋路,唔代表喺 |S| = 290 擋路 ⇒ 只喺當輪排除,冇永久排除(Phase 3c 嘅 `perma_excluded` 呢度冇)。",
++              "- **唔用細規則殺死接近完成嘅 run**(沿用 Phase 3d 嘅規矩):每輪上限 %.0f h(a + b 共用),cnc2k budget-stop 之後如果剩餘估計 ≤ %.1f h 就自動 `--resume` 延長(每輪累計 ≤ %.0f h)。Phase 3c round 10 就係喺 15 698/16 384(差 ~9 分鐘)撞 3.5 h 上限而報廢。" % (
++                  (cfg.get("cap") or 0) / 3600, cfg.get("extend_eta_h") or 0.5, (cfg.get("extend") or 0) / 3600),
++              "- **每輪都做完整認證(比規格多做)**:規格只要求每輪 spindle 引擎 A,呢度每輪 certified 都行 `l3g2 --engine-b`(引擎 A + B)加 `certify4 --k 5`(5 色逐邊覆核),大約 3 分鐘一輪 ⇒ 無論停喺邊度,最後一個 certified 圖都已經係完整認證,唔使補做。",
++              "- **RECORD 觸發線**:Amber 講明目標 |G₂′| ≤ 716(|G₃′| = 1431);程式用嘅觸發線係 |G₂′| ≤ 720(⇔ |G₃′| = 2|G₂′| − 1 ≤ 1439 < 1441),**更闊**,716 一定包含喺內,唔會漏。",
++              "- 預算:%.0f CPU-h、%.0f h wall、最多 %s 輪。%s" % (cfg.get("cpu_cap_h", 160), (cfg.get("total_cap") or 86400) / 3600, cfg.get("rounds"),
++                  "".join("(%s Amber 授權放寬:CPU %s → %s CPU-h、wall %s → %s h)" % (c.get("when"), c.get("cpu_cap_h_from"), c.get("cpu_cap_h_to"), c.get("wall_h_from"), c.get("wall_h_to"))
++                          for c in (st.get("budget_changes") or []))), "",
++              "## 每輪帳", "",
++              "| 輪 | 步幅 | 目標 \\|S\\| | 結果 | 淨剪 | S_acc | \\|G₂′\\| | \\|G₃′\\| | 輪 wall (延長) | CPU-h | 擋路集大小 |",
++              "|---|---|---|---|---|---|---|---|---|---|---|"]
++        for r in self.rounds:
++            rw = r.get("wall_s") or 0
++            L.append("| %s | %s | %s | %s | %s | %s → %s | %s | %s | %.2f h%s | %.1f | %s |" % (
++                r.get("round"), r.get("step"), r.get("target_removed"), r.get("status"), r.get("net_removed"),
++                len(r.get("S_acc_before") or []), len(r.get("S_acc_after") or r.get("S_acc_before") or []),
++                r.get("G2p_n"), r.get("G3p_n"), rw / 3600,
++                (" (+%.2f)" % ((r.get("extended_s") or 0) / 3600)) if r.get("extended_s") else "", rw * W / 3600, r.get("B_sizes")))
++        if st.get("step_history"):
++            L += ["", "步幅減半歷史 (同一輪兩張都 SAT 就減半): %s" % st["step_history"]]
++        L += ["", "## 帳 (每張證書)", "",
+               "| 嘗試 | |S| | 結果 | cube | leaf | 每 cube s+v (s) | 最長 cube (s) | wall (延長) | CPU-h | |G₂′| | |G₃′| | 認證 | 擋路集 B |", "|---|---|---|---|---|---|---|---|---|---|---|---|---|"]
+         for x in self.attempts:
+             L.append("| %s | %d | %s | %s | %s | %s | %s | %.2f h%s | %.1f | %s | %s | %s | %s |" % (
+@@ -661,10 +736,31 @@
+                 ("L2″/L3″/完整/spindle A+B %s, 5 色 %s" % ("✓" if x.get("l3_ok") else "!!", "✓" if x.get("col5_ok") else "!!")) if x["status"] == "certified" else "—",
+                 ("|B|=%d %s" % (x["B_size"], x["witness"]["blocked_min"])) if x.get("witness") else "—"))
+         L += ["", "停機原因:**%s**" % st.get("stop_reason"), ""]
++        prev_B = phase3d_B_sets(); ba = b_analysis(st.get("B_sets") or [], prev_B)
++        L += ["## 擋路集: 雷區密度隨深度點變 (Amber 要嘅數據)", "",
++              "每個 B 都有一張逐邊覆核嘅 4 色染色證書 —— G₂ − B 有一個 col(u) ≠ col(v) 嘅 4 色染色 ⇒ **B 唔可以成集剪走**(入面至少一粒係 mono-pair 性質嘅必要頂點)。", ""]
+         if st.get("B_sets"):
+-            L += ["## 擋路集 (SAT 嘅收穫: 下一步嘅地圖)", "",
+-                  "每個 B 都有一張逐邊覆核嘅 4 色染色證書 —— G₂ − B 有一個 col(u) ≠ col(v) 嘅 4 色染色 ⇒ **B 唔可以成集剪走**(入面至少一粒係 mono-pair 性質嘅必要頂點)。", ""]
+-            L += ["- **%s**: |B| = %d, B = `%s`(染色證書 `%s`)" % (b["tag"], b["size"], b["B"], os.path.basename(b.get("witness_col") or "")) for b in st["B_sets"]]
++            L += ["| 輪 | 嘗試 | 步幅 | \\|S\\| | \\|G₂′\\| | \\|B\\| | 其中喺 S_acc | 其中喺當輪新批 |", "|---|---|---|---|---|---|---|---|"]
++            L += ["| %s | %s | %s | %s | %s | %s | %s | %s |" % (x["round"], x["tag"], x["step"], x["S_size"], x["G2p"], x["size"], x["in_S_acc"], x["in_batch"]) for x in ba["by_set"]]
++            L += ["", "- Phase 3e: %d 個擋路集,平均 |B| = %s,並集 %d 粒。" % (ba["n"], ba["mean_size"], ba["union_size"])]
++            if ba["pairwise"]:
++                L += ["- Phase 3e 內部兩兩重疊(交集 / Jaccard):%s" % "; ".join("%s∩%s = %d (J = %s)" % (p["a"], p["b"], p["inter"], p["jaccard"]) for p in ba["pairwise"])]
++            else:
++                L += ["- 得一個擋路集,冇得計內部重疊。"]
++        else:
++            L += ["**Phase 3e 冇一個 SAT** —— 每一輪嘅第一張證書都 certified,所以冇擋路集。呢個本身就係數據:同 Phase 3d 一刀剪 80 三次全 SAT 對比,步幅細咗就冇撞到雷。", ""]
++        if prev_B:
++            L += ["- Phase 3d(|S| = 350 一刀剪 80)三個擋路集各 %s 粒,三個**互不重疊**,並集 %d 粒。" % ([b.get("size") for b in prev_B], ba["phase3d_union_size"])]
++            if ba["vs_phase3d"]:
++                L += ["- Phase 3e × Phase 3d 逐對重疊:%s" % "; ".join("%s∩%s = %d (J = %s)" % (p["phase3e"], p["phase3d"], p["inter"], p["jaccard"]) for p in ba["vs_phase3d"]),
++                      "- 兩個階段嘅擋路集並集交集 = **%d** 粒(Phase 3e 並集 %d,Phase 3d 並集 %d)⇒ %s。" % (
++                          ba["inter_with_phase3d_union"], ba["union_size"], ba["phase3d_union_size"],
++                          "同一批點反覆擋路" if ba["inter_with_phase3d_union"] > 0 else "擋路嘅唔係同一批點:同深度有關,唔係固定幾粒地雷")]
++        L += [""]
++        if st.get("B_sets"):
++            L += ["詳細名單:"]
++            L += ["- **%s** (round %s, 步幅 %s, |S| = %s): |B| = %d, B = `%s`(染色證書 `%s`)" % (
++                b["tag"], b.get("round"), b.get("step"), b.get("S_size"), b["size"], b["B"], os.path.basename(b.get("witness_col") or "")) for b in st["B_sets"]]
+             L += [""]
+         if fa:
+             L += ["## 最終認證圖", "",
+@@ -681,71 +777,82 @@
+                       arch.get("dir"), arch.get("n_files"), (arch.get("bytes") or 0) / 1e9, (arch.get("sha256sums_sha256") or "")[:16], arch.get("check_rc"), fa["tag"],
+                       arch.get("n_leaf_proofs"), arch.get("n_audit_proofs"), "、`RECORD_CANDIDATE.md`" if self.rec_ok else ("、`RECORD_CANDIDATE_BLOCKED.md`" if G3n < RECORD_G3P else "")),
+                   "- Windows 鏡像 `%s`(唔含 leaf 證明,有 LEAF_PROOFS_LOCATION.txt + SHA256SUMS.small)。" % arch.get("windows_mirror"),
+-                  "- 細檔 `%s/phase3d_G2_final/`(PHASE3D_README.md;reduction/ 共 %s 檔,`sha256sum -c` rc=%s),鏡像 Windows。" % (STAGE, stg.get("reduction_files"), stg.get("check_rc")), ""]
++                  "- 細檔 `%s/phase3e_G2_final/`(PHASE3E_README.md;reduction/ 共 %s 檔,`sha256sum -c` rc=%s),鏡像 Windows。" % (STAGE, stg.get("reduction_files"), stg.get("check_rc")), ""]
+         L += ["## 老實講明", "",
+               "- 「%d 點」呢個文獻紀錄數字係 Amber 提供,我哋**冇**獨立重驗過;我哋自己認證嘅只係上面呢幅圖嘅點數、邊數、無 spindle、5 色可染、唔可 4 色。" % RECORD_G3P,
+               "- CPU-h 一律用 wall × %d 計(同 Phase 3b/3c 一致),唔係 solver 實際 CPU 秒(實際數字喺 attempts.json 嘅 cpu_solve_s / cpu_verify_s)。" % W,
+               "- 冇公開任何嘢:冇 git push、冇 Zenodo new version、冇 email。", ""]
+         txt = "\n".join(L)
+         if self.a.dry_run:
+-            write(os.path.join(PH3D, "selftest", "phase3d_results_dryrun.md"), txt); self.save(report="dry-run"); return txt
+-        write(os.path.join(PH3D, "phase3d_results.md"), txt); write(os.path.join(WIN, "phase3d", "phase3d_results.md"), txt)
+-        self.save(report=os.path.join(WIN, "phase3d", "phase3d_results.md"))
++            write(os.path.join(PH3E, "selftest", "phase3e_results_dryrun.md"), txt); self.save(report="dry-run"); return txt
++        write(os.path.join(PH3E, "phase3e_results.md"), txt); write(os.path.join(WIN, "phase3e", "phase3e_results.md"), txt)
++        self.save(report=os.path.join(WIN, "phase3e", "phase3e_results.md"))
+         return txt
+ 
+     def facts(self, fa, vres, xres, c5, arch, stg):
+-        self.step("facts.json (g2shrink3d.*)")
++        self.step("facts.json (g2shrink3e.*)")
+         fp = os.path.join(WIN, "paper", "facts.json")
+-        fp_out = os.path.join(PH3D, "facts_dryrun.json") if self.a.dry_run else fp
++        fp_out = os.path.join(PH3E, "facts_dryrun.json") if self.a.dry_run else fp
+         try:
+             F = json.load(open(fp, encoding="utf-8")); facts = F["facts"]; n0 = len(facts); st = self.st
+             def add(key, value, unit=None, source=None, note=None, verified=True):
+                 facts[key] = {"value": value, "unit": unit, "source": source, "note": note, "verified": verified}
+-            add("g2shrink3d.run_id", self.rid, None, "phase3d/runs/%s/state.json" % self.rid)
+-            add("g2shrink3d.seed", st.get("seed"), None, "phase3d/runs/%s/state.json (Phase 3c r09a provenance: bundle/l3 sha)" % self.rid)
+-            add("g2shrink3d.params", {"one_cut_removed": (st.get("config") or {}).get("target_removed"), "attempts_max": (st.get("config") or {}).get("attempts"),
++            add("g2shrink3e.run_id", self.rid, None, "phase3e/runs/%s/state.json" % self.rid)
++            add("g2shrink3e.seed", st.get("seed"), None, "phase3e/runs/%s/state.json (Phase 3c r09a provenance: bundle/l3 sha)" % self.rid)
++            add("g2shrink3e.params", {"step": (st.get("config") or {}).get("step"), "min_step": (st.get("config") or {}).get("min_step"),
++                                      "rounds_max": (st.get("config") or {}).get("rounds"), "attempts_per_round": (st.get("config") or {}).get("attempts_per_round"),
+                                       "cpu_cap_h": (st.get("config") or {}).get("cpu_cap_h"), "wall_cap_h": ((st.get("config") or {}).get("total_cap") or 0) / 3600,
+                                       "round_cap_h": ((st.get("config") or {}).get("cap") or 0) / 3600, "auto_extend_h": ((st.get("config") or {}).get("extend") or 0) / 3600,
+                                       "extend_eta_h": (st.get("config") or {}).get("extend_eta_h"), "workers": (st.get("config") or {}).get("workers"),
+                                       "depth": (st.get("config") or {}).get("depth"), "kissat_timeout_s": (st.get("config") or {}).get("timeout")},
+-                None, "Amber's Phase 3d mega-prompt 2026-09-08; probe3d.py argv")
+-            add("g2shrink3d.attempts", [{k: x.get(k) for k in ("tag", "removed", "status", "n_cubes", "leaves", "mean_solve_s", "median_solve_s", "mean_sv_s", "max_solve_s", "wall_s",
++                None, "Amber's Phase 3e mega-prompt 2026-09-08; probe3e.py argv")
++            add("g2shrink3e.attempts", [{k: x.get(k) for k in ("tag", "removed", "status", "n_cubes", "leaves", "mean_solve_s", "median_solve_s", "mean_sv_s", "max_solve_s", "wall_s",
+                                                                "extended_s", "cnc_launches", "cpu_solve_s", "cpu_verify_s", "proof_total_mb", "split_events", "solver_errors", "wasted_s",
+                                                                "G2p_n", "G2p_m", "G3p_n", "G3p_m", "l3_ok", "col5_ok", "B_size")} | {"cpu_h_wall_x_workers": round((x.get("wall_s") or 0) * self.W / 3600, 2),
+                                                                                                                                      "B": (x.get("witness") or {}).get("blocked_min")} for x in self.attempts],
+-                None, "phase3d/runs/%s/attempts.json" % self.rid)
+-            add("g2shrink3d.B_sets", st.get("B_sets"), None, "phase3d/runs/%s/state.json (each B has an edge-checked 4-colouring of G2 − B with col(u) != col(v))" % self.rid)
+-            add("g2shrink3d.stop_reason", st.get("stop_reason"), None, "phase3d/runs/%s/state.json" % self.rid)
+-            add("g2shrink3d.cpu_h_used", st.get("cpu_h_used"), "CPU-h (wall×%d)" % self.W, "phase3d/runs/%s/state.json" % self.rid)
+-            add("g2shrink3d.wall_h", round((st.get("elapsed_s") or 0) / 3600, 2), "h", "phase3d/runs/%s/state.json" % self.rid)
++                None, "phase3e/runs/%s/attempts.json" % self.rid)
++            add("g2shrink3e.B_sets", st.get("B_sets"), None, "phase3e/runs/%s/state.json (each B has an edge-checked 4-colouring of G2 − B with col(u) != col(v))" % self.rid)
++            add("g2shrink3e.rounds", [{k: r.get(k) for k in ("round", "step", "status", "target_removed", "net_removed", "G2p_n", "G3p_n",
++                                                             "wall_s", "cap_s", "extended_s", "certified_tag", "B_sizes", "budget_before", "budget_after")} for r in self.rounds],
++                None, "phase3e/runs/%s/rounds.json" % self.rid)
++            add("g2shrink3e.step_history", st.get("step_history"), None, "phase3e/runs/%s/state.json" % self.rid,
++                "adaptive step: halved (20 -> 10 -> 5) whenever both certificates of a round came back SAT")
++            add("g2shrink3e.budget_changes", st.get("budget_changes") or [], None, "phase3e/runs/%s/state.json" % self.rid,
++                "operator-authorised budget changes during the run (probe3e was cleanly paused and resumed; cnc2k --resume kept every verified cube)")
++            add("g2shrink3e.B_analysis", b_analysis(st.get("B_sets") or [], phase3d_B_sets()), None,
++                "phase3e/runs/%s/state.json + phase3d/runs/p3d1_final/state.json" % self.rid,
++                "blocking-set density vs depth: |B| per round, pairwise Jaccard within Phase 3e, and overlap against the three Phase 3d sets at |S| = 350")
++            add("g2shrink3e.stop_reason", st.get("stop_reason"), None, "phase3e/runs/%s/state.json" % self.rid)
++            add("g2shrink3e.cpu_h_used", st.get("cpu_h_used"), "CPU-h (wall×%d)" % self.W, "phase3e/runs/%s/state.json" % self.rid)
++            add("g2shrink3e.wall_h", round((st.get("elapsed_s") or 0) / 3600, 2), "h", "phase3e/runs/%s/state.json" % self.rid)
+             if fa:
+-                add("g2shrink3d.S_final", fa["S"], None, "phase3d/runs/%s/state.json (S_acc)" % self.rid, "certified removable set of G2 vertices")
+-                add("g2shrink3d.G2p_final", {"n": fa["G2p_n"], "m": fa["G2p_m"]}, None, "%s/L2L3/l3_final/summary.json (exactfield --complete)" % arch.get("dir"))
+-                add("g2shrink3d.G3p_final", {"n": fa["G3p_n"], "m": fa["G3p_m"], "below_%d" % RECORD_G3P: fa["G3p_n"] < RECORD_G3P, "previous_ours": PREV_G3P},
++                add("g2shrink3e.S_final", fa["S"], None, "phase3e/runs/%s/state.json (S_acc)" % self.rid, "certified removable set of G2 vertices")
++                add("g2shrink3e.G2p_final", {"n": fa["G2p_n"], "m": fa["G2p_m"]}, None, "%s/L2L3/l3_final/summary.json (exactfield --complete)" % arch.get("dir"))
++                add("g2shrink3e.G3p_final", {"n": fa["G3p_n"], "m": fa["G3p_m"], "below_%d" % RECORD_G3P: fa["G3p_n"] < RECORD_G3P, "previous_ours": PREV_G3P},
+                     None, "%s/L2L3/l3_final/summary.json + RECORD_README.md" % arch.get("dir"),
+                     "Moser-spindle-free (engines A+B), 5-colourable (edge-checked), no proper 4-colouring (L1''+L2''+L3'')", verified=bool(self.vok))
+-                add("g2shrink3d.final_certificate", {"tag": fa["tag"], "base_sha256": fa["rec"]["cnf"]["cnf_sha256"], "leaves": fa["leaves"],
++                add("g2shrink3e.final_certificate", {"tag": fa["tag"], "base_sha256": fa["rec"]["cnf"]["cnf_sha256"], "leaves": fa["leaves"],
+                                                      "leaf_proofs_dir": os.path.join(arch.get("dir", ""), "L1pp", "leaf_proofs"), "cover_mode": json.load(open(os.path.join(fa["dir"], "cnc_" + fa["tag"], "bundle.json")))["cover_mode"]},
+-                    None, "phase3d/runs/%s/attempts.json" % self.rid)
+-                add("g2shrink3d.verify_final", {k: v for k, v in vres.items() if k in ("all_ok", "base_sha_consistent", "leaf_count_consistent", "leaf_ids_are_all_root_cubes", "cover_reverify", "audit_reverify", "exactfield_complete_G3p_again", "t_s")}
++                    None, "phase3e/runs/%s/attempts.json" % self.rid)
++                add("g2shrink3e.verify_final", {k: v for k, v in vres.items() if k in ("all_ok", "base_sha_consistent", "leaf_count_consistent", "leaf_ids_are_all_root_cubes", "cover_reverify", "audit_reverify", "exactfield_complete_G3p_again", "t_s")}
+                     | {"leaf_reverify": {k: v for k, v in (vres.get("leaf_reverify") or {}).items() if k != "bad"},
+                        "l3_final": {k: v for k, v in (vres.get("l3_final") or {}).items() if k in ("rc", "all_ok", "same_files_as_campaign_l3", "spindle_A", "spindle_B")}},
+                     None, "%s/L1pp/verify_final.json (every leaf proof re-checked from disk)" % arch.get("dir"))
+-                add("g2shrink3d.rebuild_base_from_S", self.rb, None, "finalize3d.py: buildg2.py --remove <S> 重跑, sha 對封存嘅 base.cnf", "closes the loop 'the CNF really is G2 minus S'", verified=bool(self.rb.get("ok")))
+-                add("g2shrink3d.crosscheck_cake_lpr", {k: v for k, v in (xres or {}).items() if k not in ("records", "sampled_ids", "bad")}, None, "%s/L1pp/crosscheck.json" % arch.get("dir"))
+-                add("g2shrink3d.five_colouring", c5, None, "%s/L1pp/col5_check.json + COL5/" % arch.get("dir"))
+-                add("g2shrink3d.record_candidate", self.rec_ok, None, "phase3d/runs/%s/state.json (probe3d record_candidate=%s) AND finalize independent re-verification (verify_final %s, cake_lpr %s, 5-col %s)" % (
++                add("g2shrink3e.rebuild_base_from_S", self.rb, None, "finalize3e.py: buildg2.py --remove <S> 重跑, sha 對封存嘅 base.cnf", "closes the loop 'the CNF really is G2 minus S'", verified=bool(self.rb.get("ok")))
++                add("g2shrink3e.crosscheck_cake_lpr", {k: v for k, v in (xres or {}).items() if k not in ("records", "sampled_ids", "bad")}, None, "%s/L1pp/crosscheck.json" % arch.get("dir"))
++                add("g2shrink3e.five_colouring", c5, None, "%s/L1pp/col5_check.json + COL5/" % arch.get("dir"))
++                add("g2shrink3e.record_candidate", self.rec_ok, None, "phase3e/runs/%s/state.json (probe3e record_candidate=%s) AND finalize independent re-verification (verify_final %s, cake_lpr %s, 5-col %s)" % (
+                     self.rid, st.get("record_candidate"), vres.get("all_ok"), (xres or {}).get("all_ok"), (c5 or {}).get("all_ok")),
+                     "true only when |G3'| < %d AND all three independent re-verifications passed" % RECORD_G3P, verified=bool(self.vok))
+-                add("g2shrink3d.archive", arch, None, "finalize3d.py (SHA256SUMS)")
+-                add("g2shrink3d.staging", stg, None, "finalize3d.py (reduction/SHA256SUMS)")
++                add("g2shrink3e.archive", arch, None, "finalize3e.py (SHA256SUMS)")
++                add("g2shrink3e.staging", stg, None, "finalize3e.py (reduction/SHA256SUMS)")
+             if fa:
+-                add("g2shrink3d.vs_heule_1441", {"ours_G3p_n": fa["G3p_n"], "heule_1441": RECORD_G3P, "below": fa["G3p_n"] < RECORD_G3P, "our_previous": PREV_G3P,
++                add("g2shrink3e.vs_heule_1441", {"ours_G3p_n": fa["G3p_n"], "heule_1441": RECORD_G3P, "below": fa["G3p_n"] < RECORD_G3P, "our_previous": PREV_G3P,
+                                                  "note_on_1441": "existing fact record.heule_1441 (Heule, Geombinatorics 31(2) 2021, as cited in Haugland arXiv:2608.04542); we did NOT re-verify that graph — only our own is machine-certified here"},
+-                    None, "derived from g2shrink3d.G3p_final and record.heule_1441", verified=bool(self.vok))
++                    None, "derived from g2shrink3e.G3p_final and record.heule_1441", verified=bool(self.vok))
+             F["generated"] = time.strftime("%Y-%m-%d %H:%M:%S")
+-            if "Phase 3d additions (g2shrink3d.*)" not in (F.get("note") or ""):
+-                F["note"] = (F.get("note") or "") + " | Phase 3d additions (g2shrink3d.*) by phase3d/finalize3d.py."
++            if "Phase 3e additions (g2shrink3e.*)" not in (F.get("note") or ""):
++                F["note"] = (F.get("note") or "") + " | Phase 3e additions (g2shrink3e.*) by phase3e/finalize3e.py."
+             write(fp_out, json.dumps(F, indent=1, ensure_ascii=False))
+             self.save(facts="%d → %d facts → %s" % (n0, len(facts), fp_out)); log("facts: %d → %d → %s" % (n0, len(facts), fp_out))
+         except Exception as e:
+@@ -756,7 +863,7 @@
+         p = os.path.join(WIN, "phase2b", "DECISION.md"); st = self.st
+         try:
+             s = open(p, encoding="utf-8").read()
+-            marker = "**Phase 3d 最後一刀"
++            marker = "**Phase 3e 小步慢行"
+             if fa:
+                 head = ("**RECORD_CANDIDATE:|G₃′| = %d < %d(獨立重驗全部通過)—— 等 Amber**" % (fa["G3p_n"], RECORD_G3P)) if self.rec_ok else (
+                     ("**!! |G₃′| = %d < %d 但獨立重驗唔過(BLOCKED)**" % (fa["G3p_n"], RECORD_G3P)) if fa["G3p_n"] < RECORD_G3P else
+@@ -764,16 +871,20 @@
+                 body = "最終認證圖 |G₂′| = %d 點 %d 邊,**|G₃′| = %d 點 %d 邊**(L1″+L2″+L3″ + exactfield --complete + spindle 兩引擎 + 5 色逐邊覆核);獨立重驗:全部 %s 個 leaf 證明重跑 drat-trim %s、%s 個 leaf 經 cake_lpr %s。" % (
+                     fa["G2p_n"], fa["G2p_m"], fa["G3p_n"], fa["G3p_m"], (vres.get("leaf_reverify") or {}).get("n"), "✓" if vres.get("all_ok") else "!!", (xres or {}).get("n_sampled"), "✓" if (xres or {}).get("all_ok") else "!!")
+             else:
+-                head = "冇新證書(%d 次嘗試)" % len(self.attempts); body = "最新認證圖仍然係 Phase 3c 嘅 |G₃′| = %d。" % PREV_G3P
+-            para = ("%s(%s;run %s,接力 Phase 3c r09a;Amber 設計修正:成本按證書計 ⇒ 一刀剪 80 粒,唔再分輪;輪上限 8 h + 自動延長 1 h;最多 3 張證書;預算 %.0f CPU-h / %.0f h wall;只加呢一段,其他原文不動):** %s。%s "
+-                    "嘗試 %s;CPU-h %.1f / %.0f,wall %.2f h;停機原因:%s。%s報告 `phase3d/phase3d_results.md`。**未公開、未寄信、未 push、未上 Zenodo。**" % (
+-                        marker, self.now, self.rid, (st.get("config") or {}).get("cpu_cap_h", 160), ((st.get("config") or {}).get("total_cap") or 86400) / 3600,
+-                        head, body, [(x["tag"], x["status"], round((x.get("wall_s") or 0) / 3600, 2)) for x in self.attempts],
++                head = "冇新證書(%d 輪, %d 次嘗試)" % (len(self.rounds), len(self.attempts)); body = "最新認證圖仍然係 Phase 3c 嘅 |G₃′| = %d。" % PREV_G3P
++            cfg = st.get("config") or {}
++            para = ("%s(%s;run %s,接力 Phase 3c r09a;Phase 3d 一刀剪 80 三次全 SAT ⇒ 退返細步幅:每輪剪 %s 粒、每輪最多 2 張證書、兩張都 SAT 就步幅減半(20→10→5)、排除集逐輪重置;"
++                    "每輪上限 %.0f h + 自動延長 ≤ %.0f h;最多 %s 輪;預算 %.0f CPU-h / %.0f h wall;只加呢一段,其他原文不動):** %s。%s "
++                    "每輪:%s;嘗試 %s;CPU-h %.1f / %.0f,wall %.2f h;停機原因:%s。%s報告 `phase3e/phase3e_results.md`。**未公開、未寄信、未 push、未上 Zenodo。**" % (
++                        marker, self.now, self.rid, cfg.get("step"), (cfg.get("cap") or 0) / 3600, (cfg.get("extend") or 0) / 3600, cfg.get("rounds"),
++                        cfg.get("cpu_cap_h", 160), (cfg.get("total_cap") or 86400) / 3600,
++                        head, body, [(r.get("round"), r.get("step"), r.get("status"), r.get("net_removed"), r.get("G2p_n")) for r in self.rounds],
++                        [(x["tag"], x["status"], round((x.get("wall_s") or 0) / 3600, 2)) for x in self.attempts],
+                         st.get("cpu_h_used") or 0, (st.get("config") or {}).get("cpu_cap_h", 160), (st.get("elapsed_s") or 0) / 3600,
+                         (st.get("stop_reason") or "").replace("\n", " "),
+-                        ("全套證書(含全部 leaf proofs)封存 `%s`(D:),細檔 `release_v1_1_staging/reduction/phase3d_G2_final/`;" % arch.get("dir")) if fa else ""))
++                        ("全套證書(含全部 leaf proofs)封存 `%s`(D:),細檔 `release_v1_1_staging/reduction/phase3e_G2_final/`;" % arch.get("dir")) if fa else ""))
+             if marker in s:
+-                s = re.sub(r"\*\*Phase 3d 最後一刀.*?(?=\n\n)", lambda m: para, s, count=1, flags=re.S)
++                s = re.sub(r"\*\*Phase 3e 小步慢行.*?(?=\n\n)", lambda m: para, s, count=1, flags=re.S)
+             else:
+                 anchor = "\n\n---\n\n## 路線 B"
+                 assert anchor in s, "DECISION.md 搵唔到路線 B 錨點"
+@@ -781,7 +892,7 @@
+             if not self.a.dry_run:
+                 write(p, s)
+             else:
+-                write(os.path.join(PH3D, "DECISION_dryrun.md"), s)
++                write(os.path.join(PH3E, "DECISION_dryrun.md"), s)
+             self.save(decision="ok (%d 字)" % len(para)); log("DECISION.md: 路線 A 加一段")
+         except Exception as e:
+             self.save(decision="!! %r" % e); log("!! DECISION.md 失敗: %r" % e)
+@@ -791,44 +902,53 @@
+         st = self.st
+         try:
+             if fa:
+-                one = ("Phase 3d 完 (%s): run %s 一刀剪 %d 粒 (%s), **|G₂′| %d, |G₃′| %d**%s; 獨立重驗 %s (全部 %s 個 leaf drat-trim + %s 個 cake_lpr + cover + 審計 + L2″/L3″/完整性/spindle 兩引擎 + 5 色逐邊); "
+-                       "CPU %.1f/%.0f CPU-h, wall %.2f h; 全套證書封存 %s; 報告 phase3d/phase3d_results.md; 未公開") % (
+-                    self.now[:16], self.rid, len(fa["S"]) - 270, ", ".join("%s:%s" % (x["tag"], x["status"]) for x in self.attempts), fa["G2p_n"], fa["G3p_n"],
++                one = ("Phase 3e 完 (%s): run %s 小步慢行剪多 %d 粒 (%d 輪: %s), **|G₂′| %d, |G₃′| %d**%s; 獨立重驗 %s (全部 %s 個 leaf drat-trim + %s 個 cake_lpr + cover + 審計 + L2″/L3″/完整性/spindle 兩引擎 + 5 色逐邊); "
++                       "CPU %.1f/%.0f CPU-h, wall %.2f h; 全套證書封存 %s; 報告 phase3e/phase3e_results.md; 未公開") % (
++                    self.now[:16], self.rid, len(fa["S"]) - 270, len(self.rounds),
++                    ", ".join("r%s(步幅%s):%s" % (r.get("round"), r.get("step"), r.get("status")) for r in self.rounds), fa["G2p_n"], fa["G3p_n"],
+                     (" **< %d 紀錄候選, 等 Amber**" % RECORD_G3P) if self.rec_ok else ((" (< %d 但重驗唔過, BLOCKED)" % RECORD_G3P) if fa["G3p_n"] < RECORD_G3P else " (未到 %d)" % RECORD_G3P),
+                     "all_ok ✓" if self.vok else "!! 唔過", (vres.get("leaf_reverify") or {}).get("n"), (xres or {}).get("n_sampled"),
+                     st.get("cpu_h_used") or 0, (st.get("config") or {}).get("cpu_cap_h", 160), (st.get("elapsed_s") or 0) / 3600, arch.get("dir"))
+             else:
+-                one = "Phase 3d 完 (%s): run %s %d 次嘗試冇新證書 (%s); 最新認證圖仍然係 Phase 3c |G₃′| %d; 停: %s; 報告 phase3d/phase3d_results.md" % (
+-                    self.now[:16], self.rid, len(self.attempts), ", ".join("%s:%s" % (x["tag"], x["status"]) for x in self.attempts), PREV_G3P, (st.get("stop_reason") or "")[:120])
++                one = "Phase 3e 完 (%s): run %s %d 輪 %d 次嘗試冇新證書 (%s); 最新認證圖仍然係 Phase 3c |G₃′| %d; 停: %s; 報告 phase3e/phase3e_results.md" % (
++                    self.now[:16], self.rid, len(self.rounds), len(self.attempts),
++                    ", ".join("r%s(步幅%s):%s" % (r.get("round"), r.get("step"), r.get("status")) for r in self.rounds), PREV_G3P, (st.get("stop_reason") or "")[:120])
+             out = {}
+             p = os.path.join(MEM, "hadwiger-project.md"); s = open(p, encoding="utf-8").read()
+-            block = ("**Phase 3d(%s;Mega-Prompt「最後一刀」;源碼 `Desktop\\spindle\\phase3d\\`,WSL `~/hadwiger/phase3d/`;run `%s`):** %s。"
+-                     "設計修正:成本按證書計(march d=14 每次都係 ~16 384 cube)⇒ 一刀剪 80 粒;輪上限 8 h + 剩餘 ≤ 0.5 h 自動延長 ≤ 1 h(Phase 3c round 10 就係差 9 分鐘被 3.5 h 上限殺死);最多 3 張證書 a/b/c,SAT 就 witness 出擋路集 B 再補足重試。"
+-                     "%s重跑收爐:`phase3d/resume3d.sh`(probe3d --resume → finalize3d 幂等)。") % (
+-                         st.get("started"), self.rid, one,
+-                         ("擋路集 %s。" % [(b["tag"], b["size"]) for b in st.get("B_sets") or []]) if st.get("B_sets") else "")
+-            if "**Phase 3d(" in s:
+-                s = re.sub(r"\*\*Phase 3d\(.*?(?=\n\n\*\*How to apply)", lambda m: block, s, count=1, flags=re.S)
++            block = ("**Phase 3e(%s;Mega-Prompt「小步慢行」;源碼 `Desktop\\spindle\\phase3e\\`,WSL `~/hadwiger/phase3e/`;run `%s`):** %s。"
++                     "設計:Phase 3d 一刀剪 80 三次全 SAT ⇒ 退返每輪剪 %s 粒;每輪最多 2 張證書(a、b),兩張都 SAT 就**步幅減半**(20→10→5),減到 5 仲失敗就停;"
++                     "排除集**逐輪重置**(一粒點喺 |S|=350 擋路唔代表喺 |S|=290 擋路,冇永久排除);每輪上限 6 h(a+b 共用)+ 剩餘 ≤ 0.5 h 自動延長 ≤ 1 h;每輪 certified 都即場行齊 l3g2 --engine-b + certify4 --k 5。"
++                     "%s重跑收爐:`phase3e/resume3e.sh`(probe3e --resume → finalize3e 幂等);probe3e.py 係 probe3d.Probe 嘅子類(campaign / keep 政策 / 延長邏輯一字不改)。") % (
++                         st.get("started"), self.rid, one, (st.get("config") or {}).get("step"),
++                         ("擋路集 %s。" % [(b.get("round"), b["tag"], b["size"]) for b in st.get("B_sets") or []]) if st.get("B_sets") else "")
++            if "**Phase 3e(" in s:
++                s = re.sub(r"\*\*Phase 3e\(.*?(?=\n\n\*\*How to apply)", lambda m: block, s, count=1, flags=re.S)
+             elif "\n\n**How to apply:**" in s:
+                 s = s.replace("\n\n**How to apply:**", "\n\n" + block + "\n\n**How to apply:**", 1)
+             else:
+                 s = s.rstrip("\n") + "\n\n" + block + "\n"
+             m = re.search(r'^description: "(.*)"\s*$', s, re.M)
+-            if m and "Phase 3d" not in m.group(1):
++            if m and "Phase 3e" not in m.group(1):
+                 s = s.replace(m.group(0), 'description: "%s; %s"' % (m.group(1), one.replace('"', "'")[:260]), 1)
+             out["hadwiger-project.md"] = len(block)
+             if not self.a.dry_run:
+                 write(p, s)
+             else:
+-                write(os.path.join(PH3D, "mem_dryrun_hadwiger-project.md"), s)
++                write(os.path.join(PH3E, "mem_dryrun_hadwiger-project.md"), s)
+             p2 = os.path.join(MEM, "no-spindle-hardness.md"); s2 = open(p2, encoding="utf-8").read()
+             cert = [x for x in self.attempts if x.get("status") == "certified"]
+-            b2 = ("**Phase 3d(%s,`phase3d/`)—— 一刀剪 80 粒:** %d/%d 張證書 certified;每張 wall %s h、每 cube s+v %s s、最長 cube %s s;%s。"
+-                  "教訓:剪 30 同剪 80 一樣貴(cube 數一樣),所以應該一刀剪到目標;cnc2k budget-stop 之後 `--resume` 可以無損續(cnc2k 會 drain 住嘅 cube 先停)。") % (
+-                self.now[:10], len(cert), len(self.attempts), [round((x.get("wall_s") or 0) / 3600, 2) for x in cert], [x.get("mean_sv_s") for x in cert], [x.get("max_solve_s") for x in cert],
+-                ("|G₃′| = %d%s" % (fa["G3p_n"], " < %d 紀錄候選" % RECORD_G3P if self.rec_ok else "")) if fa else "三次都 SAT / 冇證書, 擋路集 %s" % [(b["tag"], b["size"]) for b in st.get("B_sets") or []])
+-            if "**Phase 3d(" in s2:
+-                s2 = re.sub(r"\*\*Phase 3d\(.*?(?=\n\n\*\*Why)", lambda m: b2, s2, count=1, flags=re.S)
++            ba2 = b_analysis(st.get("B_sets") or [], phase3d_B_sets())
++            b2 = ("**Phase 3e(%s,`phase3e/`)—— 每輪剪 %s 粒(步幅 %s):** %d/%d 張證書 certified,%d/%d 輪 certified;每張 wall %s h、每 cube s+v %s s、最長 cube %s s;%s。"
++                  "雷區密度:每輪 |B| = %s,Phase 3e 並集 %d 粒,同 Phase 3d(|S|=350 一刀)三個 B 嘅並集交集 %d 粒 ⇒ %s。"
++                  "教訓:cube 數同剪幾多粒無關(march d=14 都係 ~16 384),但**SAT 風險同步幅有關**;cnc2k budget-stop 之後 `--resume` 可以無損續。") % (
++                self.now[:10], (st.get("config") or {}).get("step"), [r.get("step") for r in self.rounds],
++                len(cert), len(self.attempts), len([r for r in self.rounds if r.get("status") == "certified"]), len(self.rounds),
++                [round((x.get("wall_s") or 0) / 3600, 2) for x in cert], [x.get("mean_sv_s") for x in cert], [x.get("max_solve_s") for x in cert],
++                ("|G₃′| = %d%s" % (fa["G3p_n"], " < %d 紀錄候選" % RECORD_G3P if self.rec_ok else "")) if fa else "冇證書, 擋路集 %s" % [(b.get("round"), b["tag"], b["size"]) for b in st.get("B_sets") or []],
++                [x["size"] for x in ba2["by_set"]], ba2["union_size"], ba2["inter_with_phase3d_union"],
++                "同一批點反覆擋路" if ba2["inter_with_phase3d_union"] > 0 else "擋路嘅唔係同一批固定點")
++            if "**Phase 3e(" in s2:
++                s2 = re.sub(r"\*\*Phase 3e\(.*?(?=\n\n\*\*Why)", lambda m: b2, s2, count=1, flags=re.S)
+             elif "\n\n**Why:**" in s2:
+                 s2 = s2.replace("\n\n**Why:**", "\n\n" + b2 + "\n\n**Why:**", 1)
+             else:
+@@ -837,14 +957,14 @@
+             if not self.a.dry_run:
+                 write(p2, s2)
+             else:
+-                write(os.path.join(PH3D, "mem_dryrun_no-spindle-hardness.md"), s2)
++                write(os.path.join(PH3E, "mem_dryrun_no-spindle-hardness.md"), s2)
+             p3 = os.path.join(MEM, "MEMORY.md"); s3 = open(p3, encoding="utf-8").read(); lines = s3.split("\n"); done = False
+             for i, l in enumerate(lines):
+                 if l.startswith("- [Hadwiger project](hadwiger-project.md)"):
+-                    head = l.split(";Phase 3b 三輪")[0].split(";**Phase 3c")[0].split(";Phase 3c")[0].split(";**Phase 3d")[0].split(";Phase 3b/3c")[0]
++                    head = l.split(";Phase 3b 三輪")[0].split(";**Phase 3c")[0].split(";Phase 3c")[0].split(";**Phase 3d")[0].split(";**Phase 3e")[0].split(";Phase 3b/3c")[0]
+                     tail_txt = (("**RECORD_CANDIDATE |G₃′| = %d < %d,獨立重驗通過,等 Amber**" % (fa["G3p_n"], RECORD_G3P)) if self.rec_ok else
+                                 (("|G₃′| = %d(%s)" % (fa["G3p_n"], "重驗唔過 BLOCKED" if not self.vok else "未到 %d" % RECORD_G3P)) if fa else "冇新證書")).replace("\n", " ")
+-                    lines[i] = head + ";Phase 3b/3c 已收爐(|G₃′| 1591,`phase3c/phase3c_results.md`);**Phase 3d 完(%s)**:%s;報告 `phase3d/phase3d_results.md`;冇背景任務" % (self.now[:16], tail_txt)
++                    lines[i] = head + ";Phase 3b/3c 已收爐(|G₃′| 1591,`phase3c/phase3c_results.md`);Phase 3d 一刀剪 80 三次全 SAT(冇新證書);**Phase 3e 完(%s)**:%s;報告 `phase3e/phase3e_results.md`;冇背景任務" % (self.now[:16], tail_txt)
+                     done = True
+             if not done:
+                 lines.append("- [Hadwiger project](hadwiger-project.md) — %s" % one[:300])
+@@ -852,7 +972,7 @@
+             if not self.a.dry_run:
+                 write(p3, "\n".join(lines))
+             else:
+-                write(os.path.join(PH3D, "mem_dryrun_MEMORY.md"), "\n".join(lines))
++                write(os.path.join(PH3E, "mem_dryrun_MEMORY.md"), "\n".join(lines))
+             self.save(memory=out); log("MEMORY: %s" % out)
+         except Exception as e:
+             self.save(memory="!! %r" % e); log("!! MEMORY 失敗: %r" % e)
+@@ -864,7 +984,7 @@
+             self.vok = None; self.rec_ok = False
+             self.report(None, {}, {}, {}, {}, {}); self.facts(None, {}, {}, {}, {}, {}); self.decision(None, {}, {}, {}); self.memory(None, {}, {}, {})
+             self.fs["done"] = True; self.fs["finished"] = time.strftime("%Y-%m-%d %H:%M:%S"); self.fs["all_done"] = True; self.save(); self.flag_status()
+-            self.step("收爐完 (冇新證書, %s)" % self.fs["finished"]); log("FINALIZE3D DONE: 冇新證書"); return
++            self.step("收爐完 (冇新證書, %s)" % self.fs["finished"]); log("FINALIZE3E DONE: 冇新證書"); return
+         fa = self.final_attempt()
+         log("最終認證圖: %s |G₂′| %d 點 %d 邊, |G₃′| %d 點 %d 邊 (%s); leaf 證明 %s" % (fa["tag"], fa["G2p_n"], fa["G2p_m"], fa["G3p_n"], fa["G3p_m"],
+             "< %d ⇒ 紀錄候選 (未重驗)" % RECORD_G3P if fa["G3p_n"] < RECORD_G3P else "≥ %d" % RECORD_G3P, fa["keep_dir"]))
+@@ -890,7 +1010,7 @@
+         if not self.a.dry_run:
+             self.flag_status()
+         self.step("收爐完 (%s): %s" % (self.fs["finished"], "RECORD_CANDIDATE (等 Amber)" if self.rec_ok else ("重驗唔過, 要人手睇" if not self.vok else "有進步, 已封存")))
+-        log("FINALIZE3D DONE: vok=%s, record_candidate=%s, archive %s" % (self.vok, self.rec_ok, arch.get("dir")))
++        log("FINALIZE3E DONE: vok=%s, record_candidate=%s, archive %s" % (self.vok, self.rec_ok, arch.get("dir")))
+         if not self.vok:
+             sys.exit(4)
+ 

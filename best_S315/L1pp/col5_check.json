@@ -1,0 +1,39 @@
+{
+ "when": "2026-09-10 04:22:17",
+ "archived_col": {
+  "file": "/home/user/hadwiger/phase3e/runs/p3e1_step/r05a/col5/G3p_5col.col",
+  "sha256": "a0d4bbf15b7dfaa5f5bd2c3d772dc1f737d0f42907f1c686df81f2daa5ae0ce1",
+  "n": 1501,
+  "n_coloured": 1501,
+  "edges_checked": 8088,
+  "bad_edges": 0,
+  "vertex_set_ok": true,
+  "colours_used": [
+   1,
+   2,
+   3,
+   4,
+   5
+  ],
+  "ok": true
+ },
+ "fresh_col": {
+  "rc": 0,
+  "status": "SAT",
+  "n": 1501,
+  "m": 8088,
+  "colours_used": [
+   1,
+   2,
+   3,
+   4,
+   5
+  ],
+  "edges_checked": 8088,
+  "solve_s": 0.05,
+  "col_sha256": "a0d4bbf15b7dfaa5f5bd2c3d772dc1f737d0f42907f1c686df81f2daa5ae0ce1",
+  "ok": true
+ },
+ "G3p_edge_same": true,
+ "all_ok": true
+}

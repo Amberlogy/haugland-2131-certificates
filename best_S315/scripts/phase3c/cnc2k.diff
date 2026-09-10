@@ -1,0 +1,140 @@
+--- phase2b/cnc2.py
++++ phase3c/cnc2k.py
+@@ -2,4 +2,10 @@
+ # -*- coding: utf-8 -*-
+ """
++cnc2k.py —— Phase 3c 變種 (k = keep): 由 phase2b/cnc2.py v2 (v1.0 發表版) 經 make_cnc2k.py 機械生成, 只加 --keep-dir DIR:
++  每個 leaf 證明經檢查器 VERIFIED 之後唔刪, 而係複製去 DIR (sha256 逐 byte 核對, 重試 3 次) 再刪源檔; 審計證明入 DIR/audit/.
++  差異: keep_proof() 助手, solve_cube()/audit() 嘅 verified 分支, st["done"][id]["kept"], bundle.json 多 keep_* 欄, --keep-dir 參數 (resume 唔准中途換目錄).
++  其餘 (cube 邏輯 / timeout 政策 / cover / 審計 / 磁碟紀律 / resume / SAT 處理) 一字不改. 差異檔: cnc2k.diff
++
++原 cnc2.py 說明:
+ cnc2.py —— Step 4: cube-and-conquer 戰役 (march_cu cube 檔 + 逐 cube solver → 證明 → 檢查器 VERIFIED → 記 sha/用時 → 刪證明檔)  v2 (審核後)
+ 
+@@ -56,4 +62,29 @@
+ def free_gb(path):
+     st = os.statvfs(path); return st.f_bavail * st.f_frsize / 1e9
++
++KEEP_RETRIES = 3
++
++def keep_proof(proof, keep_dir, want_sha):
++    """Phase 3c: 將已 VERIFIED 嘅證明檔複製去 keep_dir (通常係 /mnt/d, 9p), sha256 逐 byte 核對, 錯就重試; 成功先刪源檔 (由 caller 嘅 finally 刪).
++    回傳 (kept_path 或 None, error 字串或 None). 唔 raise."""
++    os.makedirs(keep_dir, exist_ok=True)
++    dst = os.path.join(keep_dir, os.path.basename(proof)); err = None; tmp = dst + ".part"
++    for i in range(KEEP_RETRIES):
++        try:
++            shutil.copyfile(proof, tmp)
++            got = sha(tmp)
++            if got != want_sha:
++                err = "keep sha mismatch (try %d): %s != %s" % (i + 1, got[:16], want_sha[:16]); os.remove(tmp); time.sleep(2); continue
++            os.replace(tmp, dst)
++            return dst, None
++        except Exception as e:
++            err = "keep copy failed (try %d): %r" % (i + 1, e)
++            try:
++                if os.path.exists(tmp):
++                    os.remove(tmp)
++            except Exception:
++                pass
++            time.sleep(2)
++    return None, err
+ 
+ def du_prefix_gb(path, prefix):
+@@ -239,4 +270,10 @@
+             if res["verified"]:
+                 os.remove(cnf)      # cube CNF 可由 base + cube 重建 (writer deterministic), 留 sha; 審計會重建並核對 sha
++                if st.get("keep_dir"):                                   # Phase 3c: 保留 leaf 證明 (複製去 D:, sha 核對); 源檔由 finally 刪
++                    kept, kerr = keep_proof(proof, st["keep_dir"], res["proof_sha"])
++                    if kept:
++                        res["kept"] = kept
++                    else:
++                        res["keep_error"] = kerr
+             else:
+                 fdir = os.path.join(st["proof_dir"], "failed"); os.makedirs(fdir, exist_ok=True)
+@@ -349,4 +386,11 @@
+                 rec.update(check_proof("drat", cnf, proof)); rec["proof_bytes"] = os.path.getsize(proof)
+             rec["ok"] = bool(rec["cnf_sha_match"] and rec["rc"] == 20 and rec.get("verified", False))
++            if rec["ok"] and st.get("keep_dir"):                          # Phase 3c: 審計證明亦保留 (DIR/audit/), 令 5% 審計可以獨立重驗
++                rec["proof_sha"] = sha(proof)
++                kept, kerr = keep_proof(proof, os.path.join(st["keep_dir"], "audit"), rec["proof_sha"])
++                if kept:
++                    rec["kept"] = kept
++                else:
++                    rec["keep_error"] = kerr
+         except Exception as e:
+             rec["tail"] = repr(e)[-300:]
+@@ -363,7 +407,14 @@
+     return [done_aud[i] for i in pick]
+ 
++DISK_PD_MIN_GB = 4.0     # Phase 3c: 證明暫存目錄 (/dev/shm 16 GB RAM 盤) 剩餘 < 4 GB 就唔派新 cube (審查 #9; 磁碟紀律, 唔郁 cube/驗證邏輯)
++
+ def disk_ok(run, st):
+     pd = st["proof_dir"]
+     if du_prefix_gb(pd, run.tag + "_") > DISK_UNVERIFIED_GB_MAX:
++        return False
++    try:
++        if free_gb(pd) < DISK_PD_MIN_GB:
++            return False
++    except OSError:
+         return False
+     if pd.startswith("/mnt/"):
+@@ -391,4 +442,5 @@
+     ap.add_argument("--proof-dir", default=PROOFS); ap.add_argument("--binary", action="store_true")
+     ap.add_argument("--max-errors", type=int, default=3); ap.add_argument("--requeue-stuck", action="store_true")
++    ap.add_argument("--keep-dir", default=None, help="Phase 3c: 保留每個 VERIFIED leaf 證明 (複製去呢個目錄, sha 核對); 審計證明入 DIR/audit/")
+     a = ap.parse_args()
+     out = os.path.abspath(os.path.expanduser(a.out)); os.makedirs(out, exist_ok=True)
+@@ -412,4 +464,8 @@
+             if v is not None:
+                 st[k] = v
++        if a.keep_dir and st.get("keep_dir") and os.path.abspath(os.path.expanduser(a.keep_dir)) != st["keep_dir"]:
++            sys.exit("!! resume: --keep-dir %s != state.json keep_dir %s (唔准中途換目錄)" % (a.keep_dir, st["keep_dir"]))
++        if a.keep_dir and not st.get("keep_dir"):
++            st["keep_dir"] = os.path.abspath(os.path.expanduser(a.keep_dir)); st.setdefault("keep_errors", 0)
+         st["pending"] = st.get("running_at_save", []) + st["pending"]; st["running_at_save"] = []
+         if a.requeue_stuck:
+@@ -437,4 +493,5 @@
+               "max_split": a.max_split if a.max_split is not None else 4, "cover_timeout": a.cover_timeout or 6 * 3600, "proof_dir": pd,
+               "binary": a.binary, "max_errors": a.max_errors, "tools": tool_info(), "run_tag": run.tag,
++              "keep_dir": (os.path.abspath(os.path.expanduser(a.keep_dir)) if a.keep_dir else None), "keep_errors": 0,
+               "pending": [{"id": str(i), "cube": c, "attempt": 1} for i, c in enumerate(cubes)],
+               "done": {}, "running_at_save": [], "split_events": 0, "split_refuted": 0, "march_root_refuted": [], "stuck": [], "wall_s": 0.0,
+@@ -442,7 +499,7 @@
+         base_wall = 0.0
+         run.save(st, force=True)
+-        print("[start] base %s (sha %s): %d 變量 %d 子句; %d 個 cube (sha %s); solver %s%s, timeout %.0fs, workers %d, split-depth %d, proof-dir %s" % (
++        print("[start] base %s (sha %s): %d 變量 %d 子句; %d 個 cube (sha %s); solver %s%s, timeout %.0fs, workers %d, split-depth %d, proof-dir %s%s" % (
+             a.cnf, st["base_sha"][:16], nvars, len(base), len(cubes), st["icnf_sha"][:16], a.solver, " (binary)" if a.binary else "", st["timeout"],
+-            a.workers, a.split_depth, pd), flush=True)
++            a.workers, a.split_depth, pd, (", keep-dir %s (leaf 證明 VERIFIED 後保留)" % st["keep_dir"]) if st.get("keep_dir") else ""), flush=True)
+     nvars, base = read_cnf(st["base_cnf"])
+     assert sha(st["base_cnf"]) == st["base_sha"], "base.cnf sha 對唔上 state.json"
+@@ -483,4 +540,9 @@
+                     st["done"][res["id"]] = {k: res[k] for k in ("cube", "attempt", "timeout", "solve_s", "conflicts", "proof_bytes", "proof_lines",
+                                                                  "proof_sha", "cnf_sha", "checker", "checker_rc", "verify_s")}
++                    if st.get("keep_dir"):                               # Phase 3c: 記低證明檔搬去邊 / 搬失敗 (唔影響 leaf 嘅 VERIFIED 狀態, 只影響封存完整性)
++                        st["done"][res["id"]]["kept"] = res.get("kept")
++                        if res.get("keep_error"):
++                            st["done"][res["id"]]["keep_error"] = res["keep_error"]; st["keep_errors"] = st.get("keep_errors", 0) + 1
++                            run.last_error = "leaf %s VERIFIED 但證明搬去 keep-dir 失敗: %s" % (res["id"], res["keep_error"]); print("!! " + run.last_error, flush=True)
+                     if res["id"] in error_ids:
+                         error_ids.discard(res["id"])
+@@ -599,10 +661,14 @@
+               "max_leaf_solve_s": max(d["solve_s"] for d in st["done"].values()),
+               "cover": cover, "cover_mode": mode, "audit": {"n": len(aud), "all_ok": all(r["ok"] for r in aud), "ids": [r["id"] for r in aud]},
+-              "wall_s": st["wall_s"], "leaf_list": [dict(id=k, **v) for k, v in sorted(st["done"].items())]}
++              "wall_s": st["wall_s"], "leaf_list": [dict(id=k, **v) for k, v in sorted(st["done"].items())],
++              "keep_dir": st.get("keep_dir"), "kept_leaves": sum(1 for d in st["done"].values() if d.get("kept")), "keep_errors": st.get("keep_errors", 0),
++              "keep_error_ids": [k for k, d in st["done"].items() if d.get("keep_error")],
++              "kept_audit": sum(1 for r in aud if r.get("kept")), "audit_keep_errors": [r["id"] for r in aud if r.get("keep_error")]}
+     with open(os.path.join(out, "bundle.json"), "w") as f:
+         json.dump(bundle, f, indent=1)
+     run.status(st, {}, {"status": "certified"})
+-    print("[done] 證書 bundle: %d leaves (solver CPU %.0fs, 驗 CPU %.0fs, 浪費 %.0fs, 證明共 %.1f MB) + cover (%s) + 審計 %d/%d ok; wall %.0fs → %s/bundle.json" % (
+-        bundle["leaves"], bundle["leaf_solve_cpu_s"], bundle["leaf_verify_cpu_s"], bundle["wasted_s"], bundle["leaf_proof_total_mb"], mode, len(aud), len(aud), st["wall_s"], out), flush=True)
++    print("[done] 證書 bundle: %d leaves (solver CPU %.0fs, 驗 CPU %.0fs, 浪費 %.0fs, 證明共 %.1f MB) + cover (%s) + 審計 %d/%d ok; wall %.0fs → %s/bundle.json%s" % (
++        bundle["leaves"], bundle["leaf_solve_cpu_s"], bundle["leaf_verify_cpu_s"], bundle["wasted_s"], bundle["leaf_proof_total_mb"], mode, len(aud), len(aud), st["wall_s"], out,
++        ("; keep-dir %s: leaf 證明保留 %d/%d (搬失敗 %d), 審計證明保留 %d/%d" % (bundle["keep_dir"], bundle["kept_leaves"], bundle["leaves"], bundle["keep_errors"], bundle["kept_audit"], len(aud))) if bundle["keep_dir"] else ""), flush=True)
+     os.remove(lock)
+ 

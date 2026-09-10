@@ -1,0 +1,25 @@
+{
+ "tag": "G3p_5col_final",
+ "n": 1501,
+ "m": 8088,
+ "k": 5,
+ "same": null,
+ "tri": [
+  1,
+  2,
+  93
+ ],
+ "solver": "kissat",
+ "nvars": 7505,
+ "clauses": 41944,
+ "solve_s": 0.05,
+ "status": "SAT",
+ "colours_used": [
+  1,
+  2,
+  3,
+  4,
+  5
+ ],
+ "edges_checked": 8088
+}

@@ -1,0 +1,5 @@
+[A 枚舉] 1501 點 8088 邊: 菱形 510 個, Moser spindle copies = 0 (0.01s)
+[B SAT] CNF 21007 變量 / 100546 子句 (symbreak=True)
+[B SAT] kissat UNSAT 16.17s; DRAT 340498 行; drat-trim s VERIFIED ✓ (27.5s)
+[B SAT] 證書: /home/user/hadwiger/phase3e/runs/p3e1_step/r05a/l3/spindle_B/spindle.cnf + /home/user/hadwiger/phase3e/runs/p3e1_step/r05a/l3/spindle_B/spindle.drat
+[對數] 引擎 A (0 隻) 同引擎 B (UNSAT) 一致 ✓

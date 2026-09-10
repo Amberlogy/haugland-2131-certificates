@@ -1,0 +1,21 @@
+{
+ "nvars": 6004,
+ "clauses": 33872,
+ "tri": [
+  1,
+  2,
+  93
+ ],
+ "lemma_clauses": 16,
+ "lemmas": "col(u)=col(v), col(u)=col(rho v) (bi-implication per colour)",
+ "rc": 20,
+ "solve_s": 0.01,
+ "status": "UNSAT",
+ "verified": true,
+ "drat_lines": 1121,
+ "drat_bytes": 16161,
+ "sha": {
+  "L3pp.cnf": "b3b2582404c1280c32ca5b669aec75d055303d8a9947219f17f8b5ffc57abc35",
+  "L3pp.drat": "e9376129cbf656722623d8f09fd09650be0c2f0b8edbf9196c299793f7aebf93"
+ }
+}

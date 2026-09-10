@@ -1,0 +1,2 @@
+[G3p_5col] 1501 點 8088 邊, k=5: CNF 7505 變量 41944 子句, 三角形釘色 (1, 2, 93), 同色對 None; solver=kissat, timeout=3600s
+[G3p_5col] kissat SAT (0.0s); 5 色染色 8088/8088 條邊逐條覆核異色 ✓ (實際用咗 5 色) → G3p_5col.col

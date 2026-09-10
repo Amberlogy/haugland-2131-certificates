@@ -1,0 +1,30 @@
+[21:20:05] verify_final r05a: base sha 一致 True; leaves 16382 (bundle 16382, root cubes 16382, split 0); keep 目錄 16382 個 .drat
+[21:54:58]   leaf 重驗 2000/16382, ok 2000, 2093 s
+[22:15:37]   leaf 重驗 4000/16382, ok 4000, 3332 s
+[22:34:54]   leaf 重驗 6000/16382, ok 6000, 4490 s
+[22:49:06]   leaf 重驗 8000/16382, ok 8000, 5341 s
+[23:02:44]   leaf 重驗 10000/16382, ok 10000, 6159 s
+[23:10:48]   leaf 重驗 12000/16382, ok 12000, 6644 s
+[23:24:39]   leaf 重驗 14000/16382, ok 14000, 7475 s
+[23:44:03]   leaf 重驗 16000/16382, ok 16000, 8639 s
+[23:47:26]   leaf 重驗 16382/16382, ok 16382, 8841 s
+[23:47:26] L1″ leaf 重驗: 16382/16382 VERIFIED + sha 一致 (8841 s, 證明共 128.12 GB)
+[23:47:26] cover (pure) 重驗: drat-trim VERIFIED ✓, cnf sha True, drat sha True, 子句 == (base+)¬leaf True, header nvars True
+[23:55:57] 審計證明重驗: bundle 5% 審計 819/819 ok; keep/audit 819 檔, 819 VERIFIED; 完整 True (缺 0)
+[23:56:52] l3_final (engine B): rc=0 all_ok=True, G₃′ {'n': 1501, 'm': 8088}, L3″ UNSAT, spindle A 0, spindle B ok=True; 同戰役 l3/ 檔案一致 True; exactfield --complete G3p 再跑 rc=0
+[23:56:52] verify_final r05a: 全部通過 ✓ (9407 s) → /home/user/hadwiger/phase3e/runs/p3e1_step/r05a/verify_final.json
+[01:20:15] verify_final r05a: base sha 一致 True; leaves 16382 (bundle 16382, root cubes 16382, split 0); keep 目錄 16382 個 .drat
+[01:50:45]   leaf 重驗 2000/16382, ok 2000, 1829 s
+[02:08:51]   leaf 重驗 4000/16382, ok 4000, 2916 s
+[02:25:30]   leaf 重驗 6000/16382, ok 6000, 3915 s
+[02:39:55]   leaf 重驗 8000/16382, ok 8000, 4780 s
+[02:55:09]   leaf 重驗 10000/16382, ok 10000, 5694 s
+[03:05:20]   leaf 重驗 12000/16382, ok 12000, 6305 s
+[03:22:29]   leaf 重驗 14000/16382, ok 14000, 7333 s
+[03:49:14]   leaf 重驗 16000/16382, ok 16000, 8938 s
+[03:54:51]   leaf 重驗 16382/16382, ok 16382, 9276 s
+[03:54:51] L1″ leaf 重驗: 16382/16382 VERIFIED + sha 一致 (9276 s, 證明共 128.12 GB)
+[03:54:52] cover (pure) 重驗: drat-trim VERIFIED ✓, cnf sha True, drat sha True, 子句 == (base+)¬leaf True, header nvars True
+[04:06:13] 審計證明重驗: bundle 5% 審計 819/819 ok; keep/audit 819 檔, 819 VERIFIED; 完整 True (缺 0)
+[04:07:08] l3_final (engine B): rc=0 all_ok=True, G₃′ {'n': 1501, 'm': 8088}, L3″ UNSAT, spindle A 0, spindle B ok=True; 同戰役 l3/ 檔案一致 True; exactfield --complete G3p 再跑 rc=0
+[04:07:08] verify_final r05a: 全部通過 ✓ (10013 s) → /home/user/hadwiger/phase3e/runs/p3e1_step/r05a/verify_final.json

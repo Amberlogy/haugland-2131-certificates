@@ -1,0 +1,10 @@
+# Every file in this repository is verified by sha256 (SHA256SUMS,
+# SHA256SUMS.bundle, best_S315/SHA256SUMS, best_S315/L1pp/LEAF_INDEX.json).
+# Git must therefore never rewrite line endings on checkout: with the default
+# core.autocrlf=true of Git for Windows, a clone would receive CRLF and every
+# recorded hash would fail to match -- the stored objects are correct, but the
+# working tree would not be what was certified.
+#
+# "-text" disables all end-of-line conversion.  It does not change what is
+# stored; it only makes every checkout byte-identical to the certified files.
+* -text
