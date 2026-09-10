@@ -99,6 +99,7 @@ extra/    G3-5.col G3-5.json               5-colouring; spindle.cnf (the spindle
 scripts/  haugland.py exactfield.py spindlefind.py chain.py certify4.py l1enc.py cnc2.py cubes.py liftall.py verify_bundle.py
           refs/appendixA_paths.json        the 231 lattice paths of the paper's Appendix A (input to haugland.py)
 best_S315/                                 v1.1 layer: the 1501-vertex graph G3' (its own README, RECORD_README, certificates, scripts) -- see §9
+reduction_S60/                             v1.1 layer: the Proposition 2 certificate for G1 - S60 (metadata only; its 95.2 GiB of leaf proofs are not deposited) -- see §10
 rerun.sh                                   re-verification driver (quick layer / full layer)
 zenodo/                                    (only in the Zenodo record) hadwiger_G3_proof_bundle.tar.gz.part000..NNN, SHA256SUMS.volumes
 ```
@@ -228,6 +229,8 @@ re-split, and one sub-cube alone needed 561 s and a 480 MB proof. An 8-hour, 14-
   That DOI is the *concept* DOI and always resolves to the latest version, so it covers the v1.1 material as well.
 * v1.1 (the 1501-vertex graph G3'): `best_S315/` in this repository, and the corresponding files in the Zenodo record. The 16 382 leaf DRAT proofs
   of the v1.1 layer are **not** deposited — see §9 for why and for how to regenerate and check them.
+* v1.1 (the Proposition 2 certificate for G1 − S₆₀): `reduction_S60/` in this repository. Its 16 384 leaf DRAT proofs (95.2 GiB / 102.2 GB) are **not**
+  deposited in either layer; every one of them is pinned by sha256 in `reduction_S60/LEAF_INDEX.json` — see §10.
 
 ## 8. License
 
@@ -286,3 +289,23 @@ which fixes this retroactively for v1.0 as well.
 If you tried to verify v1.0 on Windows and it failed, that was this, not
 anything you did. Re-clone (or run `git checkout -- .` after pulling
 v1.1) and the check will pass.
+
+
+---
+
+## 10. v1.1 layer — the Proposition 2 certificate (`reduction_S60/`)
+
+`reduction_S60/` holds the cube-and-conquer certificate that **G1 − S₆₀** (680 vertices, 3580 edges) has the pair property, which together with the
+L2′/L3′ assembly in `reduction_S60/l3_phase3_round2/` certifies that G3′ (1891 vertices) is not 4-colourable.
+
+**Deposited here (41 MB):** the deleted set S₆₀ (`S60.txt`, and `base.json`), `base.cnf`, the 16 384-cube file, the cover certificate
+`cnc/cover_pure.{cnf,drat}`, the campaign record, the L2′/L3′ certificate `l3_phase3_round2/L3p.{cnf,drat}` with the exact coordinate and edge files,
+the run and re-verification logs, and **the sha256 of every one of the 16 384 leaf proofs** (`LEAF_INDEX.json`, `SHA256SUMS.leaf_proofs`).
+
+**Not deposited:** the leaf proofs themselves — 16 384 leaves plus 819 audit proofs, **95.2 GiB (102.2 GB)**, which exceeds Zenodo's 50 GB per-record
+limit even compressed (binary DRAT compresses about 1.6× with gzip, 2.1× with xz, measured on this project's proofs). They are regenerable in about
+2.4 h on 14 threads, and each one can be checked against its recorded sha256.
+
+**There is no driver script in that directory** — unlike `rerun.sh` at the repository root (2131-vertex layer) and `best_S315/reverify.sh`
+(1501-vertex layer). `reduction_S60/README.md` gives the command line instead, and lists the checks that need no leaf proofs at all
+(cover certificate, L3′ certificate, edge-list completeness, `sha256sum -c SHA256SUMS`).

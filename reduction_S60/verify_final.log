@@ -1,0 +1,14 @@
+[11:29:07] verify_final S60_full: base sha 一致 True; leaves 16384 (bundle 16384, root cubes 16384, split 0); keep 目錄 16384 個 .drat
+[11:33:44]   leaf 重驗 2000/16384, ok 2000, 277 s
+[11:44:17]   leaf 重驗 4000/16384, ok 4000, 910 s
+[11:53:45]   leaf 重驗 6000/16384, ok 6000, 1478 s
+[12:01:04]   leaf 重驗 8000/16384, ok 8000, 1917 s
+[12:06:55]   leaf 重驗 10000/16384, ok 10000, 2268 s
+[12:19:51]   leaf 重驗 12000/16384, ok 12000, 3044 s
+[12:28:37]   leaf 重驗 14000/16384, ok 14000, 3570 s
+[12:34:36]   leaf 重驗 16000/16384, ok 16000, 3929 s
+[12:35:59]   leaf 重驗 16384/16384, ok 16384, 4012 s
+[12:35:59] L1″ leaf 重驗: 16384/16384 VERIFIED + sha 一致 (4012 s, 證明共 90.75 GB)
+[12:35:59] cover (pure) 重驗: drat-trim VERIFIED ✓, cnf sha True, drat sha True, 子句 == (base+)¬leaf True, header nvars True
+[12:40:21] 審計證明重驗: bundle 5% 審計 819/819 ok; keep/audit 819 檔, 819 VERIFIED; 完整 True (缺 0)
+[12:40:21] verify_final S60_full: 全部通過 ✓ (4274 s) → /home/user/hadwiger/phase3c/s60_full/verify_final.json

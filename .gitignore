@@ -15,6 +15,10 @@ zenodo_v1_old
 !best_S315/L1pp/cnc_r05a/cover_pure.drat
 !best_S315/L2L3/l3/L3pp.drat
 !best_S315/L2L3/l3_final/L3pp.drat
+# reduction_S60: same two kinds of small certificate.  Its 16384 leaf proofs
+# (95.2 GiB) are not in the repository at all and stay covered by `*.drat`.
+!reduction_S60/cnc/cover_pure.drat
+!reduction_S60/l3_phase3_round2/L3p.drat
 # scratch output of rerun.sh
 rebuild/
 tmp_verify/

@@ -1,0 +1,20 @@
+{
+ "nvars": 7564,
+ "clauses": 45054,
+ "tri": [
+  1,
+  57,
+  59
+ ],
+ "lemma_clauses": 16,
+ "rc": 20,
+ "solve_s": 0.08,
+ "status": "UNSAT",
+ "verified": true,
+ "drat_lines": 3864,
+ "drat_bytes": 432302,
+ "sha": {
+  "L3p.cnf": "863d68361502c66432d7756668c5e3f183da5442bacb3e336f7e5c05dc141631",
+  "L3p.drat": "9c527c4d91c2d460f803b4797bc586dc9251db61e77f626ff1eca70656e3d7ff"
+ }
+}

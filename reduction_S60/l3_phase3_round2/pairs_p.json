@@ -1,0 +1,33 @@
+{
+ "pairs": {
+  "1": {
+   "A": 156,
+   "B": 584,
+   "A_orig": 172,
+   "B_orig": 655,
+   "edges_missing": 0
+  },
+  "2": {
+   "A": 885,
+   "B": 164,
+   "A_orig": 994,
+   "B_orig": 181,
+   "edges_missing": 0
+  },
+  "3": {
+   "A": 156,
+   "B": 1529,
+   "A_orig": 172,
+   "B_orig": 1720,
+   "edges_missing": 0
+  },
+  "4": {
+   "A": 1830,
+   "B": 1109,
+   "A_orig": 2059,
+   "B_orig": 1246,
+   "edges_missing": 0
+  }
+ },
+ "note": "G3' 1-based indices"
+}
