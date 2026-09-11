@@ -91,6 +91,6 @@ python3 scripts/phase2/certify4.py L2L3/l3_final/G3p.edge --out /tmp/c5 --k 5 --
 
 Verification recorded at archive time (`L1pp/verify_final.json`, `L1pp/crosscheck.json`,
 `L1pp/col5_check.json`): every one of the 16382 leaf proofs re-checked with drat-trim
-(16382/16382, 0 bad), cover and audit checks passed, an independent 5% sample (819 leaves)
-passed all three of drat-trim, the formally verified cake_lpr, and lrat-check, and the archived
+(16382/16382, 0 bad), cover and audit checks passed, a 5% sample (819 leaves) passed
+three independent checkers: drat-trim, the formally verified cake_lpr, and lrat-check, and the archived
 5-colouring was re-checked both from the file and by a fresh solve.
