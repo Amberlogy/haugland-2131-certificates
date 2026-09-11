@@ -1,6 +1,6 @@
 {
  "generated": "2026-09-06 12:56:33",
- "note": "Every number the paper cites, with its source file. verified=false entries are relayed information without a machine record.  Source paths were rewritten at publication time: a path was replaced by its repository-relative location only when the local file was byte-identical (sha256) to a file in the published tree. Sources with no published counterpart are marked '(not in the release)'; see source_status on each fact.",
+ "note": "Every number the paper cites, with its source file. verified=false entries are relayed information without a machine record.  Source paths were rewritten at publication time: a path was replaced by its repository-relative location only when the local file was byte-identical (sha256) to a file in the published tree. Sources with no published counterpart are marked '(not in the release)'; see source_status on each fact. source_status is one of: 'published' (the file is in this repository), 'not-released' (it exists on the machine that produced it but is not published), 'not-a-file' (the source is a directory, or information relayed by e-mail rather than a machine record -- those also carry verified:false), and 'gone' (no file of that name exists any more). 'gone' means the file is unrecoverable, so it is only used after searching every known root; an earlier version of this index applied it to eight facts, all of which were in fact recoverable or were never files.",
  "facts": {
   "recon.H_vertices": {
    "value": 21,
@@ -1026,26 +1026,26 @@
     }
    ],
    "unit": null,
-   "source": "(not in the release; source file no longer on disk) results.jsonl",
+   "source": "(not in the release) results.jsonl in 4 directories: probe, probe2, probe3, probe_smoke",
    "note": "22 encoding×solver runs (+2 controls), 30-min solver-internal time limit each; all timeout",
    "verified": true,
-   "source_status": "gone"
+   "source_status": "not-released"
   },
   "direct.probe_n_timeout": {
    "value": 22,
    "unit": null,
-   "source": "(not in the release; source file no longer on disk) results.jsonl",
+   "source": "(not in the release) results.jsonl in 4 directories: probe, probe2, probe3, probe_smoke",
    "note": null,
    "verified": true,
-   "source_status": "gone"
+   "source_status": "not-released"
   },
   "direct.probe_n_runs": {
    "value": 22,
    "unit": null,
-   "source": "(not in the release; source file no longer on disk) results.jsonl",
+   "source": "(not in the release) results.jsonl in 4 directories: probe, probe2, probe3, probe_smoke",
    "note": "phase2b_results.md counts 22 (5+7+10); results.jsonl may include the 2 control runs",
    "verified": true,
-   "source_status": "gone"
+   "source_status": "not-released"
   },
   "direct.L1_kissat_timeout_s": {
    "value": 1800,
@@ -1644,10 +1644,10 @@
     }
    ],
    "unit": null,
-   "source": "(not in the release) witness_blocked.json",
+   "source": "reduction_blocked/witness/witness_blocked.json",
    "note": null,
    "verified": true,
-   "source_status": "not-released"
+   "source_status": "published"
   },
   "probe.total_wall_h": {
    "value": 6.58,
@@ -1970,26 +1970,26 @@
   "haugland.reply_cadical_hours": {
    "value": 8,
    "unit": "h",
-   "source": "(not in the release; source file no longer on disk) MISSING:",
+   "source": "MISSING: e-mail from J. K. Haugland (received 2026-09-06, reported by K. T. Wong); paste the exact sentence here before citing",
    "note": "Haugland's CaDiCaL run for the pair property took about 8 hours (as relayed by the author of the release); NOT independently verified; version/hardware unknown",
    "verified": false,
-   "source_status": "gone"
+   "source_status": "not-a-file"
   },
   "haugland.permission_to_publish": {
    "value": true,
    "unit": null,
-   "source": "(not in the release; source file no longer on disk) MISSING:",
+   "source": "MISSING: same e-mail; permission to publish the reconstruction with a citation of the preprint",
    "note": null,
    "verified": false,
-   "source_status": "gone"
+   "source_status": "not-a-file"
   },
   "haugland.files_sent_to_heule": {
    "value": true,
    "unit": null,
-   "source": "(not in the release; source file no longer on disk) MISSING:",
+   "source": "MISSING: same e-mail; G1 files were sent to Marijn Heule",
    "note": null,
    "verified": false,
-   "source_status": "gone"
+   "source_status": "not-a-file"
   },
   "tools": {
    "value": {
@@ -2069,7 +2069,7 @@
    "source": "(not in the release; a directory, not a file) release",
    "note": null,
    "verified": true,
-   "source_status": "gone"
+   "source_status": "not-a-file"
   },
   "release.zenodo_volumes": {
    "value": "# Zenodo layer volumes (prepared 2026-09-06 09:39:23, run p4r0_reseal) — reassemble: cat hadwiger_G3_proof_bundle.tar.gz.part* | tar xzf -   → bundle/ (28 GB, 14831 files)\n# file  bytes  sha256\nhadwiger_G3_proof_bundle.tar.gz.part000  3984588800  2bdb04611c46deaec25876ee6db0bce46495db3e895c03f58c7a727efa634fe8\nhadwiger_G3_proof_bundle.tar.gz.part001  3907873392  f81b2f5445cced480096ae75e047d799676a4d8bf594cc2d8655b1032ae83469\n# total bytes: 7892462192\n",
@@ -2082,10 +2082,10 @@
   "release.fresh_test_s": {
    "value": 13,
    "unit": "s",
-   "source": "(not in the release; source file no longer on disk) fresh_test.log",
+   "source": "fresh_test.log",
    "note": "quick layer from a clean copy, 9/9 OK (13–26 s depending on load)",
    "verified": true,
-   "source_status": "gone"
+   "source_status": "published"
   },
   "release.author": {
    "value": "King Tat Wong, independent researcher, ORCID 0009-0003-4009-3619",
@@ -2153,8 +2153,8 @@
   }
  },
  "paths_rewritten": {
-  "not-released": 76,
-  "published": 52,
-  "gone": 8
+  "not-released": 78,
+  "published": 54,
+  "not-a-file": 4
  }
 }
