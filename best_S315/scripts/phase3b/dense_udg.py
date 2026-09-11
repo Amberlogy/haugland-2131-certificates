@@ -143,7 +143,7 @@ def main():
     # markdown (English)
     L = ["# dense_udg_L.md — Unit-distance graphs on balls of Haugland's lattice L (exact arithmetic)", "",
          "Generated %s by `phase3b/dense_udg.py` (Phase 3b, step 4). Lattice L = Z-span of the 84 unit vectors u_0..u_83 of Haugland's 21-vertex graph H (arXiv:2608.04542), "
-         "represented exactly as cyclotomic integers in Q(zeta_84) (common denominator D = %d). The r-ball B_r is the set of lattice points reachable from the origin by at most r unit steps (BFS over the 84 vectors)." % (res["created"], lat.D), "",
+         "represented exactly in Q(zeta_84) with common denominator D = %d, so not in general algebraic integers. The r-ball B_r is the set of lattice points reachable from the origin by at most r unit steps (BFS over the 84 vectors)." % (res["created"], lat.D), "",
          "Edges: two points are adjacent iff their exact distance is 1. Lattice-direction edges (q - p = u_k) are found exactly; completeness (\"no other unit-distance pairs\") is certified by a floating-point candidate scan "
          "(all pairs with | |p-q| - 1 | < 1e-6, spatial grid) followed by exact verification of every non-lattice candidate — the same standard as `haugland.py` used for T6 / G2 / G3.", "",
          "| graph | vertices | edges | max degree | # vertices of max degree | vertices of degree 84 (interior) | average degree 2m/n | edge density m/C(n,2) | completeness |", "|---|---|---|---|---|---|---|---|---|"]

@@ -2,7 +2,7 @@
 
 Proof archive (Zenodo layer): DOI [10.5281/zenodo.22435778](https://doi.org/10.5281/zenodo.22435778). GitHub layer: https://github.com/Amberlogy/haugland-2131-certificates
 
-**Proposition (machine-proved).** Let G₃ be Haugland's (arXiv:2608.04542 v4) 2131-vertex unit-distance graph with exact vertex coordinates in `inputs/G3.cvtx` (cyclotomic integers of ℚ(ζ₄₂₀)) and edge list `inputs/G3.edge` (12 530 edges).
+**Proposition (machine-proved).** Let G₃ be Haugland's (arXiv:2608.04542 v4) 2131-vertex unit-distance graph with exact vertex coordinates in `inputs/G3.cvtx` (lying in ℚ(ζ₄₂₀); denominators divide 28, so not in general algebraic integers) and edge list `inputs/G3.edge` (12 530 edges).
 **G₃ has no proper 4-colouring.** Together with the 5-colouring certified in Phase 2 (`extra/G3-5.col`, all 12 530 edges checked to have different endpoint colours), **χ(G₃) = 5**.
 
 **Proof chain (every step is a machine certificate; re-verification command `bash rerun.sh`):**

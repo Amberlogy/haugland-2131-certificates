@@ -87,7 +87,7 @@ def main():
     # ---- README ----
     L = ["# REDUCTION_README.md — v1.1 staging: certificates for the reduction experiments (NOT yet released)", "",
          "Staged %s by `phase3b/stage_v11.py`. Everything here supplements v1.0 (GitHub `Amberlogy/haugland-2131-certificates`, Zenodo DOI 10.5281/zenodo.22435778). "
-         "Vertex numbers refer to the v1.0 input files `inputs/G1.*`, `inputs/G3.*` (and `G2.*` from `scripts/phase2/haugland.py`); all coordinates are exact cyclotomic integers." % time.strftime("%Y-%m-%d %H:%M:%S"), "",
+         "Vertex numbers refer to the v1.0 input files `inputs/G1.*`, `inputs/G3.*` (and `G2.*` from `scripts/phase2/haugland.py`); all coordinates are exact, and lie in a cyclotomic field, though they are not in general algebraic integers: denominators divide 7 for G1 and G2, and divide 28 for G3." % time.strftime("%Y-%m-%d %H:%M:%S"), "",
          "## A. What each certificate proves", "",
          "**Notation.** G1 (740 vertices) has the *pair property* if every proper 4-colouring gives A=(0,0) and B=(0,√3) different colours. "
          "G2 (1066 vertices) has the *mono-pair property* if every proper 4-colouring gives u=(−1,0) and v=(1,0) the same colour. For a vertex set S, G−S is the induced subgraph on V(G)∖S.", "",

@@ -4,7 +4,7 @@ Prepared 2026-09-05 by King Tat Wong (independent researcher; ORCID https://orci
 
 ## 1. What we reconstructed
 
-* H (21 vertices, 42 edges), the 84 unit vectors u_j (Table 1 checked arc by arc: u_k = head − tail in ℚ(ζ₈₄)), the 3-ball (83 581 points), T₅ (1042), T₆ (12 856), G₀ (1294), the 7-core G₁ (740 vertices, 3985 edges), G₂ (1066 / 6264, |V₁ ∩ V₂| = 414), G₃ (2131 / 12 530, exactly two cross edges (1,0)–ρ(1,0) and (0,√3)–ρ(0,√3)). Every count equals the paper's. All coordinates are exact cyclotomic integers (H, G₁, G₂ ⊂ ℚ(ζ₈₄); G₃ ⊂ ℚ(ζ₄₂₀), (7+i√15)/8 = unit of ℚ(ζ₄₂₀)); no floating-point decision anywhere (floats only pre-screen candidate pairs, which are then decided exactly).
+* H (21 vertices, 42 edges), the 84 unit vectors u_j (Table 1 checked arc by arc: u_k = head − tail in ℚ(ζ₈₄)), the 3-ball (83 581 points), T₅ (1042), T₆ (12 856), G₀ (1294), the 7-core G₁ (740 vertices, 3985 edges), G₂ (1066 / 6264, |V₁ ∩ V₂| = 414), G₃ (2131 / 12 530, exactly two cross edges (1,0)–ρ(1,0) and (0,√3)–ρ(0,√3)). Every count equals the paper's. All coordinates are exact, and lie in a cyclotomic field, though they are not in general algebraic integers (H, G₁, G₂ ⊂ ℚ(ζ₈₄) with denominators dividing 7; G₃ ⊂ ℚ(ζ₄₂₀) with denominators dividing 28, (7+i√15)/8 = unit of ℚ(ζ₄₂₀)); no floating-point decision anywhere (floats only pre-screen candidate pairs, which are then decided exactly).
 * The 231 paths of Appendix A were transcribed; each one, started at A = (0,0) and followed through u_{i₁}, u_{i₂}, …, lands exactly on B = (0,√3) and stays inside V(G₁); the union of the paths is all of V(G₁).
 * One floating-point near-miss was found and rejected exactly: G₃ vertices #246 and #1641 are at distance 1.00000062 (not an edge).
 
