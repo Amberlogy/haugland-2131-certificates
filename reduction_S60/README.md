@@ -6,12 +6,12 @@ G1 − S₆₀ has the pair property, which with the L2′/L3′ assembly in
 Proposition 2 of the note.
 
 `S60_README.md` is the archive's own record, written by the run that produced it.
-Its title carries the label `(NOT released)` because at the time of writing nothing
-had been deposited anywhere; that label is superseded for the files in this
-directory, and remains accurate for the leaf proofs, which are still not deposited
-(see below).
+Its title used to carry the label `(NOT released)`, written when nothing had been
+deposited anywhere; it has been removed, because the files in this directory are
+released. The leaf proofs are still not deposited in either layer (see below).
 
-## 1. What is here (41 MB, 26 files)
+## 1. What is here (41 MB, 29 files; 28 of them fingerprinted in `SHA256SUMS`,
+which cannot list itself)
 
 | path | what |
 |---|---|

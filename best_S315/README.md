@@ -29,11 +29,13 @@ graph has **1441** vertices (Heule, *Geombinatorics* 31(2), 2021, as cited in ar
 ## Release notes
 
 finalize3e ran twice: once on 2026-09-09 and again on 2026-09-10 from the
-archive, after a packaging bug was fixed. Each run drew an independent
-random 5% sample for the cake_lpr cross-check; both passed 819/819. The
-sample released here is the second run's, recorded in crosscheck.json.
-The leaf_proofs/audit/ directory in the working tree holds the first run's
-DRAT artefacts and is not part of this release.
+archive, after a packaging bug was fixed. The cross-check sample is the 819
+leaves selected by `random.Random(20260908).sample(...)`, recorded in
+`crosscheck.json`. Both runs drew this same sample, because the seed is
+fixed: the selection is a deterministic function of the seed and the leaf
+set. This is a 5% sample checked twice, not two independent 5% samples.
+The sample released here is the second run's. The first run's record was in
+leaf_proofs/audit/, which is not part of this release.
 
 The complete set of 16382 leaf proofs (128.1 GB; ~61 GB with xz, ~79 GB
 with gzip) is not uploaded: both exceed Zenodo's 50 GB per-record limit.
