@@ -39,7 +39,7 @@ anywhere** — not in this repository and not in the Zenodo record.
 |---|---|---|
 | leaf proofs | 90 753 918 800 | 84.5 GiB (90.8 GB) |
 | audit proofs | 11 423 561 197 | 10.6 GiB (11.4 GB) |
-| **total** | **102 179 232 894** | **95.2 GiB (102.2 GB)** |
+| **total** | **102 177 479 997** | **95.2 GiB (102.2 GB)** |
 
 That exceeds Zenodo's 50 GB per-record limit even after compression (binary DRAT
 compresses about 1.6× with gzip and 2.1× with xz, measured on this project's
@@ -58,7 +58,7 @@ There is **no driver script in this directory** — unlike the repository root
 
 ```bash
 # whole-bundle re-verification, once the leaf proofs exist locally
-python3 scripts/phase3c/verify_final.py \
+python3 ../best_S315/scripts/phase3c/verify_final.py \
         --attempt-dir <this directory, with cnc/ renamed to cnc_S60_full> \
         --tag S60_full \
         --keep-dir <directory holding the regenerated leaf proofs> \
@@ -75,7 +75,7 @@ drat-trim cnc/cover_pure.cnf cnc/cover_pure.drat            # s VERIFIED
 drat-trim l3_phase3_round2/L3p.cnf l3_phase3_round2/L3p.drat
 
 # the edge lists are the complete unit-distance graphs on their exact point sets
-python3 best_S315/scripts/phase2/exactfield.py check \
+python3 ../best_S315/scripts/phase2/exactfield.py check \   # needs numpy
         l3_phase3_round2/G3p.cvtx l3_phase3_round2/G3p.edge --complete
 
 # integrity of this directory
@@ -89,6 +89,6 @@ the sha256 in `LEAF_INDEX.json`: that digest pins the proof that was actually
 checked in the original run. drat-trim accepting your proof is an independent
 confirmation of the same claim, which is the point of regenerating.
 
-`S60_README.md` refers to `../REDUCTION_README.md §A` for the statement being
-certified. That staging document is not part of this release; §1 above states the
-same thing.
+`S60_README.md` used to refer to `../REDUCTION_README.md §A` for the statement being
+certified. That staging document was never part of this release, so it now points at
+§1 above and at §10 of the repository README, which state the same thing.

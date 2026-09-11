@@ -1,4 +1,4 @@
-# RECORD_README.md — improved Moser-spindle-free 5-chromatic unit-distance graph on 1501 vertices (not a record; **NOT released**)
+# RECORD_README.md — improved Moser-spindle-free 5-chromatic unit-distance graph on 1501 vertices (1501 > 1441: not a record)
 
 Archived 2026-09-10 01:20:15 by `scripts/phase3e/finalize3e.py` (run `p3e1_step`, certificate `r05a`, seeded from Phase 3c `p3c1_shrink` r09a). Author of the project: King Tat Wong (Amber). Every statement below is backed by a machine certificate in this directory and was re-verified from those files at archive time (`L1pp/verify_final.json`, `L1pp/crosscheck.json`, `L1pp/col5_check.json`: all_ok = true).
 
@@ -226,6 +226,9 @@ Re-run everything with `bash reverify.sh` (about 3 h on 14 threads).
 
 ## 5. Integrity
 
-`SHA256SUMS` covers every file here (`<sha256>  <relative path>`; check with `sha256sum -c SHA256SUMS`). `SHA256SUMS.small` lists the subset mirrored to the Windows staging folder, which omits `L1pp/leaf_proofs/`.
+`SHA256SUMS` covers every file here (`<sha256>  <relative path>`; check with `sha256sum -c SHA256SUMS`). The 17201 entries under `L1pp/leaf_proofs/` name proofs that are deliberately not packaged, so a plain
+`sha256sum -c SHA256SUMS` reports them as `FAILED open or read`; that is absence, not corruption. To check what is
+present: `grep -v 'L1pp/leaf_proofs/' SHA256SUMS | sha256sum -c --quiet`.
 
-Not released: Amber (K. T. Wong) reviews first — no git push, no Zenodo version, no e-mail.
+Released as v1.1: GitHub tag `v1.1` of github.com/Amberlogy/haugland-2131-certificates, and the Zenodo record
+under concept DOI 10.5281/zenodo.22435777.

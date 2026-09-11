@@ -57,7 +57,7 @@ GitHub rejects files above 100 MB, so one certificate file is present here only 
 
 It is the engine-B spindle-freeness proof (`drat-trim spindle_B/spindle.cnf spindle_B/spindle.drat`
 → `s VERIFIED`). The matching `spindle.cnf` (3.0 MB) **is** here, so the statement being proved is
-fully visible; only the proof object is elsewhere. Both copies are in the Zenodo v1.1 record, in
+fully visible; only the proof object is elsewhere. Both copies are, once v1.1 is published, in the Zenodo v1.1 record, in
 `zenodo_v1.1_core.tar.gz`, at the same paths. Their sha256 values are also in `SHA256SUMS`.
 
 Engine A (exact rhombus-pair enumeration, 0 copies) is independent of this file and is fully
@@ -72,8 +72,9 @@ The 16382 leaf DRAT proofs are also not here — see the release note above.
 
 ```bash
 # the deleted set really produces the archived base.cnf
-python3 scripts/phase3b/buildg2.py --remove "$(paste -sd, S315.txt | tr -d ' ')" --out /tmp/b --tag base \
-        --protected run/batches_g2.json
+# (S315.txt opens with three comment lines; they must be stripped)
+python3 scripts/phase3b/buildg2.py --remove "$(grep -v '^#' S315.txt | paste -sd, | tr -d ' ')" \
+        --out /tmp/b --tag base --protected run/batches_g2.json
 sha256sum /tmp/b/base.cnf L1pp/base.cnf        # must match 1516417ea9ba4cee...
 
 # the L3'' assembly certificate

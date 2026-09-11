@@ -34,7 +34,9 @@ so anyone can check a proof they obtain or regenerate against this record.
 - base.cnf sha256: `1516417ea9ba4ceee78c6579b90827d7c026d77cd4cd6b3befc2c766f2ad3d2c`
 - independent cross-check on a 5% sample (819 leaves), three checkers
   (drat-trim + cake_lpr + lrat-check): 819/819, 0 bad
-- cover check: None, audit: None
+- cover check: verified; audit: 819/819 complete, 0 missing
 
-The 25 GB of LRAT produced during that cross-check was consumed by the
-checkers and not retained; it is regenerable from the DRAT with drat-trim.
+The 25 GB of LRAT produced during that cross-check was regenerated for
+deposit and is on the Zenodo record as `zenodo_v1.1_audit_lrat.tar.xz`
+(5.99 GB packed, 25.0 GB raw); it is also regenerable from the DRAT with
+drat-trim.

@@ -31,9 +31,11 @@ The 8, 12 and 7 in the last column are the three numbers the note quotes.
 ## Checking a witness by hand
 
 ```bash
-# rebuild G1 - S from the vertex list in <dir>/base.json, then, for the colouring:
-#   every edge bichromatic, col(A) = col(B), every colour in 1..4, every vertex coloured
-python3 best_S315/scripts/phase3b/witness_g2.py --col blocked_90/G1minus_90v.col
+# every edge bichromatic, col(A) = col(B), every colour in 1..4, every vertex coloured.
+# witness_g2.py cannot be used here: it builds G2 (1066 vertices) and these are
+# colourings of G1 - S (740 vertices), so it asserts before it starts.
+python3 check_blocked_witness.py blocked_90
+python3 check_blocked_witness.py             # all three batches
 ```
 
 `<dir>/base.json` records S and the sha256 of the CNF, coordinate and edge files, so

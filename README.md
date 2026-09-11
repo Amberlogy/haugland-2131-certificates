@@ -141,7 +141,9 @@ bash rerun.sh
 This runs, in order (expected wall times on the machine above; `fresh_test.log` is a verbatim transcript of the whole quick layer run from a
 clean copy of this repository — 26 s in total, measured while an unrelated 14-worker SAT campaign was occupying the machine):
 
-1. `sha256sum -c SHA256SUMS` — every file of this layer.
+1. `sha256sum -c SHA256SUMS` — every file of the v1.0 layer. The four v1.1 directories
+   (`best_S315/`, `reduction_S30/`, `reduction_S60/`, `reduction_blocked/`) are not in this
+   list; each carries its own `SHA256SUMS`.
 2. `scripts/haugland.py --out rebuild --paths scripts/refs/appendixA_paths.json` — rebuilds H, the 84 unit vectors, T₅/T₆, G1, G2, G3 from the paper's
    definitions in exact arithmetic and asserts every count against the paper (6 s idle, 13 s under load). The rebuilt `G1.cvtx/G1.edge/G3.cvtx/G3.edge` must be byte-identical
    to `inputs/` (rerun.sh compares sha256; the transcript shows the rebuilt sha256 `441f3121…` / `992936f8…` for G3).
@@ -229,7 +231,7 @@ re-split, and one sub-cube alone needed 561 s and a 480 MB proof. An 8-hour, 14-
 * GitHub layer (this repository, https://github.com/Amberlogy/haugland-2131-certificates): all inputs, CNFs, cube file, cover certificate, L2/L3 certificates, 5-colouring, scripts and fingerprints (< 100 MB).
 * Zenodo layer (full proof archive, 28 GB, 14 786 leaf proofs + spindle-freeness DRAT): DOI [10.5281/zenodo.22435778](https://doi.org/10.5281/zenodo.22435778).
   The archive's per-file sha256 values are in `SHA256SUMS.bundle` here, so either layer can be checked against the other.
-* v1.1 (the 1501-vertex graph G3'): `best_S315/` in this repository, and the corresponding files in the Zenodo record. The 16 382 leaf DRAT proofs
+* v1.1 (the 1501-vertex graph G3'): `best_S315/` in this repository and, once v1.1 is published, the corresponding files in the Zenodo record. The 16 382 leaf DRAT proofs
   of the v1.1 layer are **not** deposited — see §9 for why and for how to regenerate and check them.
 * v1.1 (the Proposition 2 certificate for G1 − S₆₀): `reduction_S60/` in this repository. Its 16 384 leaf DRAT proofs (95.2 GiB / 102.2 GB) are **not**
   deposited in either layer; every one of them is pinned by sha256 in `reduction_S60/LEAF_INDEX.json` — see §10.
@@ -238,9 +240,9 @@ re-split, and one sub-cube alone needed 561 s and a 480 MB proof. An 8-hour, 14-
 
 Every number the paper cites, with the file it came from and whether that number was machine-verified. Source paths are **repository-relative**:
 they were rewritten at publication time, and a path was replaced by its location here only when the local file was **byte-identical (sha256)** to a
-file in this tree — never matched by filename, which produced false pointers on a first attempt. Of the 136 facts, 52 resolve to a published file,
-76 name a working file that is not part of the release, and 8 name a file that no longer exists on disk. Each fact carries `source_status`
-(`published` / `not-released` / `gone`) and `source_original_basename`, so nothing is hidden by the rewrite.
+file in this tree — never matched by filename, which produced false pointers on a first attempt. Of the 136 facts, 54 resolve to a published file,
+78 name a working file that is not part of the release, and 4 name a path that is not a file. Each fact carries `source_status`
+(`published` / `not-released` / `not-a-file`) and `source_original_basename`, so nothing is hidden by the rewrite.
 
 ## 8. License
 
@@ -271,11 +273,13 @@ certificate and of how to check each one.
 ### Release notes
 
 finalize3e ran twice: once on 2026-09-09 and again on 2026-09-10 from the
-archive, after a packaging bug was fixed. Each run drew an independent
-random 5% sample for the cake_lpr cross-check; both passed 819/819. The
-sample released here is the second run's, recorded in crosscheck.json.
-The leaf_proofs/audit/ directory in the working tree holds the first run's
-DRAT artefacts and is not part of this release.
+archive, after a packaging bug was fixed. The cross-check sample is the 819
+leaves selected by `random.Random(20260908).sample(...)`, recorded in
+`crosscheck.json`. Both runs drew this same sample, because the seed is
+fixed: the selection is a deterministic function of the seed and the leaf
+set. This is a 5% sample checked twice, not two independent 5% samples.
+The sample released here is the second run's. The first run's record was in
+leaf_proofs/audit/, which is not part of this release.
 
 The complete set of 16382 leaf proofs (128.1 GB; ~61 GB with xz, ~79 GB
 with gzip) is not uploaded: both exceed Zenodo's 50 GB per-record limit.
@@ -311,7 +315,7 @@ v1.1) and the check will pass.
 ## 10. v1.1 layer — the Proposition 2 certificate (`reduction_S60/`)
 
 `reduction_S60/` holds the cube-and-conquer certificate that **G1 − S₆₀** (680 vertices, 3580 edges) has the pair property, which together with the
-L2′/L3′ assembly in `reduction_S60/l3_phase3_round2/` certifies that G3′ (1891 vertices) is not 4-colourable.
+L2′/L3′ assembly in `reduction_S60/l3_phase3_round2/` certifies that this batch's G3′ — 1891 vertices, built from S₆₀, a different graph from the 1501-vertex G3′ of §9 — is not 4-colourable.
 
 **Deposited here (41 MB):** the deleted set S₆₀ (`S60.txt`, and `base.json`), `base.cnf`, the 16 384-cube file, the cover certificate
 `cnc/cover_pure.{cnf,drat}`, the campaign record, the L2′/L3′ certificate `l3_phase3_round2/L3p.{cnf,drat}` with the exact coordinate and edge files,
@@ -334,7 +338,7 @@ Deleting the first batch of 30 vertices from G1 keeps the pair property; the fir
 and neither does either half of it. `reduction_S60/` (§10) covers the 60. These two directories cover the other two claims.
 
 **`reduction_S30/`** — the cube-and-conquer certificate for **G1 − S₃₀** (710 vertices, 3779 edges) and the L2′/L3′ assembly for the corresponding
-G3′ (2011 vertices). ⚠ Its situation is **not** the one in §10: those leaf proofs were **never retained** — checked with drat-trim as they were
+G3′ (2011 vertices — again a different graph from those of §9 and §10). ⚠ Its situation is **not** the one in §10: those leaf proofs were **never retained** — checked with drat-trim as they were
 produced and deleted immediately, the v1.0 policy for un-lifted proofs — so there is nothing withheld and nothing to deposit. The per-leaf digests
 live in `cnc/state.json` (a `done` map, 16 383 entries, each with `proof_sha`, `cnf_sha`, `checker: "drat-trim"` and `checker_rc: 0`), **not** in a
 `LEAF_INDEX.json`; that file does not exist here. Regenerating all 16 383 leaves takes about 2.2 h on 14 threads.

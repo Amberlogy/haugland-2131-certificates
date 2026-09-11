@@ -49,7 +49,7 @@ drat-trim <cube.cnf> <leaf.drat>          # s VERIFIED
 sha256sum <leaf.drat>                     # compare with proof_sha
 
 # all 16383 leaves, about 2.2 h on 14 threads (v1.0 script, or best_S315/scripts/phase2b/)
-python3 scripts/cnc2.py --cnf base.cnf --icnf cubes_d14.icnf --out DIR --workers 14
+python3 ../best_S315/scripts/phase2b/cnc2.py --cnf base.cnf --icnf cubes_d14.icnf --out DIR --workers 14
 ```
 
 kissat is not bit-reproducible across builds, so a regenerated proof will usually
@@ -62,7 +62,7 @@ Nothing below needs any leaf proof:
 ```bash
 drat-trim cnc/cover_pure.cnf cnc/cover_pure.drat    # the 16383 cubes cover the search space
 drat-trim l3/L3p.cnf l3/L3p.drat                    # the L3' assembly certificate
-python3 best_S315/scripts/phase2/exactfield.py check l3/G3p.cvtx l3/G3p.edge --complete
+python3 ../best_S315/scripts/phase2/exactfield.py check l3/G3p.cvtx l3/G3p.edge --complete   # needs numpy
 sha256sum -c SHA256SUMS                             # integrity of this directory
 ```
 
