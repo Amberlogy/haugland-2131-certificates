@@ -229,7 +229,6 @@ re-split, and one sub-cube alone needed 561 s and a 480 MB proof. An 8-hour, 14-
 * GitHub layer (this repository, https://github.com/Amberlogy/haugland-2131-certificates): all inputs, CNFs, cube file, cover certificate, L2/L3 certificates, 5-colouring, scripts and fingerprints (< 100 MB).
 * Zenodo layer (full proof archive, 28 GB, 14 786 leaf proofs + spindle-freeness DRAT): DOI [10.5281/zenodo.22435778](https://doi.org/10.5281/zenodo.22435778).
   The archive's per-file sha256 values are in `SHA256SUMS.bundle` here, so either layer can be checked against the other.
-  That DOI is the *concept* DOI and always resolves to the latest version, so it covers the v1.1 material as well.
 * v1.1 (the 1501-vertex graph G3'): `best_S315/` in this repository, and the corresponding files in the Zenodo record. The 16 382 leaf DRAT proofs
   of the v1.1 layer are **not** deposited — see §9 for why and for how to regenerate and check them.
 * v1.1 (the Proposition 2 certificate for G1 − S₆₀): `reduction_S60/` in this repository. Its 16 384 leaf DRAT proofs (95.2 GiB / 102.2 GB) are **not**
